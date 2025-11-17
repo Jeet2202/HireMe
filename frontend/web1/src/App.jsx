@@ -4,6 +4,8 @@ import Login from "./pages/common/Login";
 import Signup from "./pages/common/Signup";
 import ForgotPassword from "./pages/common/ForgotPassword";
 import UserSelection from "./pages/common/UserSelection";
+import ContractorDashboard from "./pages/Contractor/ContractorDashboard";
+import ContractorProfile from "./pages/Contractor/ContractorProfile";
 
 export default function App() {
   return (
@@ -16,6 +18,9 @@ export default function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/select-role" element={<UserSelection />} />
+        <Route path="/contractor-dashboard" element={<ContractorDashboard />}/>
+        <Route path="/contractor/profile" element={<ContractorProfile />} />
+        
 
         {/* 404 */}
         <Route path="*" element={<h1 className="text-center mt-20 text-3xl font-bold">Page Not Found</h1>} />
