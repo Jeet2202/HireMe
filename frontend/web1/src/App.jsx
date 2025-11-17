@@ -1,0 +1,27 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/common/Home";
+import Login from "./pages/common/Login";
+import Signup from "./pages/common/Signup";
+import ForgotPassword from "./pages/common/ForgotPassword";
+import UserSelection from "./pages/common/UserSelection";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+
+      <Routes>
+
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/select-role" element={<UserSelection />} />
+
+        {/* 404 */}
+        <Route path="*" element={<h1 className="text-center mt-20 text-3xl font-bold">Page Not Found</h1>} />
+
+      </Routes>
+
+    </BrowserRouter>
+  );
+}
