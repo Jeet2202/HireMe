@@ -15,7 +15,7 @@ export default function Login() {
     labour: {
       email: "labour@test.com",
       password: "labour123",
-      redirect: "/labour-dashboard"
+      redirect: "/labour/dashboard"
     },
     contractor: {
       email: "contractor@test.com",

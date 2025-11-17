@@ -6,6 +6,7 @@ import ForgotPassword from "./pages/common/ForgotPassword";
 import UserSelection from "./pages/common/UserSelection";
 import ContractorDashboard from "./pages/Contractor/ContractorDashboard";
 import ContractorProfile from "./pages/Contractor/ContractorProfile";
+import LabourerDashboard from "./pages/Labourer/LabourerDashboard";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/select-role" element={<UserSelection />} />
         <Route path="/contractor-dashboard" element={<ContractorDashboard />}/>
         <Route path="/contractor/profile" element={<ContractorProfile />} />
+        <Route path="/labour/dashboard" element={<LabourerDashboard />} />
         
 
         {/* 404 */}
