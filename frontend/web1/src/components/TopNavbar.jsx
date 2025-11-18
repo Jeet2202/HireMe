@@ -21,8 +21,12 @@ export default function TopNavbar() {
              <Link to="/contractor/find-labourers">Find Labourers</Link>
              </li>
              <li className="hover:text-blue-600 cursor-pointer">
+             <Link to="/contractor/job-posts">Job Post</Link>
+             </li>
+             <li className="hover:text-blue-600 cursor-pointer">
              <Link to="/contractor/profile">Profile</Link>
              </li>
+             
              </ul>
      
     </motion.nav>
