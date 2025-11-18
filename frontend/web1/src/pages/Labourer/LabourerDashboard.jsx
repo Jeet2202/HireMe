@@ -49,8 +49,12 @@ export default function LabourerDashboard() {
             <Link to="/labourer/verification">Verification</Link>
           </li>
           <li className="hover:text-blue-600 cursor-pointer">
+            <Link to="/labourer/job-requests">Job Requests</Link>
+          </li>
+          <li className="hover:text-blue-600 cursor-pointer">
             <Link to="/labourer/profile">Profile</Link>
           </li>
+          
         </ul>
       </nav>
 
