@@ -10,7 +10,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // Hardcoded Demo Users
+  // ===== HARD-CODED DEMO USERS — OCP-Friendly Extendable =====
   const USERS = {
     labour: {
       email: "labour@test.com",
@@ -21,26 +21,25 @@ export default function Login() {
       email: "contractor@test.com",
       password: "contractor123",
       redirect: "/contractor-dashboard"
+    },
+    admin: {
+      email: "admin@hireme.com",
+      password: "admin123",
+      redirect: "/admin/dashboard"
     }
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    if (
-      email === USERS.labour.email &&
-      password === USERS.labour.password
-    ) {
-      navigate(USERS.labour.redirect);
-      return;
-    }
+    // 🌟 OCP: Loop through USERS without modifying login logic
+    for (const role in USERS) {
+      const user = USERS[role];
 
-    if (
-      email === USERS.contractor.email &&
-      password === USERS.contractor.password
-    ) {
-      navigate(USERS.contractor.redirect);
-      return;
+      if (email === user.email && password === user.password) {
+        navigate(user.redirect);
+        return;
+      }
     }
 
     setError("Invalid Email or Password");

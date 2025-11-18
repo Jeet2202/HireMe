@@ -13,6 +13,11 @@ import LabourerJobRequests from "./pages/Labourer/LabourerJobRequests";
 import ContractorJobPosts from "./pages/Contractor/ContractorJobPosts";
 import ContractorVerification from "./pages/Contractor/ContractorVerification";
 import LabourerProfile from "./pages/Labourer/LabourerProfile";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminVerification from "./pages/admin/AdminVerification";
+import AdminWorkerManagement from "./pages/admin/AdminWorkerManagement";
+import AdminContractorManagement from "./pages/admin/AdminContractorManagement";
+import AdminJobManagement from "./pages/admin/AdminJobManagement";
 
 export default function App() {
   return (
@@ -34,6 +39,11 @@ export default function App() {
         <Route path="/contractor/job-posts" element={<ContractorJobPosts />} />
         <Route path="/contractor/verification" element={<ContractorVerification />} />
         <Route path="/labourer/profile" element={<LabourerProfile />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/verification" element={<AdminVerification />} />
+        <Route path="/admin/workers" element={<AdminWorkerManagement />} />
+        <Route path="/admin/contractors" element={<AdminContractorManagement />} />
+        <Route path="/admin/jobs" element={<AdminJobManagement />} />
 
         
 

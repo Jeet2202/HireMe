@@ -25,7 +25,8 @@ const LabourerVerification = () => {
       </div>
 
       {/* ===== MAIN CONTENT ===== */}
-      <div className="flex-1 p-6 pb-20 overflow-y-auto">
+      <div className="flex-1 p-6 pb-20 pt-15 overflow-y-auto">
+
         <h1 className="text-center text-3xl font-bold mb-10 tracking-tight">
           
         </h1>
@@ -68,7 +69,7 @@ const LabourerVerification = () => {
             {/* Buttons */}
             <div className="flex flex-col gap-4">
               <button
-                onClick={() => navigate("/labour/dashboard")}
+                onClick={() => navigate("/labourer/dashboard")}
                 className="bg-blue-600 text-white font-medium py-3 rounded-xl hover:bg-blue-700 transition duration-200 shadow-md"
               >
                 Go to Dashboard
