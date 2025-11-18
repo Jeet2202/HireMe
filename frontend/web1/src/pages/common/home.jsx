@@ -30,42 +30,44 @@ export default function Home() {
       <Navbar />
 
       {/* Hero */}
-      <section className="hero-gradient text-white pt-24 pb-20 bg-gradient-to-br from-blue-500 to-blue-900">
-        <div className="container mx-auto px-6">
+      {/* Hero */}
+<section 
+  className="relative text-white pt-28 pb-24"
+  style={{
+    backgroundImage: `url('https://img.freepik.com/premium-photo/construction-team-working-site_1230717-256348.jpg')`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat"
+  }}
+>
+  {/* Dark Overlay for Readability */}
+  <div className="absolute inset-0 bg-black/50"></div>
 
-          <div className="flex flex-col md:flex-row items-center">
+  <div className="container mx-auto px-6 relative z-10">
+   <div className="max-w-3xl mx-auto text-center">
 
-            {/* Left */}
-            <div className="md:w-1/2 mb-10 md:mb-0 animate-fadeInUp">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Connecting Contractors with Skilled Labourers
-              </h1>
+      <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
+        Connecting Contractors with Skilled Labourers
+      </h1>
 
-              <p className="text-lg mb-8 text-blue-100">
-                A modern platform designed to streamline the construction workforce with secure verification and intelligent matching.
-              </p>
+      <p className="text-lg mb-10 text-gray-200">
+        A modern platform designed to streamline the construction workforce with secure verification and intelligent matching.
+      </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-              
-              </div>
-            </div>
+      <div className="flex gap-4 justify-center">
+        {/* Buttons or future actions go here */}
+      </div>
 
-            {/* Right */}
-            <div className="md:w-1/2 flex justify-center animate-fadeInUp">
-              <img
-                src="https://picsum.photos/seed/construction-workers/500/350"
-                className="rounded-lg shadow-xl"
-                alt="Construction workers"
-              />
-            </div>
-          </div>
+    </div>
 
-          <div className="text-center mt-12 animate-bounceCustom">
-            <FontAwesomeIcon icon={faChevronDown} size="2x" />
-          </div>
 
-        </div>
-      </section>
+    {/* Scroll Indicator */}
+    <div className="text-center mt-16 animate-bounce">
+      <FontAwesomeIcon icon={faChevronDown} size="2x" className="text-yellow-400"/>
+    </div>
+  </div>
+</section>
+
 
       {/* Features */}
       <section id="features" className="py-20 bg-white">
@@ -92,7 +94,7 @@ export default function Home() {
 
                 <h3 className="text-xl font-semibold mb-3">{f.title}</h3>
                 <p className="text-gray-600">
-                  Lorem ipsum placeholder text for now.
+                  Finding Jobs made easy.
                 </p>
               </div>
             ))}

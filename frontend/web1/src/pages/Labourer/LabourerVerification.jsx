@@ -69,7 +69,7 @@ const LabourerVerification = () => {
             {/* Buttons */}
             <div className="flex flex-col gap-4">
               <button
-                onClick={() => navigate("/labourer/dashboard")}
+                onClick={() => navigate("/labour/dashboard")}
                 className="bg-blue-600 text-white font-medium py-3 rounded-xl hover:bg-blue-700 transition duration-200 shadow-md"
               >
                 Go to Dashboard
