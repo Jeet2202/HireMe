@@ -4,10 +4,13 @@ export default function AdminNavbar() {
   return (
     <nav className="flex justify-between items-center px-10 py-4 bg-white shadow-md sticky top-0 z-50">
 
-      {/* Logo */}
-      <h1 className="text-3xl font-extrabold text-blue-600">
-        HireMe
-      </h1>
+      {/* Logo + Icon */}
+      <Link to="/" className="flex items-center gap-3">
+        <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-md">
+          <i className="fa-solid fa-hard-hat text-white text-xl"></i>
+        </div>
+        <h1 className="text-3xl font-extrabold text-blue-600">HireMe</h1>
+      </Link>
 
       {/* Menu Items */}
       <ul className="flex space-x-10 text-lg font-medium">

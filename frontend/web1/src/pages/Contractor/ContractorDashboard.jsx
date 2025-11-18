@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Footer from "../../components/footer";
 import { Link } from "react-router-dom";
+import TopNavbar from "../../components/TopNavbar";
 
 import {
   LineChart,
@@ -42,27 +43,9 @@ export default function ContractorDashboard() {
   const donutColors = ["#2563eb", "#f59e0b", "#ef4444"];
 
   return (
-    <div className="min-h-screen bg-[#f4f6f8]">
+    <div className="min-h-screen bg-[#f4f6f8] py-20">
       {/* Navbar */}
-      <nav className="flex justify-between items-center px-10 py-4 bg-white shadow-md">
-        <h1 className="text-3xl font-extrabold text-blue-600">HireMe</h1>
-
-        <ul className="flex space-x-10 text-lg font-medium">
-        <li className="hover:text-blue-600 cursor-pointer">
-        <Link to="/contractor-dashboard">Dashboard</Link>
-        </li>
-        <li className="hover:text-blue-600 cursor-pointer">
-        <Link to="/contractor/verification">Verification</Link>
-        </li>
-        <li className="hover:text-blue-600 cursor-pointer">
-        <Link to="/contractor/find-labourers">Find Labourers</Link>
-        </li>
-        <li className="hover:text-blue-600 cursor-pointer">
-        <Link to="/contractor/profile">Profile</Link>
-        </li>
-        </ul>
-
-      </nav>
+      <TopNavbar />
 
       {/* Header */}
       <div className="px-10 mt-6">
@@ -109,7 +92,7 @@ export default function ContractorDashboard() {
           className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center"
         >
           <img
-            src="https://i.imgur.com/0y8Ftya.png"
+            src="https://img.freepik.com/premium-photo/builder-engineer-civil-engineer-worker-construction-site-engineer-worker-suit-helmet_265223-112361.jpg"
             alt="Founder"
             className="w-32 h-32 rounded-full shadow-md border"
           />
