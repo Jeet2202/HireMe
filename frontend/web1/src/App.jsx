@@ -11,6 +11,7 @@ import ContractorFindLabourers from "./pages/Contractor/ContractorFindLabourers"
 import LabourerVerification from "./pages/Labourer/LabourerVerification";
 import LabourerJobRequests from "./pages/Labourer/LabourerJobRequests";
 import ContractorJobPosts from "./pages/Contractor/ContractorJobPosts";
+import ContractorVerification from "./pages/Contractor/ContractorVerification";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/labourer/verification" element={<LabourerVerification />} />
         <Route path="/labourer/job-requests" element={<LabourerJobRequests />} />
         <Route path="/contractor/job-posts" element={<ContractorJobPosts />} />
+        <Route path="/contractor/verification" element={<ContractorVerification />} />
 
         
 
