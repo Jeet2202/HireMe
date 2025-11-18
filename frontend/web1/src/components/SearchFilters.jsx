@@ -1,129 +1,163 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
+import {
+  FiTool,
+  FiUsers,
+  FiCalendar,
+  FiClock,
+  FiChevronRight,
+} from "react-icons/fi";
 
-const categories = ["mason", "carpenter", "plumber", "electrician", "painter", "helper"];
-const skillLevels = ["beginner", "intermediate", "expert"];
+export default function SearchFilters({ initialFilters, onFind }) {
+  const [f, setF] = useState(initialFilters);
 
-export default function SearchFilters({ initialFilters, onFind, setMapCenter }) {
-  const [form, setForm] = useState(initialFilters);
+  const categories = [
+    { name: "Mason", color: "from-blue-500 to-indigo-500" },
+    { name: "Carpenter", color: "from-green-500 to-emerald-500" },
+    { name: "Plumber", color: "from-purple-500 to-pink-500" },
+    { name: "Electrician", color: "from-orange-500 to-yellow-500" },
+    { name: "Helper", color: "from-gray-500 to-gray-700" },
+  ];
 
-  const handleChange = (key, value) =>
-    setForm((prev) => ({ ...prev, [key]: value }));
-
-  const setCurrentLocation = () => {
-    navigator.geolocation.getCurrentPosition((p) => {
-      const lat = p.coords.latitude;
-      const lng = p.coords.longitude;
-      handleChange("location", { lat, lng });
-      setMapCenter({ lat, lng });
-    });
-  };
+  const skillLevels = ["Beginner", "Intermediate", "Expert"];
 
   return (
-    <motion.form
-      onSubmit={(e) => {
-        e.preventDefault();
-        onFind(form);
-      }}
-      initial={{ opacity: 0, y: -8 }}
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35 }}
-      className="bg-white shadow-lg rounded-xl p-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4"
+      className="bg-white/70 backdrop-blur-xl shadow-xl rounded-3xl p-6 border border-white/60 relative overflow-hidden"
     >
-      {/* Category */}
-      <div className="flex flex-col">
-        <label className="text-sm text-gray-600">Category</label>
-        <select
-          className="border rounded-lg p-2"
-          value={form.category}
-          onChange={(e) => handleChange("category", e.target.value)}
-        >
-          {categories.map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </select>
+      {/* Soft Gradient Glow */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-blue-100 via-white to-purple-100 opacity-40"></div>
+
+      <h1 className="text-2xl font-bold text-gray-800 mb-4">Filters</h1>
+
+      {/* CATEGORY */}
+      <div className="mb-6">
+        <p className="text-sm text-gray-600 mb-2 flex items-center gap-2">
+          <FiTool className="text-blue-500" /> Category
+        </p>
+
+        <div className="flex flex-wrap gap-3">
+          {categories.map((c) => {
+            const active = f.category === c.name.toLowerCase();
+            return (
+              <motion.button
+                key={c.name}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setF({ ...f, category: c.name.toLowerCase() })}
+                className={`
+                  px-4 py-2 rounded-xl font-medium shadow-md border transition-all
+                  ${
+                    active
+                      ? `text-white bg-gradient-to-r ${c.color} border-transparent`
+                      : "bg-white border-gray-300 text-gray-700 hover:bg-gray-100"
+                  }
+                `}
+              >
+                {c.name}
+              </motion.button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Skill */}
-      <div className="flex flex-col">
-        <label className="text-sm text-gray-600">Skill Level</label>
-        <select
-          className="border rounded-lg p-2"
-          value={form.skillLevel}
-          onChange={(e) => handleChange("skillLevel", e.target.value)}
-        >
-          {skillLevels.map((s) => (
-            <option key={s}>{s}</option>
-          ))}
-        </select>
+      {/* SKILL LEVEL */}
+      <div className="mb-8">
+        <p className="text-sm text-gray-600 mb-2 flex items-center gap-2">
+          <FiUsers className="text-purple-500" /> Skill Level
+        </p>
+
+        <div className="grid grid-cols-3 bg-gray-100 rounded-xl p-1 shadow-inner">
+          {skillLevels.map((s) => {
+            const active = f.skillLevel === s.toLowerCase();
+            return (
+              <button
+                key={s}
+                onClick={() => setF({ ...f, skillLevel: s.toLowerCase() })}
+                className={`py-2 rounded-lg font-medium transition text-sm
+                ${
+                  active
+                    ? "bg-blue-600 text-white shadow"
+                    : "text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {s}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Location */}
-      <div className="flex flex-col">
-        <label className="text-sm text-gray-600">Location</label>
-        <button
-          type="button"
-          className="px-3 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-          onClick={setCurrentLocation}
-        >
-          Use My Location
-        </button>
+      {/* SLIDERS */}
+      <div className="grid grid-cols-2 gap-6 mb-6">
+        <div className="p-4 bg-white rounded-2xl shadow-sm border">
+          <p className="text-sm text-gray-600 mb-1">
+            Workers Needed: <span className="font-bold">{f.workersNeeded}</span>
+          </p>
+
+          <input
+            type="range"
+            min={1}
+            max={20}
+            value={f.workersNeeded}
+            onChange={(e) => setF({ ...f, workersNeeded: e.target.value })}
+            className="w-full accent-blue-600 cursor-pointer"
+          />
+        </div>
+
+        <div className="p-4 bg-white rounded-2xl shadow-sm border">
+          <p className="text-sm text-gray-600 mb-1">
+            Min Payment: <span className="font-bold">₹{f.payment}</span>
+          </p>
+
+          <input
+            type="range"
+            min={300}
+            max={2000}
+            step={50}
+            value={f.payment}
+            onChange={(e) => setF({ ...f, payment: e.target.value })}
+            className="w-full accent-blue-600 cursor-pointer"
+          />
+        </div>
       </div>
 
-      {/* Date */}
-      <div className="flex flex-col">
-        <label className="text-sm text-gray-600">Date</label>
-        <input
-          type="date"
-          className="border rounded-lg p-2"
-          value={form.date}
-          onChange={(e) => handleChange("date", e.target.value)}
-        />
+      {/* DATE + TIME */}
+      <div className="grid grid-cols-2 gap-6 mb-6">
+        <div className="p-4 bg-white/90 rounded-2xl shadow-sm border">
+          <p className="text-sm text-gray-600 flex items-center gap-2">
+            <FiCalendar className="text-orange-500" /> Date
+          </p>
+          <input
+            type="date"
+            className="mt-2 w-full p-2 rounded-lg border focus:ring-2 focus:ring-blue-300"
+            value={f.date}
+            onChange={(e) => setF({ ...f, date: e.target.value })}
+          />
+        </div>
+
+        <div className="p-4 bg-white/90 rounded-2xl shadow-sm border">
+          <p className="text-sm text-gray-600 flex items-center gap-2">
+            <FiClock className="text-red-500" /> Time
+          </p>
+          <input
+            type="time"
+            className="mt-2 w-full p-2 rounded-lg border focus:ring-2 focus:ring-blue-300"
+            value={f.time}
+            onChange={(e) => setF({ ...f, time: e.target.value })}
+          />
+        </div>
       </div>
 
-      {/* Time */}
-      <div className="flex flex-col">
-        <label className="text-sm text-gray-600">Time</label>
-        <input
-          type="time"
-          className="border rounded-lg p-2"
-          value={form.time}
-          onChange={(e) => handleChange("time", e.target.value)}
-        />
-      </div>
-
-      {/* Workers count */}
-      <div className="flex flex-col">
-        <label className="text-sm text-gray-600">No. of Workers</label>
-        <input
-          type="number"
-          min={1}
-          className="border rounded-lg p-2"
-          value={form.workersNeeded}
-          onChange={(e) =>
-            handleChange("workersNeeded", Number(e.target.value))
-          }
-        />
-      </div>
-
-      {/* Payment */}
-      <div className="flex flex-col">
-        <label className="text-sm text-gray-600">Payment (₹)</label>
-        <input
-          type="number"
-          min={100}
-          className="border rounded-lg p-2"
-          value={form.payment}
-          onChange={(e) => handleChange("payment", Number(e.target.value))}
-        />
-      </div>
-
-      <button
-        type="submit"
-        className="col-span-full bg-gray-900 hover:bg-gray-800 text-white py-2 rounded-lg transition"
+      {/* APPLY BUTTON */}
+      <motion.button
+        whileTap={{ scale: 0.93 }}
+        onClick={() => onFind(f)}
+        className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-md hover:shadow-lg transition"
       >
-        Find Workers
-      </button>
-    </motion.form>
+        Apply Filters <FiChevronRight className="inline ml-1" />
+      </motion.button>
+    </motion.div>
   );
 }
