@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Footer from "../../components/footer";
-import { Link } from "react-router-dom";
+import BottomNavbar from "../../components/BottomNavbar";
+import { Link, useNavigate } from "react-router-dom";
 
 // Recharts Imports
 import {
@@ -16,9 +17,10 @@ import {
 } from "recharts";
 
 export default function LabourerDashboard() {
+  const navigate = useNavigate();
   const [available, setAvailable] = useState(true);
 
-  // Dummy Data for Charts
+  // Dummy Data
   const earningsData = [
     { month: "Jan", amount: 1200 },
     { month: "Feb", amount: 900 },
@@ -35,28 +37,12 @@ export default function LabourerDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 pt-24">
+
 
       {/* NAVBAR */}
-      <nav className="flex justify-between items-center px-10 py-4 bg-white shadow-md">
-        <h1 className="text-3xl font-extrabold text-blue-600">HireMe</h1>
+      <BottomNavbar></BottomNavbar>
 
-        <ul className="flex space-x-10 text-lg font-medium">
-          <li className="hover:text-blue-600 cursor-pointer">
-            <Link to="/labour/dashboard">Dashboard</Link>
-          </li>
-          <li className="hover:text-blue-600 cursor-pointer">
-            <Link to="/labourer/verification">Verification</Link>
-          </li>
-          <li className="hover:text-blue-600 cursor-pointer">
-            <Link to="/labourer/job-requests">Job Requests</Link>
-          </li>
-          <li className="hover:text-blue-600 cursor-pointer">
-            <Link to="/labourer/profile">Profile</Link>
-          </li>
-          
-        </ul>
-      </nav>
 
       {/* HEADER */}
       <div className="px-10 mt-6">
@@ -111,7 +97,7 @@ export default function LabourerDashboard() {
 
       </div>
 
-      {/* MIDDLE SECTION */}
+      {/* MID SECTION */}
       <div className="px-10 grid grid-cols-1 lg:grid-cols-3 gap-10 mt-10">
 
         {/* VERIFICATION STATUS */}
@@ -123,10 +109,10 @@ export default function LabourerDashboard() {
         >
           <h3 className="text-2xl font-semibold text-gray-800">Verification Status</h3>
           <p className="mt-4 text-lg font-medium text-green-600">✔ Verified by UIDAI</p>
-          <p className="text-gray-600 mt-2">Your identity and details are verified.</p>
+          <p className="text-gray-600 mt-2">Your identity is securely verified.</p>
         </motion.div>
 
-        {/* AVAILABILITY */}
+        {/* AVAILABILITY (TOGGLE) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -135,17 +121,25 @@ export default function LabourerDashboard() {
         >
           <h3 className="text-2xl font-semibold text-gray-800">Availability</h3>
 
-          <div className="mt-4 flex items-center space-x-4">
-            <label className="text-lg font-medium">Currently:</label>
+          <div className="mt-6 flex items-center space-x-5">
 
-            <button
+            {/* Toggle Switch */}
+            <div
               onClick={() => setAvailable(!available)}
-              className={`px-6 py-2 rounded-lg text-white font-semibold transition ${
-                available ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"
+              className={`w-16 h-8 flex items-center rounded-full p-1 cursor-pointer transition-all ${
+                available ? "bg-green-500" : "bg-red-500"
               }`}
             >
+              <div
+                className={`bg-white w-6 h-6 rounded-full shadow-md transform transition ${
+                  available ? "translate-x-8" : "translate-x-0"
+                }`}
+              ></div>
+            </div>
+
+            <span className="text-lg font-semibold">
               {available ? "Available" : "Not Available"}
-            </button>
+            </span>
           </div>
         </motion.div>
 
@@ -160,9 +154,10 @@ export default function LabourerDashboard() {
           <p className="text-3xl font-bold mt-3 text-yellow-500">4.6 ⭐</p>
           <p className="text-gray-500">Based on contractor feedback</p>
         </motion.div>
+
       </div>
 
-      {/* GRAPH SECTION */}
+      {/* CHARTS SECTION */}
       <div className="px-10 mt-12 grid grid-cols-1 lg:grid-cols-2 gap-10">
 
         {/* Earnings Graph */}
@@ -182,7 +177,7 @@ export default function LabourerDashboard() {
           </ResponsiveContainer>
         </motion.div>
 
-        {/* Rating Chart */}
+        {/* Rating Trend Graph */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
