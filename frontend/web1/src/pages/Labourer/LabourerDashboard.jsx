@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Bell, 
   Search, 
@@ -10,7 +10,8 @@ import {
   Star,
   Clock,
   MapPin,
-  ChevronRight
+  ChevronRight,
+  Loader2
 } from 'lucide-react';
 import {
   BarChart,
@@ -23,6 +24,8 @@ import {
   LineChart,
   Line
 } from 'recharts';
+
+const API_BASE = 'http://localhost:8000/api/labourer';
 
 const earningsData = [
   { month: 'Jan', amount: 3200 },
@@ -41,8 +44,51 @@ const ratingData = [
   { week: 'W5', rating: 4.92 },
 ];
 
+/* Hardcoded fallback values */
+const defaultStats = {
+  job_request_count: 12,
+  new_requests: 4,
+  current_booking: 'Westside Renovation',
+  skill_level: 'Level 4',
+  skill_title: 'Expert Mason',
+  is_verified: true,
+  average_rating: 4.92,
+  total_completions: 128,
+  next_shift_time: 'Tomorrow, 08:00 AM',
+  next_shift_location: 'Downtown Site B',
+  next_shift_foreman: 'Sarah Wilson',
+};
+
 export default function LabourerDashboard() {
   const [isAvailable, setIsAvailable] = useState(true);
+  const [stats, setStats] = useState(defaultStats);
+  const [jobCount, setJobCount] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        /* Fetch dashboard stats */
+        const statsRes = await fetch(`${API_BASE}/dashboard`);
+        const statsData = await statsRes.json();
+        if (statsData.stats) {
+          setStats(statsData.stats);
+        }
+
+        /* Fetch job count */
+        const jobsRes = await fetch(`${API_BASE}/jobs`);
+        const jobsData = await jobsRes.json();
+        if (jobsData.count > 0) {
+          setJobCount(jobsData.count);
+        }
+      } catch (err) {
+        console.log('API unavailable, using fallback data.');
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <div className="flex-1 p-8 space-y-8 animate-in fade-in duration-500 bg-gradient-to-br from-white to-[#f4f4f5] min-h-screen">
@@ -70,10 +116,14 @@ export default function LabourerDashboard() {
             <div className="p-3 bg-primary rounded-xl">
               <Clock className="text-white" size={24} />
             </div>
-            <span className="bg-surface-container-high text-on-surface text-xs font-bold px-3 py-1 rounded-full">+4 New</span>
+            <span className="bg-surface-container-high text-on-surface text-xs font-bold px-3 py-1 rounded-full">
+              {loading ? '...' : `+${stats.new_requests} New`}
+            </span>
           </div>
           <p className="text-xs font-medium text-on-surface uppercase tracking-wider">Job Requests</p>
-          <h3 className="text-4xl font-bold text-on-surface mt-1">12</h3>
+          <h3 className="text-4xl font-bold text-on-surface mt-1">
+            {loading ? <Loader2 size={28} className="animate-spin" /> : (jobCount ?? stats.job_request_count)}
+          </h3>
         </div>
 
         <div className="bg-white p-8 rounded-2xl border border-outline-variant card-shadow">
@@ -84,7 +134,7 @@ export default function LabourerDashboard() {
             <span className="bg-surface-container-high text-on-surface text-xs font-bold px-3 py-1 rounded-full">Ongoing</span>
           </div>
           <p className="text-xs font-medium text-on-surface uppercase tracking-wider">Current Booking</p>
-          <h3 className="text-2xl font-bold text-on-surface mt-1 truncate">Westside Renovation</h3>
+          <h3 className="text-2xl font-bold text-on-surface mt-1 truncate">{stats.current_booking}</h3>
         </div>
 
         <div className="bg-white p-8 rounded-2xl border border-outline-variant card-shadow">
@@ -92,10 +142,10 @@ export default function LabourerDashboard() {
             <div className="p-3 bg-[#fcdfa9] rounded-xl">
               <TrendingUp className="text-[#180f00]" size={24} />
             </div>
-            <span className="bg-[#dec38f]/30 text-[#180f00] text-xs font-bold px-3 py-1 rounded-full">Level 4</span>
+            <span className="bg-[#dec38f]/30 text-[#180f00] text-xs font-bold px-3 py-1 rounded-full">{stats.skill_level}</span>
           </div>
           <p className="text-xs font-medium text-on-surface uppercase tracking-wider">Skill Level</p>
-          <h3 className="text-2xl font-bold text-on-surface mt-1">Expert Mason</h3>
+          <h3 className="text-2xl font-bold text-on-surface mt-1">{stats.skill_title}</h3>
         </div>
       </div>
 
@@ -134,19 +184,19 @@ export default function LabourerDashboard() {
             <Star className="text-[#fcdfa9] fill-[#fcdfa9]" size={20} />
           </div>
           <div className="mt-4">
-            <h4 className="text-4xl font-bold text-on-surface">4.92<span className="text-base text-on-surface ml-2">/ 5.0</span></h4>
-            <p className="text-xs text-on-surface mt-1">Based on 128 job completions</p>
+            <h4 className="text-4xl font-bold text-on-surface">{stats.average_rating}<span className="text-base text-on-surface ml-2">/ 5.0</span></h4>
+            <p className="text-xs text-on-surface mt-1">Based on {stats.total_completions} job completions</p>
           </div>
         </div>
 
         <div className="bg-primary text-on-primary p-6 rounded-2xl card-shadow flex flex-col justify-between">
           <div>
             <p className="text-[10px] text-white/70 uppercase tracking-widest">Next Shift</p>
-            <p className="text-lg font-bold mt-1">Tomorrow, 08:00 AM</p>
+            <p className="text-lg font-bold mt-1">{stats.next_shift_time}</p>
           </div>
           <div className="mt-4">
-            <p className="text-sm">Downtown Site B</p>
-            <p className="text-xs text-white/70 mt-1">Site Foreman: Sarah Wilson</p>
+            <p className="text-sm">{stats.next_shift_location}</p>
+            <p className="text-xs text-white/70 mt-1">Site Foreman: {stats.next_shift_foreman}</p>
           </div>
           <button className="mt-4 w-full py-2 bg-white text-on-surface rounded-xl text-xs font-bold hover:bg-opacity-90 transition-all">VIEW DETAILS</button>
         </div>
