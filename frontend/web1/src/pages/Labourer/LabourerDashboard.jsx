@@ -45,14 +45,14 @@ export default function LabourerDashboard() {
   const [isAvailable, setIsAvailable] = useState(true);
 
   return (
-    <div className="flex-1 p-8 space-y-8 animate-in fade-in duration-500">
+    <div className="flex-1 p-8 space-y-8 animate-in fade-in duration-500 bg-gradient-to-br from-white to-[#f4f4f5] min-h-screen">
       <header className="flex justify-between items-center">
         <div>
           <h1 className="text-4xl font-bold text-on-surface">Overview</h1>
           <p className="text-on-surface mt-1">Welcome back, Marcus. Here's your schedule for today.</p>
         </div>
         <div className="flex items-center gap-4">
-          <button className="w-12 h-12 flex items-center justify-center rounded-xl bg-white shadow-sm border border-outline-variant hover:bg-white transition-colors relative">
+          <button className="w-12 h-12 flex items-center justify-center rounded-xl bg-white card-shadow border border-outline-variant hover:bg-white transition-colors relative">
             <Bell className="text-on-surface" size={20} />
             <span className="absolute top-3 right-3 w-2 h-2 bg-[#ba1a1a] rounded-full"></span>
           </button>
@@ -65,10 +65,10 @@ export default function LabourerDashboard() {
 
       {/* KPI Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-outline-variant hover:-translate-y-1 transition-transform">
+        <div className="bg-white p-8 rounded-2xl border border-outline-variant card-shadow">
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-primary rounded-xl">
-              <Clock className="text-on-surface" size={24} />
+              <Clock className="text-white" size={24} />
             </div>
             <span className="bg-surface-container-high text-on-surface text-xs font-bold px-3 py-1 rounded-full">+4 New</span>
           </div>
@@ -76,7 +76,7 @@ export default function LabourerDashboard() {
           <h3 className="text-4xl font-bold text-on-surface mt-1">12</h3>
         </div>
 
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-outline-variant hover:-translate-y-1 transition-transform">
+        <div className="bg-white p-8 rounded-2xl border border-outline-variant card-shadow">
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-surface-container-high rounded-xl">
               <Briefcase className="text-on-surface" size={24} />
@@ -87,7 +87,7 @@ export default function LabourerDashboard() {
           <h3 className="text-2xl font-bold text-on-surface mt-1 truncate">Westside Renovation</h3>
         </div>
 
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-outline-variant hover:-translate-y-1 transition-transform">
+        <div className="bg-white p-8 rounded-2xl border border-outline-variant card-shadow">
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-[#fcdfa9] rounded-xl">
               <TrendingUp className="text-[#180f00]" size={24} />
@@ -101,14 +101,14 @@ export default function LabourerDashboard() {
 
       {/* Status & Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-outline-variant flex flex-col items-center justify-center text-center">
+        <div className="bg-white p-6 rounded-2xl border border-outline-variant card-shadow flex flex-col items-center justify-center text-center">
           <ShieldCheck size={48} className="text-on-surface fill-surface-container-high" />
           <p className="text-lg font-bold text-on-surface mt-4">Identity Verified</p>
           <p className="text-xs text-on-surface mt-1">Next renewal: Oct 2024</p>
           <button className="mt-4 w-full py-2 border border-outline-variant rounded-xl text-xs font-bold hover:bg-white transition-colors">VIEW BADGE</button>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-outline-variant flex flex-col justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-outline-variant card-shadow flex flex-col justify-between">
           <div className="flex justify-between items-center">
             <p className="font-bold text-on-surface">Availability</p>
             <button 
@@ -128,7 +128,7 @@ export default function LabourerDashboard() {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-outline-variant flex flex-col justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-outline-variant card-shadow flex flex-col justify-between">
           <div className="flex justify-between items-center">
             <p className="font-bold text-on-surface">Average Rating</p>
             <Star className="text-[#fcdfa9] fill-[#fcdfa9]" size={20} />
@@ -139,14 +139,14 @@ export default function LabourerDashboard() {
           </div>
         </div>
 
-        <div className="bg-primary text-on-primary p-6 rounded-2xl shadow-lg flex flex-col justify-between">
+        <div className="bg-primary text-on-primary p-6 rounded-2xl card-shadow flex flex-col justify-between">
           <div>
-            <p className="text-[10px] text-on-surface-variant uppercase tracking-widest">Next Shift</p>
+            <p className="text-[10px] text-white/70 uppercase tracking-widest">Next Shift</p>
             <p className="text-lg font-bold mt-1">Tomorrow, 08:00 AM</p>
           </div>
           <div className="mt-4">
             <p className="text-sm">Downtown Site B</p>
-            <p className="text-xs text-on-surface-variant mt-1">Site Foreman: Sarah Wilson</p>
+            <p className="text-xs text-white/70 mt-1">Site Foreman: Sarah Wilson</p>
           </div>
           <button className="mt-4 w-full py-2 bg-white text-on-surface rounded-xl text-xs font-bold hover:bg-opacity-90 transition-all">VIEW DETAILS</button>
         </div>
@@ -154,7 +154,7 @@ export default function LabourerDashboard() {
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-8">
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-outline-variant h-[400px] flex flex-col">
+        <div className="bg-white p-8 rounded-2xl border border-outline-variant card-shadow h-[400px] flex flex-col">
           <div className="flex justify-between items-center mb-8">
             <h3 className="font-bold text-lg text-on-surface">Monthly Earnings</h3>
             <select className="bg-transparent border-none text-xs font-bold text-on-surface focus:ring-0">
@@ -175,13 +175,13 @@ export default function LabourerDashboard() {
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-6 flex justify-between items-center pt-6 border-t border-[#efeded]">
+          <div className="mt-6 flex justify-between items-center pt-6 border-t border-outline-variant">
             <p className="text-sm text-on-surface">Current Month Projection</p>
             <p className="font-bold text-on-surface">$4,250.00</p>
           </div>
         </div>
 
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-outline-variant h-[400px] flex flex-col">
+        <div className="bg-white p-8 rounded-2xl border border-outline-variant card-shadow h-[400px] flex flex-col">
           <div className="flex justify-between items-center mb-8">
             <h3 className="font-bold text-lg text-on-surface">Rating Trend</h3>
             <div className="flex items-center gap-2">

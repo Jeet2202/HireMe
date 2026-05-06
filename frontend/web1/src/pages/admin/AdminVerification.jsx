@@ -44,12 +44,12 @@ const AdminVerification = () => {
                   <tr key={v.id} className="hover:bg-background-page/5 transition-colors group">
                     <td className="py-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-primary-container text-on-surface flex items-center justify-center font-bold">{v.name.charAt(0)}</div>
+                        <div className="w-10 h-10 rounded-lg bg-primary-container text-white flex items-center justify-center font-bold">{v.name.charAt(0)}</div>
                         <div><p className="font-bold">{v.name}</p><p className="text-xs text-on-surface-variant font-medium">{v.type} • {v.company}</p></div>
                       </div>
                     </td>
                     <td className="py-6 text-right">
-                      <button onClick={() => setSelectedVerification(v)} className="bg-primary text-on-primary font-bold text-[10px] px-6 py-2 rounded-xl hover:bg-primary-container transition-all">REVIEW XML</button>
+                      <button onClick={() => setSelectedVerification(v)} className="bg-primary text-on-primary font-bold text-[10px] px-6 py-2 rounded-xl hover:bg-primary-container transition-all hover:text-white">REVIEW XML</button>
                     </td>
                   </tr>
                 ))}
@@ -81,9 +81,9 @@ const AdminVerification = () => {
                 <button onClick={() => setSelectedVerification(null)}><X size={24} className="text-outline" /></button>
               </div>
               <div className="p-10 space-y-8 bg-surface-container-low overflow-y-auto">
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-secondary-container/20">
+                <div className="bg-white p-6 rounded-2xl card-shadow border border-secondary-container/20">
                   <p className="text-[10px] font-bold text-outline uppercase mb-4 tracking-tighter">Secure Data Stream</p>
-                  <pre className="bg-primary-container/5 p-4 rounded-xl font-mono text-[11px] text-on-surface overflow-x-auto">
+                  <pre className="bg-primary-container/5 p-4 rounded-xl font-mono text-[11px] text-white overflow-x-auto">
                     {`<UidData>
   <Poi name="${selectedVerification.name}" gender="M" dob="1984-05-15" />
   <Poa vtc="Andheri West" dist="Mumbai" state="Maharashtra" pc="400053"/>
@@ -93,7 +93,7 @@ const AdminVerification = () => {
                 </div>
                 <div className="flex gap-4">
                   <button onClick={() => setSelectedVerification(null)} className="flex-1 py-4 border-2 border-outline-variant text-on-surface font-bold rounded-2xl hover:bg-surface-container-low uppercase text-xs">Reject</button>
-                  <button onClick={() => setSelectedVerification(null)} className="flex-2 py-4 bg-primary text-on-primary font-bold rounded-2xl hover:bg-primary-container shadow-xl active:scale-95 uppercase text-xs">Approve Verification</button>
+                  <button onClick={() => setSelectedVerification(null)} className="flex-2 py-4 bg-primary text-on-primary font-bold rounded-2xl hover:bg-primary-container shadow-xl active:scale-95 uppercase text-xs hover:text-white">Approve Verification</button>
                 </div>
               </div>
             </motion.div>

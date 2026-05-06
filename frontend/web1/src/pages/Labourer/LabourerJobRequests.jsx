@@ -27,7 +27,7 @@ const initialJobs = [
     status: 'Pending',
     categoryIcon: <Route size={24} />,
     iconBg: 'bg-surface-container-high',
-    iconColor: 'text-[#28084b]'
+    iconColor: 'text-on-surface'
   },
   {
     id: '2',
@@ -41,7 +41,7 @@ const initialJobs = [
     status: 'Accepted',
     categoryIcon: <Briefcase size={24} />,
     iconBg: 'bg-primary',
-    iconColor: 'text-[#2e0349]'
+    iconColor: 'text-on-surface'
   },
   {
     id: '3',
@@ -103,7 +103,7 @@ export default function LabourerJobRequests() {
 
       {/* Search & Filter */}
       <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-12 lg:col-span-8 bg-white rounded-2xl p-6 shadow-sm border border-outline-variant">
+        <div className="col-span-12 lg:col-span-8 bg-white rounded-2xl p-6 card-shadow border border-outline-variant">
           <div className="flex items-center gap-4 bg-white px-4 py-3 rounded-xl border border-outline-variant focus-within:border-outline-variant transition-all">
             <Search className="text-on-surface" size={20} />
             <input 
@@ -113,7 +113,7 @@ export default function LabourerJobRequests() {
             />
           </div>
         </div>
-        <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl p-6 shadow-sm border border-outline-variant flex items-center gap-3">
+        <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl p-6 card-shadow border border-outline-variant flex items-center gap-3">
           <Filter className="text-on-surface" size={20} />
           <span className="font-semibold text-on-surface">Sort by:</span>
           <select className="flex-1 bg-transparent border-none focus:ring-0 text-sm font-medium">
@@ -145,7 +145,7 @@ export default function LabourerJobRequests() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {filteredJobs.length > 0 ? (
           filteredJobs.map((job) => (
-            <div key={job.id} className={`bg-white rounded-2xl p-8 shadow-sm border border-outline-variant flex flex-col justify-between transition-all hover:shadow-md ${job.status === 'Completed' ? 'opacity-75' : ''}`}>
+            <div key={job.id} className={`bg-white rounded-2xl p-8 card-shadow border border-outline-variant flex flex-col justify-between transition-all hover:shadow-md ${job.status === 'Completed' ? 'opacity-75' : ''}`}>
               <div>
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex items-center gap-4">
@@ -159,7 +159,7 @@ export default function LabourerJobRequests() {
                   </div>
                   <div className={`px-4 py-1.5 rounded-full text-[10px] font-bold flex items-center gap-1.5 ${
                     job.status === 'Pending' ? 'bg-[#fcdfa9] text-[#261a00]' :
-                    job.status === 'Accepted' ? 'bg-[#d4b3fd] text-[#2e0349]' :
+                    job.status === 'Accepted' ? 'bg-surface-container-highest text-on-surface' :
                     job.status === 'Completed' ? 'bg-white text-on-surface' :
                     'bg-[#ffdad6] text-[#ba1a1a]'
                   }`}>
@@ -171,32 +171,32 @@ export default function LabourerJobRequests() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-6 py-6 border-y border-[#efeded]">
+                <div className="grid grid-cols-2 gap-6 py-6 border-y border-outline-variant">
                   <div className="flex items-center gap-3">
-                    <DollarSign size={18} className="text-[#7d747f]" />
+                    <DollarSign size={18} className="text-on-surface-variant" />
                     <div>
-                      <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-wider">Wage</p>
+                      <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Wage</p>
                       <p className="font-bold text-on-surface">{job.wage}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Calendar size={18} className="text-[#7d747f]" />
+                    <Calendar size={18} className="text-on-surface-variant" />
                     <div>
-                      <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-wider">Date/Time</p>
+                      <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Date/Time</p>
                       <p className="font-bold text-on-surface">{job.date} • {job.time}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <MapPin size={18} className="text-[#7d747f]" />
+                    <MapPin size={18} className="text-on-surface-variant" />
                     <div>
-                      <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-wider">Location</p>
+                      <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Location</p>
                       <p className="font-bold text-on-surface">{job.location}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Route size={18} className="text-[#7d747f]" />
+                    <Route size={18} className="text-on-surface-variant" />
                     <div>
-                      <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-wider">Distance</p>
+                      <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Distance</p>
                       <p className="font-bold text-on-surface">{job.distance}</p>
                     </div>
                   </div>
@@ -241,7 +241,7 @@ export default function LabourerJobRequests() {
                 )}
                 {activeTab === 'Completed' && (
                   <div className="flex justify-between items-center py-2">
-                    <span className="text-xs font-bold text-on-surface uppercase tracking-widest bg-primary px-4 py-2 rounded-lg">Payment Processed</span>
+                    <span className="text-xs font-bold text-white uppercase tracking-widest bg-primary px-4 py-2 rounded-lg">Payment Processed</span>
                   </div>
                 )}
                 {activeTab === 'Rejected' && (

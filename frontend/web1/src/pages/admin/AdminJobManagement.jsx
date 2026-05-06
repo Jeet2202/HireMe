@@ -71,7 +71,7 @@ const AdminJobManagement = () => {
           <h2 className="text-4xl font-bold text-on-surface tracking-tight">Job Management</h2>
           <p className="text-on-surface-variant mt-2 text-lg">Monitor and manage operational worker allocation across active contracts.</p>
         </div>
-        <button className="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-primary-container">
+        <button className="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-primary-container hover:text-white">
           <Plus size={20} />
           Create New Job
         </button>
@@ -95,7 +95,7 @@ const AdminJobManagement = () => {
         {mockJobs.map((job) => (
           <div 
             key={job.id} 
-            className={`bg-surface rounded-xl custom-card-shadow overflow-hidden transition-all duration-300 border-l-4 ${job.allocation < 50 ? 'border-orange-500' : 'border-primary'}`}
+            className={`bg-surface rounded-xl custom-card-shadow overflow-hidden transition-all duration-300 border-l-4 ${job.allocation < 50 ? 'border-black border-dashed' : 'border-primary'}`}
           >
             <div 
               onClick={() => setExpandedJob(expandedJob === job.id ? null : job.id)}
@@ -115,7 +115,7 @@ const AdminJobManagement = () => {
                     <motion.div 
                       initial={{ width: 0 }}
                       animate={{ width: `${job.allocation}%` }}
-                      className={`h-full rounded-full ${job.allocation < 50 ? 'bg-orange-500' : 'bg-primary'}`}
+                      className={`h-full rounded-full ${job.allocation < 50 ? 'bg-black/60' : 'bg-primary'}`}
                     />
                   </div>
                 </div>
@@ -125,7 +125,7 @@ const AdminJobManagement = () => {
                 </div>
                 <div className="flex justify-center">
                   {job.allocation < 50 ? (
-                    <div className="flex items-center gap-2 px-4 py-2 border border-orange-200 rounded-lg bg-orange-50 text-orange-600">
+                    <div className="flex items-center gap-2 px-4 py-2 border border-outline rounded-lg bg-white text-black font-bold">
                       <AlertCircle size={16} />
                       <span className="text-xs font-bold uppercase">Worker Shortage Detected</span>
                     </div>
@@ -159,18 +159,18 @@ const AdminJobManagement = () => {
                           <p className="text-[10px] font-bold text-outline uppercase mb-3 text-right">Activity Status</p>
                           <div className="flex justify-end -space-x-3 overflow-hidden mb-4">
                             {[1, 2, 3, 4, 5].map(i => (
-                              <div key={i} className="w-8 h-8 rounded-full bg-primary-container border-2 border-white flex items-center justify-center text-[10px] text-on-surface">W{i}</div>
+                              <div key={i} className="w-8 h-8 rounded-full bg-primary-container border-2 border-white flex items-center justify-center text-[10px] text-white">W{i}</div>
                             ))}
                           </div>
                           <p className="text-xs font-medium text-on-surface-variant text-right">{job.matches} matches found in the vicinity.</p>
                         </div>
                       </div>
                       <div className="flex gap-4 pt-4">
-                        <button className="px-6 py-3 bg-primary text-on-primary rounded-xl font-bold flex items-center gap-2 hover:bg-primary-container">
+                        <button className="px-6 py-3 bg-primary text-on-primary rounded-xl font-bold flex items-center gap-2 hover:bg-primary-container hover:text-white">
                           <DollarSign size={18} />
                           Increase Wage (+15%)
                         </button>
-                        <button className="px-6 py-3 border border-primary text-on-surface rounded-xl font-bold flex items-center gap-2 hover:bg-primary/5">
+                        <button className="px-6 py-3 border border-primary text-white rounded-xl font-bold flex items-center gap-2 hover:bg-primary/5 hover:text-white">
                           <Send size={18} />
                           Notify Available Workers
                         </button>
@@ -185,7 +185,7 @@ const AdminJobManagement = () => {
                         <div className="space-y-4">
                           <div className="flex justify-between items-center text-sm">
                             <span className="opacity-70">Shift Fulfillment:</span>
-                            <span className={`font-bold ${job.allocation < 50 ? 'text-orange-400' : 'text-on-surface'}`}>{job.allocation < 50 ? 'Critical' : 'Healthy'}</span>
+                            <span className={`font-bold text-white`}>{job.allocation < 50 ? 'Critical' : 'Healthy'}</span>
                           </div>
                           <div className="flex justify-between items-center text-sm">
                             <span className="opacity-70">Current Wage:</span>
@@ -210,7 +210,7 @@ const AdminJobManagement = () => {
         <div className="flex gap-8 items-center">
           <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Status Indicators</span>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+            <div className="w-3 h-3 rounded-full bg-white"></div>
             <span className="text-xs">Critical Shortage (&lt;50%)</span>
           </div>
           <div className="flex items-center gap-2">

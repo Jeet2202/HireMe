@@ -24,8 +24,8 @@ function ExperienceItem({ title, company, period, isOpen, onToggle, description,
         className={`w-full p-6 flex justify-between items-center transition-colors ${isOpen ? 'bg-primary text-on-primary' : 'hover:bg-white'}`}
       >
         <div className="flex gap-4 items-center">
-          <div className={`w-12 h-12 rounded-full flex items-center justify-center ${isOpen ? 'bg-white/20' : 'bg-[#efeded]'}`}>
-            <Briefcase size={20} className={isOpen ? 'text-on-surface' : 'text-[#7d747f]'} />
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center ${isOpen ? 'bg-white/20' : 'bg-surface-container-high'}`}>
+            <Briefcase size={20} className={isOpen ? 'text-on-surface' : 'text-on-surface-variant'} />
           </div>
           <div className="text-left">
             <h5 className="font-bold text-lg">{title}</h5>
@@ -37,11 +37,11 @@ function ExperienceItem({ title, company, period, isOpen, onToggle, description,
       
       {isOpen && (
         <div className="p-8 space-y-6 animate-in slide-in-from-top-4 duration-300">
-          <p className="text-base text-[#1b1c1c] leading-relaxed">{description}</p>
+          <p className="text-base text-on-surface leading-relaxed">{description}</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {outcomes.map((outcome, idx) => (
-              <div key={idx} className="p-4 bg-white rounded-xl border border-outline-variant shadow-sm">
-                <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-widest mb-1">Key Outcome</p>
+              <div key={idx} className="p-4 bg-white rounded-2xl border border-outline-variant card-shadow">
+                <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Key Outcome</p>
                 <p className="font-bold text-on-surface">{outcome}</p>
               </div>
             ))}
@@ -69,7 +69,7 @@ export default function LabourerProfile() {
 
       {/* Hero Section */}
       <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-12 lg:col-span-8 bg-white rounded-2xl p-10 shadow-sm border border-outline-variant flex flex-col md:flex-row gap-10">
+        <div className="col-span-12 lg:col-span-8 bg-white rounded-2xl p-10 card-shadow border border-outline-variant flex flex-col md:flex-row gap-10">
           <div className="relative shrink-0">
             <div className="w-56 h-56 rounded-2xl bg-black text-white flex items-center justify-center text-7xl font-bold shadow-xl border-2 border-outline-variant">
               RM
@@ -91,31 +91,31 @@ export default function LabourerProfile() {
                 <MapPin size={20} className="text-on-surface" />
                 <span className="text-base">Manchester, United Kingdom</span>
               </div>
-              <p className="text-base text-[#1b1c1c] leading-relaxed max-w-xl">
+              <p className="text-base text-on-surface leading-relaxed max-w-xl">
                 Dedicated and highly skilled labourer with over 12 years of experience in masonry, structural reinforcement, and heavy equipment operation. Proven track record of safety compliance and high-efficiency project completion in complex urban development environments.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3 pt-2">
-              <span className="bg-primary text-[#2e0349] px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-[#e4b5ff]">Verified Labourer</span>
+              <span className="bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-white/20">Verified Labourer</span>
               <span className="bg-[#fcdfa9] text-[#261a00] px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-[#dec38f]">Top Rated</span>
             </div>
           </div>
         </div>
 
-        <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl p-10 shadow-sm border border-outline-variant h-full flex flex-col">
+        <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl p-10 card-shadow border border-outline-variant h-full flex flex-col">
           <h3 className="text-2xl font-bold text-on-surface mb-8">Performance</h3>
           <div className="space-y-8 flex-1">
-            <div className="flex justify-between items-end border-b border-[#efeded] pb-6">
+            <div className="flex justify-between items-end border-b border-outline-variant pb-6">
               <div>
-                <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-widest mb-1">Jobs Completed</p>
+                <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Jobs Completed</p>
                 <p className="text-5xl font-bold text-on-surface">142</p>
               </div>
               <Trophy size={40} className="text-on-surface opacity-10" />
             </div>
-            <div className="flex justify-between items-end border-b border-[#efeded] pb-6">
+            <div className="flex justify-between items-end border-b border-outline-variant pb-6">
               <div>
-                <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-widest mb-1">Years Experience</p>
+                <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Years Experience</p>
                 <p className="text-5xl font-bold text-on-surface">12+</p>
               </div>
               <ShieldCheck size={40} className="text-on-surface opacity-10" />
@@ -130,7 +130,7 @@ export default function LabourerProfile() {
 
       {/* Details & Skills */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl p-10 shadow-sm border border-outline-variant">
+        <div className="bg-white rounded-2xl p-10 card-shadow border border-outline-variant">
           <div className="flex items-center gap-4 mb-8">
             <div className="p-3 bg-white rounded-xl text-on-surface">
               <Target size={24} />
@@ -139,29 +139,29 @@ export default function LabourerProfile() {
           </div>
           <div className="grid grid-cols-2 gap-y-8">
             <div>
-              <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-widest mb-1">Age</p>
-              <p className="font-bold text-[#1b1c1c]">42 Years</p>
+              <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Age</p>
+              <p className="font-bold text-on-surface">42 Years</p>
             </div>
             <div>
-              <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-widest mb-1">Gender</p>
-              <p className="font-bold text-[#1b1c1c]">Male</p>
+              <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Gender</p>
+              <p className="font-bold text-on-surface">Male</p>
             </div>
             <div>
-              <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-widest mb-1">Languages</p>
-              <p className="font-bold text-[#1b1c1c]">English, Polish</p>
+              <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Languages</p>
+              <p className="font-bold text-on-surface">English, Polish</p>
             </div>
             <div>
-              <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-widest mb-1">Primary Role</p>
-              <p className="font-bold text-[#1b1c1c]">Senior Mason</p>
+              <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Primary Role</p>
+              <p className="font-bold text-on-surface">Senior Mason</p>
             </div>
             <div className="col-span-2">
-              <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-widest mb-1">Availability</p>
-              <p className="font-bold text-[#1b1c1c]">Full-time (Mon - Sat)</p>
+              <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Availability</p>
+              <p className="font-bold text-on-surface">Full-time (Mon - Sat)</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-10 shadow-sm border border-outline-variant">
+        <div className="bg-white rounded-2xl p-10 card-shadow border border-outline-variant">
           <div className="flex items-center gap-4 mb-8">
             <div className="p-3 bg-white rounded-xl text-on-surface">
               <Hammer size={24} />
@@ -170,17 +170,17 @@ export default function LabourerProfile() {
           </div>
           <div className="space-y-8">
             <div>
-              <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-widest mb-4">Core Skills</p>
+              <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-4">Core Skills</p>
               <div className="flex flex-wrap gap-2">
                 {skills.map(skill => (
-                  <span key={skill} className="px-5 py-2.5 bg-white border border-outline-variant rounded-xl text-sm font-bold text-on-surface shadow-sm">
+                  <span key={skill} className="px-5 py-2.5 bg-white border border-outline-variant rounded-2xl text-sm font-bold text-on-surface card-shadow">
                     {skill}
                   </span>
                 ))}
               </div>
             </div>
             <div>
-              <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-widest mb-4">Tools Mastery</p>
+              <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-4">Tools Mastery</p>
               <div className="flex flex-wrap gap-3">
                 {tools.map(tool => (
                   <span key={tool} className="px-5 py-2.5 bg-white rounded-xl text-sm font-bold text-on-surface flex items-center gap-2 border border-outline-variant">
@@ -195,7 +195,7 @@ export default function LabourerProfile() {
       </div>
 
       {/* Experience Timeline */}
-      <div className="bg-white rounded-2xl p-10 shadow-sm border border-outline-variant">
+      <div className="bg-white rounded-2xl p-10 card-shadow border border-outline-variant">
         <div className="flex items-center gap-4 mb-10">
           <div className="p-3 bg-white rounded-xl text-on-surface">
             <History size={24} />
@@ -234,7 +234,7 @@ export default function LabourerProfile() {
       </div>
 
       {/* Portfolio Section */}
-      <div className="bg-white rounded-2xl p-10 shadow-sm border border-outline-variant">
+      <div className="bg-white rounded-2xl p-10 card-shadow border border-outline-variant">
         <div className="flex justify-between items-center mb-10">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-white rounded-xl text-on-surface">
@@ -247,13 +247,21 @@ export default function LabourerProfile() {
           </button>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[1, 2, 3, 4].map(idx => (
-            <div key={idx} className="aspect-video rounded-2xl overflow-hidden bg-[#efeded] group relative cursor-pointer">
-              <div className="w-full h-full bg-[#f4f4f5] flex items-center justify-center text-[#71717a] transition-all duration-500 transform group-hover:scale-110">
-                <ImageIcon size={48} className="opacity-20" />
+          {[
+            { id: 1, img: '/projects/project1.png', title: 'Luxury Residential Brickwork' },
+            { id: 2, img: '/projects/project2.png', title: 'Commercial Foundation Pour' },
+            { id: 3, img: '/projects/project3.png', title: 'Heritage Restoration' },
+            { id: 4, img: '/projects/project4.png', title: 'High-end Stone Patio' }
+          ].map(project => (
+            <div key={project.id} className="aspect-video rounded-2xl overflow-hidden bg-surface-container-high group relative cursor-pointer shadow-sm border border-outline-variant">
+              <div className="w-full h-full bg-surface-container-high flex items-center justify-center transition-all duration-500 transform group-hover:scale-110">
+                <img src={project.img} alt={project.title} className="w-full h-full object-cover" />
               </div>
-              <div className="absolute inset-0 bg-surface-container-high opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300">
-                <span className="text-on-surface font-bold text-[10px] uppercase tracking-widest px-4 py-2 border border-white/30 rounded-full backdrop-blur-sm">View Project</span>
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition-all duration-300 p-4">
+                <span className="text-white font-bold text-[10px] uppercase tracking-widest px-4 py-2 border border-white/30 rounded-full backdrop-blur-sm">View Project</span>
+                <span className="text-white font-semibold text-xs text-center mt-3 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                  {project.title}
+                </span>
               </div>
             </div>
           ))}

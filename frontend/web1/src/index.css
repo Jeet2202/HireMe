@@ -48,7 +48,8 @@ html {
 }
 
 body {
-  background-color: #ffffff;
+  background: linear-gradient(to bottom right, #ffffff, #f4f4f5);
+  background-attachment: fixed;
   color: #1a1c1d;
   min-height: 100vh;
   margin: 0;
@@ -73,9 +74,14 @@ body {
   border-radius: 1.25rem;
   padding: 2rem;
   border: 1px solid #e4e4e7;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.05),
-    0 4px 16px -4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+.executive-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
 /* Primary button */
@@ -125,14 +131,25 @@ body {
 
 /* Card shadows */
 .card-shadow {
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.05),
-    0 8px 24px -4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 10;
+  transition: all 0.3s ease;
 }
+.card-shadow:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
 .custom-card-shadow {
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.05),
-    0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+.custom-card-shadow:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 .shadow-executive {
   box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.1);

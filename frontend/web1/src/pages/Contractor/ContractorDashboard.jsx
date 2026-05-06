@@ -74,7 +74,7 @@ const ContractorDashboard = () => {
             </h3>
             <div className="space-y-6">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-brand-primary rounded-xl flex items-center justify-center text-on-surface font-bold text-2xl">HS</div>
+                <div className="w-16 h-16 bg-brand-primary rounded-xl flex items-center justify-center text-white font-bold text-2xl">HS</div>
                 <div>
                   <p className="font-bold text-on-surface">HireMe Solutions Ltd.</p>
                   <p className="text-xs text-on-surface">Enterprise Contractor</p>
@@ -94,7 +94,7 @@ const ContractorDashboard = () => {
                   <span className="text-[10px] font-black text-on-surface bg-brand-background px-2 py-0.5 rounded">VERIFIED</span>
                 </div>
               </div>
-              <button className="w-full mt-4 py-3 bg-brand-primary text-on-surface rounded-xl font-bold hover:opacity-90 transition-opacity">Edit Profile</button>
+              <button className="w-full mt-4 py-3 bg-brand-primary text-white rounded-xl font-bold hover:opacity-90 transition-opacity">Edit Profile</button>
             </div>
           </motion.div>
 
