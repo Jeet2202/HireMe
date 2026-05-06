@@ -122,7 +122,7 @@ const AdminDashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-primary p-8 rounded-xl custom-card-shadow text-on-surface">
+        <div className="bg-primary p-8 rounded-xl custom-card-shadow text-white">
           <h4 className="text-xl font-bold mb-2">Success Velocity</h4>
           <p className="text-sm opacity-70 mb-8">Percentage of jobs completed without intervention</p>
           <div className="flex items-center justify-between">
@@ -154,7 +154,7 @@ const AdminDashboard = () => {
               <p className="text-sm font-bold text-on-surface-variant uppercase mb-2">Supply Efficiency</p>
               <p className="text-sm text-on-background">Fulfillment speed increased by <span className="font-bold text-on-surface text-lg">14m</span> via matching engine.</p>
             </div>
-            <div className="flex items-center gap-3 text-on-surface bg-primary/5 p-4 rounded-xl">
+            <div className="flex items-center gap-3 text-white bg-primary/5 p-4 rounded-xl">
               <Info size={20} />
               <p className="text-sm font-medium">Verification backlog reaching critical status. Review suggested.</p>
             </div>

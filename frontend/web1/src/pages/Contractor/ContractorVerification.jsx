@@ -92,7 +92,7 @@ const ContractorVerification = () => {
                   </ul>
                 </div>
 
-                <div className="bg-brand-primary p-8 rounded-2xl card-shadow text-on-surface relative overflow-hidden">
+                <div className="bg-brand-primary p-8 rounded-2xl card-shadow text-white relative overflow-hidden">
                   <div className="relative z-10">
                     <h4 className="text-lg font-bold mb-3">Need Help?</h4>
                     <p className="text-xs text-on-surface-variant leading-relaxed font-medium mb-6">Contact our verification support team if you encounter issues with the XML file structure or share code encryption.</p>
@@ -138,7 +138,7 @@ const ContractorVerification = () => {
                 <h3 className="text-3xl font-bold text-on-surface tracking-tight">Verification Successful</h3>
                 <p className="text-on-surface mt-2 max-w-sm font-medium mx-auto">Your identity has been verified. A gold badge has been added to your profile across the platform.</p>
               </div>
-              <button onClick={() => setStep(1)} className="px-10 py-4 bg-brand-primary text-on-surface rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl active:scale-95 transition-all">
+              <button onClick={() => setStep(1)} className="px-10 py-4 bg-brand-primary text-white rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl active:scale-95 transition-all">
                 Return to Dashboard
               </button>
             </motion.div>

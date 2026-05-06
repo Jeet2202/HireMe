@@ -35,7 +35,7 @@ const ContractorProfile = () => {
       <header className="flex justify-between items-center px-10 py-6 mb-8">
         <h2 className="text-3xl font-bold text-on-surface">Contractor Profile</h2>
         <div className="flex gap-3">
-          <button className="px-6 py-3 bg-brand-primary text-on-surface font-bold rounded-xl shadow-lg active:scale-95 transition-all uppercase tracking-widest text-xs">Edit Portfolio</button>
+          <button className="px-6 py-3 bg-brand-primary text-white font-bold rounded-xl shadow-lg active:scale-95 transition-all uppercase tracking-widest text-xs">Edit Portfolio</button>
           <button className="px-6 py-3 bg-white border border-gray-100 text-on-surface font-bold rounded-xl hover:bg-white active:scale-95 transition-all shadow-sm flex items-center gap-2 uppercase tracking-widest text-xs">
             <Download size={14} /> Download CV
           </button>
@@ -53,7 +53,7 @@ const ContractorProfile = () => {
             <div className="w-40 h-40 rounded-2xl bg-black text-white flex items-center justify-center text-6xl font-bold border-4 border-white shadow-xl">
               AR
             </div>
-            <div className="absolute -bottom-2 -right-2 bg-brand-primary text-on-surface p-2 rounded-xl shadow-lg ring-4 ring-white">
+            <div className="absolute -bottom-2 -right-2 bg-brand-primary text-white p-2 rounded-xl shadow-lg ring-4 ring-white">
               <ShieldCheck size={20} />
             </div>
           </div>
@@ -102,7 +102,7 @@ const ContractorProfile = () => {
               <div className="grid grid-cols-2 gap-6">
                 {metrics.map((metric, i) => (
                   <div key={i} className="text-center p-6 bg-white rounded-2xl flex flex-col items-center gap-2 group hover:bg-brand-background transition-colors">
-                    <div className="bg-white p-2 rounded-lg shadow-sm group-hover:scale-110 transition-transform">{metric.icon}</div>
+                    <div className="bg-white p-2 rounded-2xl card-shadow group-hover:scale-110 transition-transform">{metric.icon}</div>
                     <p className="text-2xl font-black text-on-surface">{metric.value}</p>
                     <p className="text-[10px] font-black text-on-surface uppercase tracking-tighter">{metric.label}</p>
                   </div>

@@ -63,7 +63,7 @@ const ContractorFindLabourers = () => {
                 <h4 className="text-xl font-bold text-on-surface mb-2">Live Labourer Map</h4>
                 <p className="text-sm text-on-surface-variant max-w-xs">Track real-time location and availability of workers across the region.</p>
               </div>
-              <button className="absolute bottom-6 left-1/2 -translate-x-1/2 px-6 py-2 bg-brand-primary text-on-surface rounded-full text-xs font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+              <button className="absolute bottom-6 left-1/2 -translate-x-1/2 px-6 py-2 bg-brand-primary text-white rounded-full text-xs font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
                 Enter Map View
               </button>
             </div>
@@ -105,7 +105,7 @@ const ContractorFindLabourers = () => {
                     <button className="flex-1 px-4 py-2.5 bg-white text-on-surface rounded-xl text-sm font-bold hover:bg-white transition-colors">
                       View Profile
                     </button>
-                    <button className="flex-1 px-4 py-2.5 bg-brand-primary text-on-surface rounded-xl text-sm font-bold shadow-sm hover:opacity-90 transition-opacity">
+                    <button className="flex-1 px-4 py-2.5 bg-brand-primary text-white rounded-xl text-sm font-bold shadow-sm hover:opacity-90 transition-opacity">
                       Hire
                     </button>
                   </div>
@@ -160,7 +160,7 @@ const ContractorFindLabourers = () => {
                   </p>
                 </div>
 
-                <button className="w-full bg-brand-primary text-on-surface py-4 rounded-xl font-bold shadow-lg active:scale-95 transition-all text-sm uppercase tracking-widest">
+                <button className="w-full bg-brand-primary text-white py-4 rounded-xl font-bold shadow-lg active:scale-95 transition-all text-sm uppercase tracking-widest">
                   Apply Filters
                 </button>
               </div>

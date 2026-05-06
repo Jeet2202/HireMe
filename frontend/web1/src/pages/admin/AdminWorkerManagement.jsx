@@ -28,7 +28,7 @@ const AdminWorkerManagement = () => {
           <h2 className="text-4xl font-bold text-on-surface tracking-tight">Worker Management</h2>
           <p className="text-on-surface-variant mt-2 text-lg">Comprehensive oversight of personnel across all regions.</p>
         </div>
-        <button className="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold shadow-lg hover:bg-primary-container uppercase text-sm">Onboard New Worker</button>
+        <button className="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold shadow-lg hover:bg-primary-container uppercase text-sm hover:text-white">Onboard New Worker</button>
       </div>
 
       <div className="grid grid-cols-12 gap-6 pb-4">
