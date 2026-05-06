@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { User, Mail, Phone, BadgeHelp, Lock, ArrowRight } from "lucide-react";
+import { User, Mail, Phone, BadgeHelp, Lock, ArrowRight, Loader2 } from "lucide-react";
 import { motion } from "motion/react";
+import { signupUser, getDashboardRoute } from "../../services/api";
 
 export default function SignupPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   
   const [formData, setFormData] = useState({
     name: "",
@@ -15,11 +18,31 @@ export default function SignupPage() {
     password: ""
   });
 
-  const handleSignup = (e) => {
+  // Map UI role labels → backend enum values
+  const roleMap = {
+    labourer: "worker",
+    contractor: "contractor",
+  };
+
+  const handleSignup = async (e) => {
     e.preventDefault();
-    // Simulate signup and onboard
-    if (formData.role === "contractor") navigate("/onboarding/contractor");
-    else navigate("/onboarding/labourer");
+    setError(null);
+    setLoading(true);
+    try {
+      const backendRole = roleMap[formData.role] || formData.role;
+      const { user } = await signupUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: backendRole,
+      });
+      localStorage.setItem("user", JSON.stringify(user));
+      navigate(getDashboardRoute(user.role));
+    } catch (err) {
+      setError(err.message || "Signup failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -114,8 +137,22 @@ export default function SignupPage() {
               </div>
             </div>
 
-            <button type="submit" className="primary-button w-full flex items-center justify-center gap-2 !py-5 mt-6">
-              Sign Up <ArrowRight size={20} />
+            {error && (
+              <div className="flex items-center gap-2 text-red-500 text-xs px-1 animate-in fade-in slide-in-from-top-1">
+                <span>{error}</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="primary-button w-full flex items-center justify-center gap-2 !py-5 mt-6 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <><Loader2 size={18} className="animate-spin" /> Creating account…</>
+              ) : (
+                <>Sign Up <ArrowRight size={20} /></>
+              )}
             </button>
           </form>
 
