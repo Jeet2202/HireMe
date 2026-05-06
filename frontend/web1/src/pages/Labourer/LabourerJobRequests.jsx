@@ -241,7 +241,7 @@ export default function LabourerJobRequests() {
                 )}
                 {activeTab === 'Completed' && (
                   <div className="flex justify-between items-center py-2">
-                    <span className="text-xs font-bold text-on-surface uppercase tracking-widest bg-primary px-4 py-2 rounded-lg">Payment Processed</span>
+                    <span className="text-xs font-bold text-white uppercase tracking-widest bg-primary px-4 py-2 rounded-lg">Payment Processed</span>
                   </div>
                 )}
                 {activeTab === 'Rejected' && (

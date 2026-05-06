@@ -70,7 +70,7 @@ export default function LabourerVerification() {
         <div className="lg:col-span-3 space-y-6">
           {renderStepNav()}
           
-          <div className="bg-primary p-8 rounded-2xl shadow-lg text-on-surface">
+          <div className="bg-primary p-8 rounded-2xl shadow-lg text-white">
             <ShieldCheck size={32} className="mb-4 opacity-50" />
             <h4 className="text-lg font-bold mb-2">Data Privacy</h4>
             <p className="text-sm text-on-surface-variant leading-relaxed">

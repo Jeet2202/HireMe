@@ -122,7 +122,7 @@ const AdminDashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-primary p-8 rounded-xl custom-card-shadow text-on-surface">
+        <div className="bg-primary p-8 rounded-xl custom-card-shadow text-white">
           <h4 className="text-xl font-bold mb-2">Success Velocity</h4>
           <p className="text-sm opacity-70 mb-8">Percentage of jobs completed without intervention</p>
           <div className="flex items-center justify-between">

@@ -44,7 +44,7 @@ const AdminVerification = () => {
                   <tr key={v.id} className="hover:bg-background-page/5 transition-colors group">
                     <td className="py-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-primary-container text-on-surface flex items-center justify-center font-bold">{v.name.charAt(0)}</div>
+                        <div className="w-10 h-10 rounded-lg bg-primary-container text-white flex items-center justify-center font-bold">{v.name.charAt(0)}</div>
                         <div><p className="font-bold">{v.name}</p><p className="text-xs text-on-surface-variant font-medium">{v.type} • {v.company}</p></div>
                       </div>
                     </td>

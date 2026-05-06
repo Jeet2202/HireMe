@@ -67,8 +67,8 @@ export default function LabourerDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-8 rounded-2xl shadow-sm border border-outline-variant hover:-translate-y-1 transition-transform">
           <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-primary rounded-xl">
-              <Clock className="text-on-surface" size={24} />
+            <div className="p-3 bg-primary rounded-xl text-white">
+              <Clock className="text-white" size={24} />
             </div>
             <span className="bg-surface-container-high text-on-surface text-xs font-bold px-3 py-1 rounded-full">+4 New</span>
           </div>
@@ -139,14 +139,14 @@ export default function LabourerDashboard() {
           </div>
         </div>
 
-        <div className="bg-primary text-on-primary p-6 rounded-2xl shadow-lg flex flex-col justify-between">
+        <div className="bg-primary text-white p-6 rounded-2xl shadow-lg flex flex-col justify-between">
           <div>
-            <p className="text-[10px] text-on-surface-variant uppercase tracking-widest">Next Shift</p>
+            <p className="text-[10px] text-white/70 uppercase tracking-widest">Next Shift</p>
             <p className="text-lg font-bold mt-1">Tomorrow, 08:00 AM</p>
           </div>
           <div className="mt-4">
             <p className="text-sm">Downtown Site B</p>
-            <p className="text-xs text-on-surface-variant mt-1">Site Foreman: Sarah Wilson</p>
+            <p className="text-xs text-white/70 mt-1">Site Foreman: Sarah Wilson</p>
           </div>
           <button className="mt-4 w-full py-2 bg-white text-on-surface rounded-xl text-xs font-bold hover:bg-opacity-90 transition-all">VIEW DETAILS</button>
         </div>

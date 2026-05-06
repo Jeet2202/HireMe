@@ -35,7 +35,7 @@ const ContractorProfile = () => {
       <header className="flex justify-between items-center px-10 py-6 mb-8">
         <h2 className="text-3xl font-bold text-on-surface">Contractor Profile</h2>
         <div className="flex gap-3">
-          <button className="px-6 py-3 bg-brand-primary text-on-surface font-bold rounded-xl shadow-lg active:scale-95 transition-all uppercase tracking-widest text-xs">Edit Portfolio</button>
+          <button className="px-6 py-3 bg-brand-primary text-white font-bold rounded-xl shadow-lg active:scale-95 transition-all uppercase tracking-widest text-xs">Edit Portfolio</button>
           <button className="px-6 py-3 bg-white border border-gray-100 text-on-surface font-bold rounded-xl hover:bg-white active:scale-95 transition-all shadow-sm flex items-center gap-2 uppercase tracking-widest text-xs">
             <Download size={14} /> Download CV
           </button>
@@ -53,7 +53,7 @@ const ContractorProfile = () => {
             <div className="w-40 h-40 rounded-2xl bg-black text-white flex items-center justify-center text-6xl font-bold border-4 border-white shadow-xl">
               AR
             </div>
-            <div className="absolute -bottom-2 -right-2 bg-brand-primary text-on-surface p-2 rounded-xl shadow-lg ring-4 ring-white">
+            <div className="absolute -bottom-2 -right-2 bg-brand-primary text-white p-2 rounded-xl shadow-lg ring-4 ring-white">
               <ShieldCheck size={20} />
             </div>
           </div>
@@ -133,15 +133,13 @@ const ContractorProfile = () => {
                     img.size === 'large' ? 'col-span-2 row-span-2' : ''
                   }`}
                 >
-                  <div className="w-full h-full bg-[#f4f4f5] flex items-center justify-center text-[#71717a] transition-transform duration-700 group-hover:scale-110">
-                    <LayoutGrid size={32} className="opacity-20" />
-                  </div>
+                  <img src={img.src} alt={img.title} className="w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                    <p className="text-on-surface text-xs font-bold uppercase tracking-widest">{img.title}</p>
+                    <p className="text-white text-xs font-bold uppercase tracking-widest">{img.title}</p>
                   </div>
                   {img.size === 'large' && (
                     <div className="absolute top-4 right-4 bg-brand-primary/80 backdrop-blur-md px-4 py-1.5 rounded-full">
-                       <span className="text-[10px] font-black text-on-surface uppercase tracking-widest">Featured Project</span>
+                       <span className="text-[10px] font-black text-white uppercase tracking-widest">Featured Project</span>
                     </div>
                   )}
                 </div>

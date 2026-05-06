@@ -50,7 +50,7 @@ export default function LabourerSkillTest() {
         {/* Benefits Grid */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
           <div className="bg-white/50 backdrop-blur-sm p-8 rounded-2xl border border-outline-variant flex items-start gap-5 hover:bg-white transition-colors">
-            <div className="p-3 bg-primary rounded-xl text-on-surface">
+            <div className="p-3 bg-primary rounded-xl text-white">
               <ShieldCheck size={24} />
             </div>
             <div>

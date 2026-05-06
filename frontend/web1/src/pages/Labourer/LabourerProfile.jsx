@@ -97,7 +97,7 @@ export default function LabourerProfile() {
             </div>
 
             <div className="flex flex-wrap gap-3 pt-2">
-              <span className="bg-primary text-[#2e0349] px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-[#e4b5ff]">Verified Labourer</span>
+              <span className="bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-[#e4b5ff]">Verified Labourer</span>
               <span className="bg-[#fcdfa9] text-[#261a00] px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-[#dec38f]">Top Rated</span>
             </div>
           </div>

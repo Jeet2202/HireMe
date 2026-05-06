@@ -113,7 +113,7 @@ const AdminContractorManagement = () => {
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="bg-surface w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden relative z-10"
             >
-              <div className="bg-primary p-8 text-on-surface">
+              <div className="bg-primary p-8 text-white">
                 <button 
                   onClick={() => setSelectedContractor(null)}
                   className="absolute top-6 right-6 text-on-surface-variant hover:text-on-surface"

@@ -37,7 +37,7 @@ const ContractorJobPosts = () => {
     <div className="flex-1 min-h-screen pb-10">
       <header className="flex justify-between items-center px-10 py-6 mb-8">
         <h2 className="text-3xl font-bold text-on-surface">Job Posts</h2>
-        <button className="bg-brand-primary text-on-surface px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:opacity-90 active:scale-95 transition-all">
+        <button className="bg-brand-primary text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:opacity-90 active:scale-95 transition-all">
           <Plus size={20} /> POST NEW JOB
         </button>
       </header>
@@ -125,7 +125,7 @@ const ContractorJobPosts = () => {
                             {activeTab === 'Pending Applications' ? (
                               <>
                                 <button onClick={() => moveJob(job.id, activeTab, 'Cancelled')} className="px-6 py-2 border border-gray-100 rounded-xl text-xs font-bold text-on-surface hover:bg-white transition-colors uppercase tracking-widest">Reject All</button>
-                                <button onClick={() => moveJob(job.id, activeTab, 'In Progress')} className="px-6 py-2 bg-brand-primary text-on-surface rounded-xl text-xs font-bold shadow-sm hover:opacity-90 transition-opacity uppercase tracking-widest">Approve Applications</button>
+                                <button onClick={() => moveJob(job.id, activeTab, 'In Progress')} className="px-6 py-2 bg-brand-primary text-white rounded-xl text-xs font-bold shadow-sm hover:opacity-90 transition-opacity uppercase tracking-widest">Approve Applications</button>
                               </>
                             ) : (
                               <button className="px-6 py-2 bg-white text-on-surface rounded-xl text-xs font-bold hover:bg-white transition-colors uppercase tracking-widest">Manage Post</button>
@@ -136,7 +136,7 @@ const ContractorJobPosts = () => {
                       
                       {activeTab === 'In Progress' && (
                         <div className="flex justify-end pt-2">
-                           <button onClick={() => moveJob(job.id, activeTab, 'Completed')} className="px-8 py-3 bg-brand-primary text-on-surface rounded-xl font-bold text-sm shadow-md hover:bg-brand-primary/95 transition-all">MARK COMPLETED</button>
+                           <button onClick={() => moveJob(job.id, activeTab, 'Completed')} className="px-8 py-3 bg-brand-primary text-white rounded-xl font-bold text-sm shadow-md hover:bg-brand-primary/95 transition-all">MARK COMPLETED</button>
                         </div>
                       )}
                     </div>

@@ -35,10 +35,10 @@ const Sidebar = () => {
             to={item.path}
             end={item.path === '/admin/dashboard'}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-200 text-sm font-medium ${
+              `flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 text-sm font-medium ${
                 isActive
-                  ? 'bg-white/15 text-on-surface font-bold'
-                  : 'text-on-surface-variant hover:text-on-surface hover:bg-white/10'
+                  ? 'bg-white text-black font-bold shadow-lg'
+                  : 'text-on-surface-variant hover:text-white hover:bg-white/10'
               }`
             }
           >
@@ -54,13 +54,13 @@ const Sidebar = () => {
             <UserCircle size={26} className="text-on-surface-variant" />
           </div>
           <div>
-            <p className="font-bold text-sm text-on-surface">Admin User</p>
-            <p className="text-on-surface-variant text-[10px] uppercase tracking-wider">System Director</p>
+            <p className="font-bold text-sm text-white">Admin User</p>
+            <p className="text-white/70 text-[10px] uppercase tracking-wider">System Director</p>
           </div>
         </div>
         <button
           onClick={() => navigate('/login')}
-          className="flex items-center gap-2 text-on-surface-variant hover:text-on-surface text-xs transition-colors mt-2"
+          className="flex items-center gap-2 text-on-surface-variant hover:text-white text-xs transition-colors mt-2"
         >
           <LogOut size={14} />
           <span>Sign Out</span>

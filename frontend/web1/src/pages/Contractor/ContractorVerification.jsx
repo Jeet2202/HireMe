@@ -73,7 +73,7 @@ const ContractorVerification = () => {
                       onClick={handleBeginVerification}
                       disabled={shareCode.length < 4}
                       className={`w-full py-5 rounded-2xl font-bold shadow-xl flex items-center justify-center gap-3 active:scale-[0.98] transition-all uppercase tracking-widest text-sm ${
-                        shareCode.length === 4 ? 'bg-brand-primary text-on-surface' : 'bg-white text-on-surface cursor-not-allowed'
+                        shareCode.length === 4 ? 'bg-brand-primary text-white' : 'bg-white text-on-surface cursor-not-allowed'
                       }`}
                     >
                       Begin Verification Process <ChevronRight size={18} />
@@ -92,10 +92,10 @@ const ContractorVerification = () => {
                   </ul>
                 </div>
 
-                <div className="bg-brand-primary p-8 rounded-2xl card-shadow text-on-surface relative overflow-hidden">
+                <div className="bg-brand-primary p-8 rounded-2xl card-shadow text-white relative overflow-hidden">
                   <div className="relative z-10">
                     <h4 className="text-lg font-bold mb-3">Need Help?</h4>
-                    <p className="text-xs text-on-surface-variant leading-relaxed font-medium mb-6">Contact our verification support team if you encounter issues with the XML file structure or share code encryption.</p>
+                    <p className="text-xs text-white/70 leading-relaxed font-medium mb-6">Contact our verification support team if you encounter issues with the XML file structure or share code encryption.</p>
                     <button className="w-full py-3 bg-white text-on-surface font-black rounded-xl text-[10px] uppercase tracking-[0.2em] shadow-lg">Chat Support</button>
                   </div>
                   <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
@@ -138,7 +138,7 @@ const ContractorVerification = () => {
                 <h3 className="text-3xl font-bold text-on-surface tracking-tight">Verification Successful</h3>
                 <p className="text-on-surface mt-2 max-w-sm font-medium mx-auto">Your identity has been verified. A gold badge has been added to your profile across the platform.</p>
               </div>
-              <button onClick={() => setStep(1)} className="px-10 py-4 bg-brand-primary text-on-surface rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl active:scale-95 transition-all">
+              <button onClick={() => setStep(1)} className="px-10 py-4 bg-brand-primary text-white rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl active:scale-95 transition-all">
                 Return to Dashboard
               </button>
             </motion.div>
@@ -183,8 +183,8 @@ const StepIndicator = ({ current, step, label }) => {
   return (
     <div className="flex flex-col items-center gap-3 relative z-10 group">
       <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-lg transition-all duration-500 ${
-        isCompleted ? 'bg-brand-primary text-on-surface' : 
-        isActive ? 'bg-brand-primary text-on-surface shadow-xl scale-110' : 
+        isCompleted ? 'bg-brand-primary text-white' : 
+        isActive ? 'bg-brand-primary text-white shadow-xl scale-110' : 
         'bg-white text-on-surface border-2 border-gray-50'
       }`}>
         {isCompleted ? <CheckCircle2 size={24} /> : step}
