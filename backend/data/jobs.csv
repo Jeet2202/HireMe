@@ -1,0 +1,31 @@
+job_id,required_skills,required_skill_level,workers_needed,budget_per_day,urgency,latitude,longitude
+J001,"masonry, electrical, painting",expert,9,759,low,18.963962,73.004964
+J002,"painting, masonry",beginner,5,1859,high,19.040471,72.75675
+J003,"masonry, welding, painting",expert,7,1470,medium,19.072187,72.762964
+J004,"painting, carpentry",expert,20,873,low,18.893348,73.001774
+J005,concrete,intermediate,15,2055,medium,19.091397,72.876818
+J006,"plumbing, carpentry",expert,4,1406,medium,18.866534,72.971287
+J007,"welding, electrical, painting",intermediate,2,1151,medium,19.390667,72.721913
+J008,electrical,beginner,5,2265,medium,18.973668,72.747994
+J009,"carpentry, concrete",beginner,13,1790,high,18.938066,72.923489
+J010,"painting, masonry, plumbing",expert,2,1593,low,19.075853,72.731145
+J011,"carpentry, electrical",intermediate,14,1292,low,19.043019,73.08648
+J012,welding,expert,12,880,medium,19.306691,72.797327
+J013,"carpentry, electrical, masonry",intermediate,10,2227,medium,18.932943,73.011647
+J014,concrete,expert,17,1097,medium,19.01066,73.083289
+J015,"tiling, concrete, masonry",beginner,9,1104,low,19.161439,73.004086
+J016,"concrete, welding, painting",intermediate,15,2245,high,19.255926,72.879562
+J017,"painting, carpentry, welding",intermediate,5,1600,low,19.081353,72.952554
+J018,"masonry, tiling",expert,3,1335,medium,19.071148,72.722756
+J019,"concrete, painting",beginner,20,1916,high,19.030689,72.932132
+J020,"masonry, plumbing, electrical",expert,7,1358,high,19.085377,72.760344
+J021,welding,beginner,11,2162,low,19.102729,72.769024
+J022,welding,intermediate,17,1770,high,18.895248,72.849141
+J023,"carpentry, plumbing",intermediate,20,807,high,19.188383,72.726365
+J024,carpentry,intermediate,9,2182,high,19.378646,72.94108
+J025,painting,beginner,19,2059,low,19.350048,72.824093
+J026,"carpentry, concrete, electrical",expert,3,1334,high,19.026008,73.016665
+J027,concrete,expert,14,1741,medium,18.810938,72.823546
+J028,painting,intermediate,7,1163,low,18.892967,72.818317
+J029,masonry,expert,11,2494,high,18.878629,72.850688
+J030,tiling,expert,20,2356,low,19.23271,72.717477

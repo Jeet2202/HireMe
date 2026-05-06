@@ -1,0 +1,101 @@
+worker_id,skills,experience_years,skill_level,rating,jobs_completed,reliability_score,attendance_rate,expected_daily_wage,response_time,latitude,longitude
+W001,"concrete, masonry, painting, tiling",4,beginner,2.8,18,0.84,0.96,678,7.3,18.81907,72.737478
+W002,"masonry, electrical",4,expert,4.1,74,0.71,0.78,1069,9.8,18.803899,73.022328
+W003,"carpentry, tiling, welding, concrete",4,intermediate,2.8,53,0.55,0.94,1736,3.5,18.82607,72.88377
+W004,"carpentry, masonry",9,intermediate,4.6,84,0.94,0.74,893,8.6,18.827495,72.791159
+W005,"concrete, carpentry, welding",14,beginner,3.5,63,0.82,0.75,1258,4.6,19.202105,72.980728
+W006,"concrete, electrical, painting, welding",9,expert,3.1,64,0.69,1.0,1810,8.4,18.931769,72.829713
+W007,"plumbing, carpentry",1,intermediate,3.5,13,0.61,0.98,1970,4.1,19.193263,72.858253
+W008,"welding, concrete, tiling, carpentry",4,expert,3.9,38,0.87,0.77,1695,5.1,18.931592,73.099015
+W009,"welding, masonry, carpentry, painting",3,expert,2.9,92,0.71,0.63,1281,7.4,19.08083,72.800566
+W010,"masonry, painting, carpentry, welding",11,expert,4.4,103,0.82,0.64,1390,2.3,18.801947,72.988837
+W011,"electrical, welding, concrete, carpentry",15,beginner,4.7,43,0.92,0.8,907,2.3,19.257506,72.915752
+W012,"masonry, electrical, tiling, plumbing",1,beginner,4.8,117,0.99,0.92,990,1.2,19.326806,73.07878
+W013,"welding, carpentry",2,expert,4.4,21,0.83,0.98,838,3.5,19.32346,72.869255
+W014,"plumbing, painting",5,intermediate,5.0,88,0.69,0.96,1424,1.9,18.934818,72.835234
+W015,"plumbing, electrical, concrete, masonry",2,expert,4.1,34,0.53,0.61,1176,1.3,18.942803,72.967591
+W016,"tiling, painting",15,expert,3.9,36,0.89,0.92,889,1.6,19.19539,72.841719
+W017,"welding, carpentry, painting",1,expert,4.1,87,0.55,0.76,1194,9.7,18.865561,72.776636
+W018,"welding, concrete, plumbing, carpentry",5,intermediate,3.1,14,0.72,0.94,1627,1.6,19.191287,72.916235
+W019,"concrete, carpentry",14,beginner,2.9,67,0.74,0.95,620,2.4,18.801293,72.856169
+W020,"electrical, plumbing, painting",12,expert,4.2,67,0.58,0.72,619,7.2,19.125317,72.99919
+W021,"masonry, electrical",8,expert,4.8,72,0.58,0.98,664,10.3,18.841113,72.727184
+W022,"carpentry, masonry",15,expert,3.1,81,0.52,0.63,1846,7.2,19.11367,73.073883
+W023,"painting, concrete",5,intermediate,2.8,87,0.65,0.73,648,0.6,19.172696,72.925197
+W024,"concrete, electrical",4,expert,3.2,49,0.94,0.95,1256,3.8,19.062911,72.917287
+W025,"masonry, painting, electrical",5,expert,2.8,117,0.57,0.65,719,9.0,18.893269,72.812703
+W026,"painting, concrete",11,expert,4.6,69,0.74,0.96,604,1.6,19.054145,72.810672
+W027,"painting, carpentry",3,expert,4.9,25,0.87,0.82,1375,7.0,18.867124,73.07802
+W028,"tiling, electrical, masonry, welding",10,expert,2.9,21,0.52,0.75,581,10.8,18.926046,72.799812
+W029,"painting, carpentry",9,intermediate,4.9,100,0.58,0.97,832,11.7,19.286463,73.052566
+W030,"tiling, painting",15,intermediate,4.5,57,0.9,0.95,1008,3.6,19.272425,72.743238
+W031,"welding, concrete",4,intermediate,3.4,110,0.9,0.69,548,8.1,19.03908,72.811441
+W032,"electrical, tiling",11,expert,3.5,112,0.77,0.98,736,10.6,18.956729,72.932236
+W033,"masonry, welding, electrical",7,intermediate,4.3,45,0.72,0.99,736,4.9,19.145953,72.801889
+W034,"carpentry, masonry, electrical, painting",11,expert,4.9,99,0.84,0.75,643,11.4,19.352463,72.949262
+W035,"concrete, painting, tiling, electrical",5,expert,3.5,56,0.85,0.82,892,5.3,19.364218,72.970927
+W036,"electrical, plumbing",9,beginner,3.3,31,0.71,0.83,1840,4.2,19.065072,72.970251
+W037,"welding, carpentry, painting, concrete",11,beginner,3.2,89,0.82,0.73,981,8.2,18.934784,72.779652
+W038,"masonry, concrete",8,expert,4.6,14,0.73,0.95,1678,2.7,19.217813,72.897751
+W039,"tiling, painting",12,beginner,4.7,115,0.89,0.64,1370,3.0,19.282466,72.978365
+W040,"masonry, electrical, concrete",15,beginner,3.6,107,0.73,0.81,1644,7.3,19.370024,73.05657
+W041,"carpentry, welding, electrical, plumbing",15,beginner,4.4,65,0.73,0.9,1805,3.7,19.266605,72.893839
+W042,"electrical, plumbing",2,expert,3.2,39,0.67,0.96,665,2.1,18.938757,72.97758
+W043,"plumbing, masonry, welding, painting",6,expert,3.7,12,0.6,0.77,1696,11.4,18.811719,73.052263
+W044,"carpentry, plumbing, masonry, tiling",5,intermediate,4.6,111,0.71,0.9,1618,9.7,19.338687,72.895292
+W045,"carpentry, plumbing, masonry",7,intermediate,4.2,107,0.7,0.67,1457,11.1,19.388433,72.913649
+W046,"masonry, welding, painting",7,beginner,4.7,28,0.53,0.75,933,5.7,19.0025,73.051856
+W047,"carpentry, tiling, masonry",8,beginner,4.4,11,1.0,0.74,1831,1.3,19.374371,72.716103
+W048,"plumbing, concrete",14,beginner,4.1,35,0.56,0.87,1655,11.4,19.07902,72.802497
+W049,"tiling, electrical, carpentry",12,expert,2.8,109,0.58,0.72,1685,0.8,18.987174,72.970939
+W050,"carpentry, painting, concrete",2,expert,4.2,85,0.62,0.88,1117,10.3,19.160247,72.748422
+W051,"masonry, tiling, electrical, plumbing",11,intermediate,2.7,87,0.67,0.94,1503,1.7,19.376473,72.954234
+W052,"tiling, plumbing, concrete",12,expert,4.9,39,0.81,0.97,1490,5.8,19.295441,72.93699
+W053,"plumbing, carpentry, masonry",5,intermediate,3.1,64,0.78,0.87,1188,0.8,19.310572,72.772736
+W054,"painting, carpentry",5,intermediate,3.2,81,0.85,0.71,520,6.4,18.914634,72.796542
+W055,"welding, electrical, concrete",12,intermediate,4.1,67,0.72,0.61,1102,3.0,19.215072,72.822482
+W056,"painting, plumbing, electrical, welding",6,intermediate,5.0,75,0.67,0.88,1054,4.0,18.938323,72.988514
+W057,"concrete, painting, electrical",13,expert,3.0,32,0.87,0.71,1707,11.7,19.114782,72.813199
+W058,"plumbing, tiling",4,intermediate,2.9,6,0.85,0.65,593,11.7,19.132015,72.978967
+W059,"welding, masonry",14,beginner,3.9,65,0.74,0.74,605,3.4,19.317034,72.745635
+W060,"carpentry, plumbing",2,expert,4.1,11,0.58,0.92,1122,1.5,18.948915,72.923229
+W061,"plumbing, carpentry, electrical",7,intermediate,4.8,43,0.93,1.0,1125,7.0,18.836138,73.084044
+W062,"plumbing, painting",4,intermediate,4.2,25,0.62,0.82,820,0.5,19.070302,72.937524
+W063,"masonry, concrete, tiling",12,intermediate,4.3,63,0.54,0.69,1041,9.6,19.175035,72.964473
+W064,"carpentry, masonry",9,beginner,4.1,39,0.91,0.63,839,9.6,19.157026,73.029696
+W065,"welding, masonry, plumbing",12,intermediate,4.2,39,0.75,0.8,664,7.4,19.333654,72.993814
+W066,"electrical, masonry, carpentry, concrete",11,expert,4.0,7,1.0,0.87,1051,7.1,19.257865,72.770076
+W067,"welding, tiling, concrete, electrical",7,expert,4.5,16,0.74,0.76,1157,8.2,19.31464,72.831921
+W068,"welding, tiling, painting, plumbing",14,expert,2.6,16,0.66,0.73,1327,10.4,19.294956,72.70046
+W069,"welding, plumbing, masonry, concrete",9,intermediate,4.1,68,0.81,0.9,916,3.6,18.878608,72.815212
+W070,"welding, masonry, carpentry, electrical",13,beginner,4.3,44,0.78,0.82,690,3.1,19.304843,72.745384
+W071,"tiling, plumbing",15,expert,3.2,95,0.64,0.93,1467,3.3,19.130759,72.853434
+W072,"tiling, carpentry, masonry, welding",13,intermediate,3.3,105,0.75,0.93,1079,8.8,19.302486,72.931969
+W073,"welding, carpentry, concrete, plumbing",9,intermediate,3.4,75,0.88,0.75,1159,10.5,19.388465,72.795522
+W074,"plumbing, carpentry, welding",1,intermediate,4.4,95,0.96,0.75,1859,9.6,19.191211,72.760842
+W075,"tiling, electrical",10,intermediate,4.7,116,0.92,0.64,1435,0.7,18.886493,73.048373
+W076,"concrete, plumbing",13,intermediate,3.3,93,0.7,0.63,1172,10.3,19.315605,72.852004
+W077,"welding, carpentry, electrical",1,expert,2.7,85,0.84,0.71,965,9.1,19.060383,72.739377
+W078,"concrete, plumbing, welding, tiling",15,beginner,2.6,106,0.53,0.74,1382,2.2,19.1187,72.926371
+W079,"tiling, concrete",2,expert,4.7,84,0.84,0.8,1694,2.1,19.07669,72.801591
+W080,"masonry, carpentry, plumbing",15,intermediate,4.2,25,0.54,0.98,1703,3.9,19.377217,72.976125
+W081,"electrical, concrete, plumbing",14,intermediate,2.8,53,0.79,0.83,1932,3.9,19.386767,72.963292
+W082,"masonry, electrical, painting",13,expert,4.9,82,0.87,0.93,1086,9.4,18.938071,73.020773
+W083,"plumbing, electrical",5,expert,4.4,103,0.83,0.94,1786,1.6,19.176475,72.715769
+W084,"masonry, electrical, tiling",12,beginner,2.7,42,0.66,0.77,911,2.0,19.123645,73.088596
+W085,"electrical, carpentry, concrete, tiling",15,intermediate,4.9,42,0.87,0.74,735,5.9,18.84518,73.001661
+W086,"carpentry, welding",13,expert,3.4,106,0.7,0.71,753,5.7,19.203697,72.968936
+W087,"carpentry, welding, painting, tiling",2,expert,3.1,8,0.81,0.98,1171,11.0,18.93282,72.725287
+W088,"electrical, painting, plumbing",2,beginner,2.6,9,0.65,0.8,699,3.2,19.122528,72.855458
+W089,"carpentry, electrical, painting",12,beginner,4.7,88,0.55,0.8,1335,11.3,18.967844,72.976112
+W090,"welding, plumbing",4,intermediate,2.7,92,0.68,0.96,1820,4.6,19.038884,72.775923
+W091,"welding, masonry",11,beginner,4.1,81,0.99,0.62,1183,3.3,18.875554,72.925831
+W092,"plumbing, electrical",4,beginner,3.3,23,0.89,0.84,1067,10.4,18.886813,72.751997
+W093,"tiling, masonry, painting",14,beginner,2.8,50,0.89,0.7,1163,0.7,18.959221,72.750703
+W094,"concrete, painting, masonry",8,intermediate,4.4,70,0.8,0.78,953,11.4,18.826019,73.013291
+W095,"electrical, plumbing, painting, masonry",1,intermediate,4.6,59,0.84,0.8,1408,1.3,18.848474,72.943319
+W096,"tiling, welding",10,expert,4.0,96,0.66,1.0,1586,3.9,19.103331,72.87208
+W097,"concrete, carpentry, painting, electrical",12,beginner,3.6,118,0.61,0.74,1428,5.1,19.237768,72.825019
+W098,"electrical, tiling, concrete",11,intermediate,2.7,111,0.54,0.77,1263,9.8,19.133822,72.934586
+W099,"painting, welding, masonry, plumbing",6,expert,4.9,59,0.93,0.89,1089,7.4,19.010988,72.931167
+W100,"tiling, painting",8,beginner,4.6,49,0.92,0.75,1070,7.1,19.284333,73.038062

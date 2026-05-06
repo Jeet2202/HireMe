@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 from app.routes.auth import router as auth_router
+from app.routes.ml import router as ml_router
 
 load_dotenv()
 
@@ -28,6 +29,7 @@ app.add_middleware(
 
 # Register routers
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
+app.include_router(ml_router, prefix="/api/ml", tags=["ML Matching Engine"])
 
 
 @app.get("/")
