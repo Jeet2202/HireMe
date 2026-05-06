@@ -71,7 +71,7 @@ const AdminJobManagement = () => {
           <h2 className="text-4xl font-bold text-on-surface tracking-tight">Job Management</h2>
           <p className="text-on-surface-variant mt-2 text-lg">Monitor and manage operational worker allocation across active contracts.</p>
         </div>
-        <button className="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-primary-container">
+        <button className="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-primary-container hover:text-white">
           <Plus size={20} />
           Create New Job
         </button>
@@ -166,11 +166,11 @@ const AdminJobManagement = () => {
                         </div>
                       </div>
                       <div className="flex gap-4 pt-4">
-                        <button className="px-6 py-3 bg-primary text-on-primary rounded-xl font-bold flex items-center gap-2 hover:bg-primary-container">
+                        <button className="px-6 py-3 bg-primary text-on-primary rounded-xl font-bold flex items-center gap-2 hover:bg-primary-container hover:text-white">
                           <DollarSign size={18} />
                           Increase Wage (+15%)
                         </button>
-                        <button className="px-6 py-3 border border-primary text-on-surface rounded-xl font-bold flex items-center gap-2 hover:bg-primary/5">
+                        <button className="px-6 py-3 border border-primary text-white rounded-xl font-bold flex items-center gap-2 hover:bg-primary/5 hover:text-white">
                           <Send size={18} />
                           Notify Available Workers
                         </button>

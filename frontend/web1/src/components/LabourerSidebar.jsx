@@ -19,7 +19,7 @@ export default function LabourerSidebar() {
   return (
     <aside className="fixed left-0 top-0 h-full w-[280px] flex flex-col bg-primary z-50 overflow-y-auto">
       <div className="p-8">
-        <h1 className="text-2xl font-bold text-white tracking-tight drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">HireMe Services</h1>
+        <h1 className="text-2xl font-bold text-white tracking-tight">HireMe Services</h1>
         <p className="text-white/70 text-xs uppercase tracking-wider mt-1">Labourer Module</p>
       </div>
 
@@ -32,7 +32,7 @@ export default function LabourerSidebar() {
               `flex items-center gap-4 px-6 py-4 rounded-xl transition-all duration-300 group ${
                 isActive 
                   ? 'bg-white text-on-surface font-bold shadow-lg scale-95' 
-                  : 'text-on-surface-variant hover:text-white hover:bg-white/10'
+                  : 'text-white/70 hover:text-white hover:bg-white/10'
               }`
             }
           >
@@ -52,7 +52,7 @@ export default function LabourerSidebar() {
             <p className="text-white/70 text-xs truncate">Senior Mason</p>
           </div>
         </div>
-        <button className="flex items-center gap-2 text-on-surface-variant hover:text-white text-xs mt-6 px-2 transition-colors">
+        <button className="flex items-center gap-2 text-white/70 hover:text-white text-xs mt-6 px-2 transition-colors">
           <LogOut size={14} />
           <span>Sign Out</span>
         </button>

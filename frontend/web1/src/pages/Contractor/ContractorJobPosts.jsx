@@ -136,7 +136,7 @@ const ContractorJobPosts = () => {
                       
                       {activeTab === 'In Progress' && (
                         <div className="flex justify-end pt-2">
-                           <button onClick={() => moveJob(job.id, activeTab, 'Completed')} className="px-8 py-3 bg-brand-primary text-white rounded-xl font-bold text-sm shadow-md hover:bg-brand-primary/95 transition-all">MARK COMPLETED</button>
+                           <button onClick={() => moveJob(job.id, activeTab, 'Completed')} className="px-8 py-3 bg-brand-primary text-white rounded-xl font-bold text-sm shadow-md hover:bg-brand-primary/95 transition-all hover:text-white">MARK COMPLETED</button>
                         </div>
                       )}
                     </div>
@@ -156,7 +156,7 @@ const ContractorJobPosts = () => {
 
           {/* Pipeline Stats Sidebar */}
           <div className="lg:col-span-4 flex flex-col gap-6">
-            <div className="bg-white rounded-2xl p-8 card-shadow shadow-sm">
+            <div className="bg-white rounded-2xl p-8 card-shadow card-shadow">
               <h4 className="text-lg font-bold text-on-surface mb-8 underline decoration-brand-background decoration-4 underline-offset-8">Pipeline Overview</h4>
               <div className="space-y-4">
                 <StatRow icon={<CheckCircle2 className="text-on-surface" />} label="New Applicants" value="24" color="bg-brand-background" />
@@ -165,7 +165,7 @@ const ContractorJobPosts = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 card-shadow shadow-sm flex-grow">
+            <div className="bg-white rounded-2xl p-8 card-shadow card-shadow flex-grow">
               <h4 className="text-lg font-bold text-on-surface mb-8 underline decoration-brand-background decoration-4 underline-offset-8">Recent Activity</h4>
               <div className="space-y-8 relative before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-[1px] before:bg-white">
                 <ActivityItem icon={<UserSearch className="text-on-surface" size={12} />} text="Marc S. applied for Masonry" time="15 minutes ago" color="border-brand-primary" />

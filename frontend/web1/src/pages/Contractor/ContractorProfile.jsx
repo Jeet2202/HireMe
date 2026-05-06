@@ -102,7 +102,7 @@ const ContractorProfile = () => {
               <div className="grid grid-cols-2 gap-6">
                 {metrics.map((metric, i) => (
                   <div key={i} className="text-center p-6 bg-white rounded-2xl flex flex-col items-center gap-2 group hover:bg-brand-background transition-colors">
-                    <div className="bg-white p-2 rounded-lg shadow-sm group-hover:scale-110 transition-transform">{metric.icon}</div>
+                    <div className="bg-white p-2 rounded-2xl card-shadow group-hover:scale-110 transition-transform">{metric.icon}</div>
                     <p className="text-2xl font-black text-on-surface">{metric.value}</p>
                     <p className="text-[10px] font-black text-on-surface uppercase tracking-tighter">{metric.label}</p>
                   </div>

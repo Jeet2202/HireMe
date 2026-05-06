@@ -40,7 +40,7 @@ const AdminContractorManagement = () => {
           <h2 className="text-4xl font-bold text-on-surface tracking-tight">Contractor Management</h2>
           <p className="text-on-surface-variant mt-2 text-lg">Oversee, verify, and organize your workforce network.</p>
         </div>
-        <button className="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-primary-container transition-all">
+        <button className="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-primary-container transition-all hover:text-white">
           <UserPlus size={20} />
           ADD NEW CONTRACTOR
         </button>
@@ -161,7 +161,7 @@ const AdminContractorManagement = () => {
                     <div className="flex flex-col gap-2">
                       <button 
                         onClick={() => moveContractor(selectedContractor.id, 'Priority')}
-                        className="w-full py-2 bg-primary/5 text-on-surface rounded-lg font-bold text-xs hover:bg-primary/10"
+                        className="w-full py-2 bg-primary/5 text-white rounded-lg font-bold text-xs hover:bg-primary/10 hover:text-white"
                       >
                         Flag as Priority
                       </button>
@@ -184,7 +184,7 @@ const AdminContractorManagement = () => {
               <div className="p-6 bg-surface-bright border-t border-secondary-container/30 flex justify-end">
                 <button 
                   onClick={() => setSelectedContractor(null)}
-                  className="bg-primary text-on-primary px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-primary-container"
+                  className="bg-primary text-on-primary px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-primary-container hover:text-white"
                 >
                   SAVE CHANGES
                 </button>

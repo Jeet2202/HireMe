@@ -154,7 +154,7 @@ const AdminDashboard = () => {
               <p className="text-sm font-bold text-on-surface-variant uppercase mb-2">Supply Efficiency</p>
               <p className="text-sm text-on-background">Fulfillment speed increased by <span className="font-bold text-on-surface text-lg">14m</span> via matching engine.</p>
             </div>
-            <div className="flex items-center gap-3 text-on-surface bg-primary/5 p-4 rounded-xl">
+            <div className="flex items-center gap-3 text-white bg-primary/5 p-4 rounded-xl">
               <Info size={20} />
               <p className="text-sm font-medium">Verification backlog reaching critical status. Review suggested.</p>
             </div>

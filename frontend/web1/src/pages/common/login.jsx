@@ -1,31 +1,29 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, Info, ArrowRight } from "lucide-react";
+import { Mail, Lock, Info, ArrowRight, Loader2 } from "lucide-react";
 import { motion } from "motion/react";
+import { loginUser, getDashboardRoute } from "../../services/api";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    
-    // Hardcoded demo logic
-    if (email === "admin@hireme.com") {
-      navigate("/admin/dashboard");
-    } else if (email === "contractor@hireme.com") {
-      navigate("/contractor-dashboard");
-    } else if (email === "labourer@hireme.com") {
-      navigate("/labour/dashboard");
-    } else if (email && password) {
-      // Default fallback based on email pattern
-      if (email.includes("admin")) navigate("/admin/dashboard");
-      else if (email.includes("contractor")) navigate("/contractor-dashboard");
-      else navigate("/labour/dashboard");
-    } else {
-      setError("Invalid email or password");
+    setError(null);
+    setLoading(true);
+    try {
+      const { user } = await loginUser({ email, password });
+      // Persist user info for the session
+      localStorage.setItem("user", JSON.stringify(user));
+      navigate(getDashboardRoute(user.role));
+    } catch (err) {
+      setError(err.message || "Invalid email or password");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,8 +81,16 @@ export default function LoginPage() {
               </div>
             )}
 
-            <button type="submit" className="primary-button w-full flex items-center justify-center gap-2 mt-4">
-              Login to HireMe <ArrowRight size={20} />
+            <button
+              type="submit"
+              disabled={loading}
+              className="primary-button w-full flex items-center justify-center gap-2 mt-4 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <><Loader2 size={18} className="animate-spin" /> Logging in…</>
+              ) : (
+                <>Login to HireMe <ArrowRight size={20} /></>
+              )}
             </button>
           </form>
 

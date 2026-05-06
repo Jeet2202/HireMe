@@ -15,7 +15,7 @@ export default function LabourerSkillTest() {
       <header className="flex justify-between items-center">
         <h1 className="text-4xl font-bold text-on-surface">Skill Test</h1>
         <div className="flex items-center gap-4">
-          <button className="w-12 h-12 flex items-center justify-center rounded-full bg-white shadow-sm border border-outline-variant hover:bg-white transition-colors relative">
+          <button className="w-12 h-12 flex items-center justify-center rounded-full bg-white card-shadow border border-outline-variant hover:bg-white transition-colors relative">
             <Bell className="text-on-surface" size={20} />
           </button>
           <div className="hidden sm:block text-right">
@@ -27,7 +27,7 @@ export default function LabourerSkillTest() {
 
       <div className="flex flex-col items-center justify-center min-h-[600px] py-12">
         <div className="w-full max-w-2xl bg-white p-16 rounded-3xl shadow-xl border border-outline-variant text-center transform transition-transform hover:scale-[1.02]">
-          <div className="w-24 h-24 bg-[#efeded] rounded-full flex items-center justify-center mx-auto mb-10 shadow-inner">
+          <div className="w-24 h-24 bg-surface-container-high rounded-full flex items-center justify-center mx-auto mb-10 shadow-inner">
             <ClipboardCheck size={48} className="text-on-surface opacity-20" />
           </div>
           <h2 className="text-4xl font-bold text-on-surface mb-6 tracking-tight">Skill Test Coming Soon</h2>
