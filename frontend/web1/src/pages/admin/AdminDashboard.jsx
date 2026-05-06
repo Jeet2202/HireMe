@@ -1,202 +1,170 @@
-import React from "react";
-import { motion } from "framer-motion";
-import Footer from "../../components/footer";
-import { Link } from "react-router-dom";
-import AdminNavbar from "../../components/AdminNavbar";
-
-
-// Recharts
-import {
+import React from 'react';
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
   LineChart,
   Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  Pie,
   PieChart,
-  Cell,
-} from "recharts";
+  Pie,
+  Cell
+} from 'recharts';
+import { motion } from 'motion/react';
+import { TrendingUp, Users, Briefcase, CheckCircle2, Info } from 'lucide-react';
 
-export default function AdminDashboard() {
+const growthData = [
+  { name: 'Jan', workers: 1200 },
+  { name: 'Feb', workers: 1900 },
+  { name: 'Mar', workers: 1500 },
+  { name: 'Apr', workers: 2800 },
+  { name: 'May', workers: 3200 },
+  { name: 'Jun', workers: 2400 },
+  { name: 'Jul', workers: 4200 },
+];
 
-  // Dummy Data
-  const workerGrowth = [
-    { month: "Jan", workers: 40 },
-    { month: "Feb", workers: 55 },
-    { month: "Mar", workers: 80 },
-    { month: "Apr", workers: 120 },
-    { month: "May", workers: 170 },
-  ];
+const skillData = [
+  { name: 'Specialized Tech', value: 42, color: '#391053' },
+  { name: 'General Labor', value: 38, color: '#1f0033' },
+  { name: 'Administration', value: 20, color: '#cec3d0' },
+];
 
-  const jobStats = [
-    { month: "Jan", jobs: 22 },
-    { month: "Feb", jobs: 35 },
-    { month: "Mar", jobs: 40 },
-    { month: "Apr", jobs: 50 },
-    { month: "May", jobs: 65 },
-  ];
-
-  // Job Completion Analytics
-  const jobCompletionData = [
-    { name: "Completed", value: 180 },
-    { name: "Cancelled", value: 45 },
-  ];
-
-  // Skill Level Pie Chart
-  const skillLevels = [
-    { level: "Level 1 (Helper)", value: 120 },
-    { level: "Level 2 (Semi-skilled)", value: 220 },
-    { level: "Level 3 (Skilled)", value: 310 },
-    { level: "Level 4 (Expert)", value: 95 },
-  ];
-
-  const COLORS = ["#3b82f6", "#10b981", "#6366f1", "#f59e0b"];
-
+const AdminDashboard = () => {
   return (
-    <div className="min-h-screen bg-gray-100">
-
-      {/* ================= NAVBAR ================= */}
-      <AdminNavbar />
-
-
-      {/* ================= HEADER ================= */}
-      <div className="px-10 mt-6">
-        <motion.h2
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-4xl font-semibold text-gray-900"
-        >
-          Admin Dashboard
-        </motion.h2>
-        <p className="text-gray-600">Platform performance and analytics overview.</p>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-6"
+    >
+      <div className="mb-8">
+        <h2 className="text-4xl font-bold text-[#391053] tracking-tight">Platform Overview</h2>
+        <p className="text-[#391053]-variant mt-2 text-lg">Real-time performance metrics and service delivery analytics.</p>
       </div>
 
-      {/* ================= TOP CARDS ================= */}
-      <div className="px-10 grid grid-cols-1 md:grid-cols-5 gap-8 mt-8">
-
-        {/* Workers */}
-        <motion.div whileHover={{ scale: 1.03 }} className="bg-white p-6 rounded-2xl shadow-lg">
-          <h3 className="text-lg font-semibold text-gray-700">Total Workers</h3>
-          <p className="text-4xl mt-3 font-bold text-blue-600">1,240</p>
-        </motion.div>
-
-        {/* Contractors */}
-        <motion.div whileHover={{ scale: 1.03 }} className="bg-white p-6 rounded-2xl shadow-lg">
-          <h3 className="text-lg font-semibold text-gray-700">Total Contractors</h3>
-          <p className="text-4xl mt-3 font-bold text-green-600">280</p>
-        </motion.div>
-
-        {/* Bookings */}
-        <motion.div whileHover={{ scale: 1.03 }} className="bg-white p-6 rounded-2xl shadow-lg">
-          <h3 className="text-lg font-semibold text-gray-700">Bookings This Month</h3>
-          <p className="text-4xl mt-3 font-bold text-purple-600">89</p>
-        </motion.div>
-
-        {/* Platform Rating */}
-        <motion.div whileHover={{ scale: 1.03 }} className="bg-white p-6 rounded-2xl shadow-lg">
-          <h3 className="text-lg font-semibold text-gray-700">Platform Rating</h3>
-          <p className="text-4xl mt-3 font-bold text-yellow-500">4.5 ⭐</p>
-        </motion.div>
-
-        {/* Pending KYC */}
-        <motion.div whileHover={{ scale: 1.03 }} className="bg-white p-6 rounded-2xl shadow-lg">
-          <h3 className="text-lg font-semibold text-gray-700">Pending KYC</h3>
-          <p className="text-4xl mt-3 font-bold text-orange-500">32</p>
-        </motion.div>
-
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { label: 'Total Workers', value: '12,482', trend: '+12%', icon: Users },
+          { label: 'Total Contractors', value: '843', trend: '+5.2%', icon: Users },
+          { label: 'Total Jobs', value: '45,102', trend: '98% Success', icon: Briefcase },
+          { label: 'Active Bookings', value: '1,240', trend: 'Live Now', icon: CheckCircle2 },
+        ].map((stat, i) => (
+          <div key={i} className="bg-surface p-6 rounded-xl custom-card-shadow border-none">
+            <div className="flex items-center justify-between mb-4">
+              <stat.icon size={24} className="text-[#391053]" />
+              <span className="text-[10px] font-bold text-[#391053]-variant uppercase tracking-widest">{stat.label.split(' ')[1]}</span>
+            </div>
+            <h3 className="text-3xl font-bold text-[#391053]">{stat.value}</h3>
+            <p className="text-sm font-bold text-[#391053] mt-4 pt-4 border-t border-secondary-container/30">{stat.trend} from last period</p>
+          </div>
+        ))}
       </div>
 
-      {/* ================= ANALYTICS SECTION ================= */}
-      <div className="px-10 mt-12 grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-12 lg:col-span-8 bg-surface p-8 rounded-xl custom-card-shadow">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h4 className="text-xl font-bold text-[#391053]">Worker Growth Trends</h4>
+              <p className="text-sm text-[#391053]-variant">Monthly registration and onboarding velocity</p>
+            </div>
+          </div>
+          <div className="h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={growthData}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#efeded" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#4c444e', fontSize: 12}} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#4c444e', fontSize: 12}} />
+                <Tooltip 
+                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
+                  cursor={{ fill: '#f4d9ff', opacity: 0.4 }}
+                />
+                <Bar dataKey="workers" fill="#1f0033" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
 
-        {/* Worker Growth */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white p-6 rounded-2xl shadow-lg">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Worker Growth</h3>
-          <ResponsiveContainer width="100%" height={260}>
-            <LineChart data={workerGrowth}>
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Line dataKey="workers" stroke="#2563eb" strokeWidth={3} />
-            </LineChart>
-          </ResponsiveContainer>
-        </motion.div>
-
-        {/* Job Stats */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white p-6 rounded-2xl shadow-lg">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Job Statistics</h3>
-          <ResponsiveContainer width="100%" height={260}>
-            <BarChart data={jobStats}>
-              <XAxis dataKey="month" />
-              <Tooltip />
-              <Bar dataKey="jobs" fill="#10b981" radius={[10, 10, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </motion.div>
-
+        <div className="col-span-12 lg:col-span-4 bg-surface p-8 rounded-xl custom-card-shadow">
+          <h4 className="text-xl font-bold text-[#391053] mb-2">Skill Distribution</h4>
+          <p className="text-sm text-[#391053]-variant mb-8">Workforce expertise breakdown</p>
+          <div className="h-[250px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={skillData}
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {skillData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="space-y-3 mt-4">
+            {skillData.map((skill, i) => (
+              <div key={i} className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: skill.color }}></div>
+                  <span className="text-xs font-medium text-[#391053]-variant">{skill.name}</span>
+                </div>
+                <span className="text-xs font-bold text-[#391053]">{skill.value}%</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* ================= JOB COMPLETION + SKILL DISTRIBUTION ================= */}
-      <div className="px-10 mt-12 grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-primary p-8 rounded-xl custom-card-shadow text-[#391053]">
+          <h4 className="text-xl font-bold mb-2">Success Velocity</h4>
+          <p className="text-sm opacity-70 mb-8">Percentage of jobs completed without intervention</p>
+          <div className="flex items-center justify-between">
+            <div className="h-24 w-48">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={growthData}>
+                  <Line type="monotone" dataKey="workers" stroke="#ffffff" strokeWidth={3} dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="text-right">
+              <span className="text-5xl font-bold block">99.4%</span>
+              <span className="text-[10px] font-bold opacity-60 uppercase tracking-widest">Active Rate</span>
+            </div>
+          </div>
+          <div className="mt-8 flex gap-4">
+            <button className="flex-1 py-3 bg-on-primary text-[#391053] font-bold rounded-xl active:scale-95 transition-transform hover:bg-secondary-container">Download Report</button>
+            <button className="flex-1 py-3 border border-on-primary text-[#391053] font-bold rounded-xl active:scale-95 transition-transform hover:bg-white/10">View Details</button>
+          </div>
+        </div>
 
-        {/* Job Completion Analytics */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white p-6 rounded-2xl shadow-lg">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Job Completion Analytics</h3>
-          <ResponsiveContainer width="100%" height={260}>
-            <PieChart>
-              <Pie
-                data={jobCompletionData}
-                dataKey="value"
-                nameKey="name"
-                outerRadius={100}
-                fill="#8884d8"
-                label
-              >
-                <Cell fill="#10b981" />
-                <Cell fill="#ef4444" />
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-
-          {/* Success Rate */}
-          <p className="text-center text-lg font-semibold mt-4 text-gray-700">
-            Success Rate:{" "}
-            <span className="text-green-600">
-              {Math.round((180 / (180 + 45)) * 100)}%
-            </span>
-          </p>
-        </motion.div>
-
-        {/* Skill Level Distribution */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white p-6 rounded-2xl shadow-lg">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Skill Level Distribution</h3>
-
-          <ResponsiveContainer width="100%" height={260}>
-            <PieChart>
-              <Pie
-                data={skillLevels}
-                dataKey="value"
-                nameKey="level"
-                outerRadius={100}
-                label
-              >
-                {skillLevels.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </motion.div>
-
+        <div className="bg-surface p-8 rounded-xl custom-card-shadow flex flex-col justify-center">
+          <div className="flex items-center gap-3 mb-6">
+            <TrendingUp size={32} className="text-[#391053]" />
+            <h3 className="text-xl font-bold text-[#391053]">Platform Insights</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="p-4 rounded-xl border border-secondary-container/30 bg-background-page/10">
+              <p className="text-sm font-bold text-[#391053]-variant uppercase mb-2">Supply Efficiency</p>
+              <p className="text-sm text-on-background">Fulfillment speed increased by <span className="font-bold text-[#391053] text-lg">14m</span> via matching engine.</p>
+            </div>
+            <div className="flex items-center gap-3 text-[#391053] bg-primary/5 p-4 rounded-xl">
+              <Info size={20} />
+              <p className="text-sm font-medium">Verification backlog reaching critical status. Review suggested.</p>
+            </div>
+          </div>
+        </div>
       </div>
-
-      {/* FOOTER */}
-      <Footer />
-    </div>
+    </motion.div>
   );
-}
+};
+
+export default AdminDashboard;
+
+

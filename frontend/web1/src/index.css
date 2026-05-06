@@ -1,57 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 
-/* Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* ─── Custom Design Tokens ───────────────────────────────
+   Tailwind v4: @theme registers these as utility classes
+   e.g. bg-brand-primary, text-primary, bg-surface-stage
+──────────────────────────────────────────────────────── */
+@theme {
+  /* Contractor / Labourer */
+  --color-brand-primary:    #c9a8f1;
+  --color-brand-secondary:  #ffffff;
+  --color-brand-background: #ffffff;
+  --color-brand-surface:    #ffffff;
 
-/* Apply global font */
-* {
-  font-family: 'Inter', sans-serif;
+  /* Admin / Common (Material-style) */
+  --color-primary:                #c9a8f1;
+  --color-on-primary:             #391053;
+  --color-primary-container:      #ffffff;
+  --color-on-primary-container:   #391053;
+  --color-secondary:              #ffffff;
+  --color-secondary-container:    #c9a8f1;
+  --color-on-secondary-container: #391053;
+  --color-surface:                #ffffff;
+  --color-surface-bright:         #ffffff;
+  --color-surface-container:      #ffffff;
+  --color-surface-container-low:  #ffffff;
+  --color-surface-stage:          #ffffff;
+  --color-on-surface:             #391053;
+  --color-on-surface-variant:     #391053;
+  --color-background-page:        #ffffff;
+  --color-outline:                #c9a8f1;
+  --color-outline-variant:        #c9a8f1;
+
+  /* Font */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-/* HERO GRADIENT (replaces your old CSS class) */
-.hero-gradient {
-  background-image: linear-gradient(to bottom right, #3b82f6, #1e3a8a);
+/* ─── Global Base ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* NAV-LINK underline hover animation */
-.nav-link {
-  position: relative;
+body {
+  background-color: #ffffff;
+  color: #391053;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #c9a8f1; border-radius: 2px; }
+
+/* ─── Reusable Component Classes ─────────────────────── */
+
+/* White card with shadow — Admin & Common pages */
+.executive-card {
+  background-color: #ffffff;
+  border-radius: 1.25rem;
+  padding: 2rem;
+  border: 1px solid #c9a8f1;
+  box-shadow:
+    0 1px 3px rgba(201, 168, 241, 0.2),
+    0 4px 16px -4px rgba(201, 168, 241, 0.4);
+}
+
+/* Primary button */
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #c9a8f1;
+  color: #391053;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.875rem 2rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+  box-shadow: 0 4px 14px rgba(201, 168, 241, 0.35);
+}
+.primary-button:hover  { opacity: 0.88; }
+.primary-button:active { transform: scale(0.97); }
+
+/* Secondary button */
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: #391053;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.875rem 2rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  border: 2px solid #c9a8f1;
+  outline: none;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+.secondary-button:hover { background-color: rgba(201, 168, 241, 0.15); }
+
+/* Card shadows */
+.card-shadow {
+  box-shadow:
+    0 1px 3px rgba(201, 168, 241, 0.2),
+    0 8px 24px -4px rgba(201, 168, 241, 0.4);
+}
+.custom-card-shadow {
+  box-shadow:
+    0 1px 3px rgba(201, 168, 241, 0.15),
+    0 4px 12px rgba(201, 168, 241, 0.2);
+}
+.shadow-executive {
+  box-shadow: 0 20px 60px -10px rgba(201, 168, 241, 0.4);
+}
+
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Nav-link hover underline */
+.nav-link { position: relative; }
 .nav-link::after {
   content: '';
   position: absolute;
   width: 0;
   height: 2px;
   left: 50%;
-  bottom: -5px;
-  background-color: #3b82f6; /* Tailwind blue-500 */
-  transition: all 0.3s ease;
   transform: translateX(-50%);
+  bottom: -5px;
+  background-color: #c9a8f1;
+  transition: width 0.3s ease;
 }
+.nav-link:hover::after { width: 100%; }
 
-.nav-link:hover::after {
-  width: 100%;
+/* ─── Animations ──────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
-/* Scrollbar hidden (optional) */
-::-webkit-scrollbar {
-  width: 0;
-  background: transparent;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  background: #f9fafb; /* Tailwind gray-50 */
-}
-
 @keyframes fade {
   from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
 }
 
-.animate-fade {
-  animation: fade 0.4s ease-out;
-}
+/* animate-in utilities (used by Labourer/Contractor pages) */
+.animate-in           { animation-fill-mode: both; }
+.fade-in              { animation: fadeInUp 0.5s ease-out both; }
+.slide-in-from-top-4  { animation: fadeInUp 0.3s ease-out both; }
+.slide-in-from-right-4{ animation: fadeInUp 0.3s ease-out both; }
+.zoom-in-95           { animation: fadeInUp 0.3s ease-out both; }
+.animate-fade         { animation: fade 0.4s ease-out; }
+.animate-fadeInUp     { animation: fadeInUp 0.8s ease-out; }
+.animate-float        { animation: float 6s ease-in-out infinite; }

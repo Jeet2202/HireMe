@@ -1,490 +1,202 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import AdminNavbar from "../../components/AdminNavbar";
-import Footer from "../../components/footer";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Search, UserPlus, Filter, Download, Star, MoreVertical, X, Mail, Phone, MapPin, ShieldCheck, AlertTriangle, Ban } from 'lucide-react';
 
-export default function AdminContractorManagement() {
-  // =============================
-  // Dummy Contractor Data
-  // =============================
-  const [contractors, setContractors] = useState([
-    {
-      id: 1,
-      company: "Prime Build Co.",
-      person: "Rohit Mehta",
-      verified: true,
-      jobsPosted: 42,
-      rating: 4.6,
-      location: "Mumbai",
-      license: "MH-CONTRACT-2020-4598",
-      groundCheck: true,
-      statuses: [],
-      details: "Large commercial contractor with 40+ employees. Specialized in malls & corporate complexes."
-    },
-    {
-      id: 2,
-      company: "UrbanCore Construction",
-      person: "Deepak Shah",
-      verified: false,
-      jobsPosted: 28,
-      rating: 4.1,
-      location: "Pune",
-      license: "MH-URBN-2019-4938",
-      groundCheck: false,
-      statuses: [],
-      details: "Mid-size contractor focusing on residential towers and villa projects."
-    },
-    {
-      id: 3,
-      company: "Skyline InfraWorks",
-      person: "Aarav Khanna",
-      verified: true,
-      jobsPosted: 56,
-      rating: 4.8,
-      location: "Nashik",
-      license: "MH-SKY-2021-7343",
-      groundCheck: true,
-      statuses: ["priority"],
-      details: "High-grade infra company handling hospitals, schools, and highway repairs."
-    },
-    {
-      id: 4,
-      company: "Elite Home Makers",
-      person: "Kunal Deshmukh",
-      verified: false,
-      jobsPosted: 18,
-      rating: 3.8,
-      location: "Thane",
-      license: "MH-ELITE-2018-1183",
-      groundCheck: false,
-      statuses: [],
-      details: "Premium home interior & renovation contractor."
-    }
-  ]);
+const mockContractors = [
+  { id: 1, name: 'Julian Thorne', email: 'julian.thorne@example.com', company: 'Thorne Structural Ltd.', rating: 4.9, status: 'Active', category: 'Priority' },
+  { id: 2, name: 'Elena Rodriguez', email: 'elena.r@urbanpeak.io', company: 'Urban Peak Devs', rating: 4.8, status: 'Active', category: 'Priority' },
+  { id: 3, name: 'Markus Vane', email: 'vane.m@construct.com', company: 'Vane Constructions', rating: 3.2, status: 'Under Review', category: 'Suspicious' },
+  { id: 4, name: 'Sarah Jenkins', email: 'sarah.j@build.io', company: 'Elite Build Co.', rating: 4.5, status: 'Pending', category: 'Main' },
+  { id: 5, name: 'Arthur Lexington', email: 'arthur.l@lex.com', company: 'Lexington Group', rating: 4.2, status: 'Active', category: 'Main' },
+  { id: 6, name: 'Vector Solutions', email: 'contact@vector.io', company: 'Vector Solutions', rating: 2.1, status: 'Blocked', category: 'Blocked' },
+];
 
-  // Derived Lists
-  const [blockedContractors, setBlockedContractors] = useState([]);
-  const [suspiciousContractors, setSuspiciousContractors] = useState(
-    contractors.filter((c) => c.statuses.includes("suspicious"))
-  );
-  const [priorityContractors, setPriorityContractors] = useState(
-    contractors.filter((c) => c.statuses.includes("priority"))
-  );
-
+const AdminContractorManagement = () => {
   const [selectedContractor, setSelectedContractor] = useState(null);
+  const [contractors, setContractors] = useState(mockContractors);
 
-  // Refresh derived tables
-  const refreshLists = (updated) => {
-    setSuspiciousContractors(updated.filter((c) => c.statuses.includes("suspicious")));
-    setPriorityContractors(updated.filter((c) => c.statuses.includes("priority")));
+  const moveContractor = (id, newCategory) => {
+    setContractors(prev => prev.map(c => c.id === id ? { ...c, category: newCategory } : c));
+    if (selectedContractor?.id === id) {
+      setSelectedContractor(prev => ({ ...prev, category: newCategory }));
+    }
   };
 
-  // Status actions
-  const markSuspicious = (id) => {
-    const updated = contractors.map((c) =>
-      c.id === id && !c.statuses.includes("suspicious")
-        ? { ...c, statuses: [...c.statuses, "suspicious"] }
-        : c
-    );
-    setContractors(updated);
-    refreshLists(updated);
-    setSelectedContractor(null);
-  };
-
-  const unmarkSuspicious = (id) => {
-    const updated = contractors.map((c) =>
-      c.id === id
-        ? { ...c, statuses: c.statuses.filter((s) => s !== "suspicious") }
-        : c
-    );
-    setContractors(updated);
-    refreshLists(updated);
-  };
-
-  const markPriority = (id) => {
-    const updated = contractors.map((c) =>
-      c.id === id && !c.statuses.includes("priority")
-        ? { ...c, statuses: [...c.statuses, "priority"] }
-        : c
-    );
-    setContractors(updated);
-    refreshLists(updated);
-    setSelectedContractor(null);
-  };
-
-  const unmarkPriority = (id) => {
-    const updated = contractors.map((c) =>
-      c.id === id
-        ? { ...c, statuses: c.statuses.filter((s) => s !== "priority") }
-        : c
-    );
-    setContractors(updated);
-    refreshLists(updated);
-  };
-
-  // Block & Unblock
-  const blockContractor = (id) => {
-    const target = contractors.find((c) => c.id === id);
-    const clean = { ...target, statuses: [] };
-
-    setBlockedContractors((prev) => [clean, ...prev]);
-    const remaining = contractors.filter((c) => c.id !== id);
-
-    setContractors(remaining);
-    refreshLists(remaining);
-    setSelectedContractor(null);
-  };
-
-  const unblockContractor = (id) => {
-    const target = blockedContractors.find((b) => b.id === id);
-    setContractors([target, ...contractors]);
-    setBlockedContractors(blockedContractors.filter((b) => b.id !== id));
-    refreshLists([target, ...contractors]);
-  };
-
-  // Row Highlight Colors
-  const rowStyle = (c) => {
-    if (c.statuses.includes("suspicious")) return "bg-yellow-50";
-    if (c.statuses.includes("priority")) return "bg-blue-50";
-    return "";
-  };
-
-  // Badges next to contractor name
-  const renderBadges = (c) => (
-    <div className="flex items-center gap-2">
-      <span className="font-medium">{c.person}</span>
-
-      {c.statuses.includes("suspicious") && (
-        <span className="text-xs px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full">
-          Suspicious
-        </span>
-      )}
-
-      {c.statuses.includes("priority") && (
-        <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-800 rounded-full">
-          Priority
-        </span>
-      )}
-    </div>
-  );
+  const categories = [
+    { title: 'Priority', icon: Star, color: 'text-[#391053]' },
+    { title: 'Main', icon: ShieldCheck, color: 'text-[#391053]' },
+    { title: 'Suspicious', icon: AlertTriangle, color: 'text-orange-600' },
+    { title: 'Blocked', icon: Ban, color: 'text-red-600' },
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <AdminNavbar />
-
-      {/* Page header */}
-      <div className="px-10 mt-6">
-        <motion.h2
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-4xl font-semibold text-gray-900"
-        >
-          Contractor Management
-        </motion.h2>
-        <p className="text-gray-600 mt-1">
-          Manage contractors, review KYC, ground checks, and moderation actions.
-        </p>
+    <motion.div 
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      className="space-y-8 pb-20"
+    >
+      <div className="flex justify-between items-end">
+        <div>
+          <h2 className="text-4xl font-bold text-[#391053] tracking-tight">Contractor Management</h2>
+          <p className="text-[#391053]-variant mt-2 text-lg">Oversee, verify, and organize your workforce network.</p>
+        </div>
+        <button className="bg-primary text-[#391053] px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-primary-container transition-all">
+          <UserPlus size={20} />
+          ADD NEW CONTRACTOR
+        </button>
       </div>
 
-      {/* ---------------- MAIN TABLE ---------------- */}
-      <div className="px-10 mt-8">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="bg-white p-6 rounded-2xl shadow-lg"
-        >
-          <h3 className="text-2xl font-semibold mb-4 text-gray-800">Contractor List</h3>
-
+      {categories.map((cat) => (
+        <div key={cat.title} className="bg-surface p-8 rounded-xl custom-card-shadow">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-2xl font-bold text-[#391053] flex items-center gap-2">
+              <cat.icon size={24} className={cat.color} />
+              {cat.title} Contractors
+            </h3>
+            <span className="text-xs font-bold px-3 py-1 bg-background-page/20 border border-outline-variant rounded-full uppercase tracking-tighter">
+              {contractors.filter(c => c.category === cat.title).length} Records
+            </span>
+          </div>
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
+            <table className="w-full text-left">
               <thead>
-                <tr className="bg-gray-100 text-left">
-                  <th className="p-3">Company</th>
-                  <th className="p-3">Contact Person</th>
-                  <th className="p-3">Verified</th>
-                  <th className="p-3">Jobs Posted</th>
-                  <th className="p-3">Rating</th>
-                  <th className="p-3">Location</th>
-                  <th className="p-3">Action</th>
+                <tr className="border-b border-surface-container">
+                  <th className="py-4 font-bold text-xs text-outline uppercase tracking-wider">Contractor</th>
+                  <th className="py-4 font-bold text-xs text-outline uppercase tracking-wider">Company</th>
+                  <th className="py-4 font-bold text-xs text-outline uppercase tracking-wider">Rating</th>
+                  <th className="py-4 font-bold text-xs text-outline uppercase tracking-wider text-right">Actions</th>
                 </tr>
               </thead>
-
-              <tbody>
-                {contractors.map((c) => (
-                  <motion.tr
-                    key={c.id}
-                    className={`${rowStyle(c)} border-b`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
-                    <td className="p-3">{c.company}</td>
-
-                    <td className="p-3">{renderBadges(c)}</td>
-
-                    <td className="p-3">
-                      {c.verified ? (
-                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                          Yes
-                        </span>
-                      ) : (
-                        <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm">
-                          Pending
-                        </span>
-                      )}
-                    </td>
-
-                    <td className="p-3">{c.jobsPosted}</td>
-                    <td className="p-3">{c.rating} ⭐</td>
-                    <td className="p-3">{c.location}</td>
-
-                    <td className="p-3">
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setSelectedContractor(c)}
-                          className="px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm"
-                        >
-                          View
-                        </button>
-
-                        {!c.statuses.includes("priority") && (
-                          <button
-                            onClick={() => markPriority(c.id)}
-                            className="px-3 py-2 bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200 text-sm"
-                          >
-                            ★
-                          </button>
-                        )}
-
-                        {!c.statuses.includes("suspicious") && (
-                          <button
-                            onClick={() => markSuspicious(c.id)}
-                            className="px-3 py-2 bg-yellow-100 text-yellow-800 rounded-md hover:bg-yellow-200 text-sm"
-                          >
-                            !
-                          </button>
-                        )}
-
-                        <button
-                          onClick={() => blockContractor(c.id)}
-                          className="px-3 py-2 bg-red-100 text-red-800 rounded-md hover:bg-red-200 text-sm"
-                        >
-                          ⛔
-                        </button>
+              <tbody className="divide-y divide-surface-container">
+                {contractors.filter(c => c.category === cat.title).map((c) => (
+                  <tr key={c.id} className="hover:bg-background-page/5 transition-colors">
+                    <td className="py-4 font-semibold text-[#391053]">{c.name}</td>
+                    <td className="py-4 text-[#391053]-variant text-sm">{c.company}</td>
+                    <td className="py-4">
+                      <div className="flex items-center text-[#391053] font-bold text-sm">
+                        <Star size={14} className="fill-primary" />
+                        <span className="ml-1">{c.rating}</span>
                       </div>
                     </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* ---------------- BLOCKED CONTRACTORS ---------------- */}
-      <div className="px-10 mt-8">
-        <h3 className="text-2xl font-semibold text-red-700">
-          Blocked Contractors ({blockedContractors.length})
-        </h3>
-
-        {blockedContractors.length === 0 ? (
-          <div className="mt-4 bg-red-50 text-red-700 p-6 rounded-xl shadow">
-            No blocked contractors
-          </div>
-        ) : (
-          <div className="bg-white mt-4 p-4 rounded-2xl shadow">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-red-50 text-left">
-                  <th className="p-3">Company</th>
-                  <th className="p-3">Person</th>
-                  <th className="p-3">Rating</th>
-                  <th className="p-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {blockedContractors.map((b) => (
-                  <tr key={b.id} className="border-b bg-red-50">
-                    <td className="p-3 text-red-800 font-semibold">{b.company}</td>
-                    <td className="p-3">{b.person}</td>
-                    <td className="p-3">{b.rating} ⭐</td>
-                    <td className="p-3">
-                      <button
-                        onClick={() => unblockContractor(b.id)}
-                        className="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm"
+                    <td className="py-4 text-right">
+                      <button 
+                        onClick={() => setSelectedContractor(c)}
+                        className="text-[#391053] font-bold text-sm hover:underline"
                       >
-                        Unblock
+                        Details
                       </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            {contractors.filter(c => c.category === cat.title).length === 0 && (
+              <p className="py-8 text-center text-[#391053]-variant italic text-sm">No contractors in this category.</p>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      ))}
 
-      {/* ---------------- SUSPICIOUS CONTRACTORS ---------------- */}
-      <div className="px-10 mt-8">
-        <h3 className="text-2xl font-semibold text-yellow-700">
-          Suspicious Contractors ({suspiciousContractors.length})
-        </h3>
-
-        {suspiciousContractors.length === 0 ? (
-          <div className="mt-4 bg-yellow-50 text-yellow-800 p-6 rounded-xl shadow">
-            No suspicious contractors
-          </div>
-        ) : (
-          <div className="bg-white mt-4 p-4 rounded-2xl shadow">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-yellow-50 text-left">
-                  <th className="p-3">Company</th>
-                  <th className="p-3">Person</th>
-                  <th className="p-3">Rating</th>
-                  <th className="p-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {suspiciousContractors.map((s) => (
-                  <tr key={s.id} className="border-b">
-                    <td className="p-3">{s.company}</td>
-                    <td className="p-3">{s.person}</td>
-                    <td className="p-3">{s.rating} ⭐</td>
-                    <td className="p-3">
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => unmarkSuspicious(s.id)}
-                          className="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm"
-                        >
-                          Remove Suspicious
-                        </button>
-                        <button
-                          onClick={() => blockContractor(s.id)}
-                          className="px-3 py-2 bg-red-100 text-red-800 rounded-md hover:bg-red-200 text-sm"
-                        >
-                          Block
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-
-      {/* ---------------- PRIORITY CONTRACTORS ---------------- */}
-      <div className="px-10 mt-8 mb-20">
-        <h3 className="text-2xl font-semibold text-blue-700">
-          Priority Contractors ({priorityContractors.length})
-        </h3>
-
-        {priorityContractors.length === 0 ? (
-          <div className="mt-4 bg-blue-50 text-blue-800 p-6 rounded-xl shadow">
-            No priority contractors
-          </div>
-        ) : (
-          <div className="bg-white mt-4 p-4 rounded-2xl shadow">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-blue-50 text-left">
-                  <th className="p-3">Company</th>
-                  <th className="p-3">Person</th>
-                  <th className="p-3">Rating</th>
-                  <th className="p-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {priorityContractors.map((p) => (
-                  <tr key={p.id} className="border-b">
-                    <td className="p-3 text-blue-900 font-semibold">{p.company}</td>
-                    <td className="p-3">{p.person}</td>
-                    <td className="p-3">{p.rating} ⭐</td>
-                    <td className="p-3">
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => unmarkPriority(p.id)}
-                          className="px-3 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 text-sm"
-                        >
-                          Remove Priority
-                        </button>
-                        <button
-                          onClick={() => blockContractor(p.id)}
-                          className="px-3 py-2 bg-red-100 text-red-800 rounded-md hover:bg-red-200 text-sm"
-                        >
-                          Block
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-
-      {/* ---------------- MODAL VIEW ---------------- */}
-      {selectedContractor && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50"
-        >
-          <motion.div
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-2xl"
-          >
-            <h3 className="text-3xl font-semibold">{selectedContractor.company}</h3>
-            <p className="text-gray-600">{selectedContractor.person}</p>
-
-            <div className="mt-4 bg-gray-50 p-4 rounded-xl">
-              <p><strong>License:</strong> {selectedContractor.license}</p>
-              <p><strong>Jobs Posted:</strong> {selectedContractor.jobsPosted}</p>
-              <p><strong>Ground Check:</strong> {selectedContractor.groundCheck ? "Completed" : "Pending"}</p>
-              <p className="mt-2"><strong>Details:</strong> {selectedContractor.details}</p>
-            </div>
-
-            <div className="flex gap-3 mt-6">
-              {!selectedContractor.statuses.includes("priority") && (
-                <button
-                  onClick={() => markPriority(selectedContractor.id)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+      <AnimatePresence>
+        {selectedContractor && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 sm:p-12">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedContractor(null)}
+              className="absolute inset-0 bg-primary/40 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-surface w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden relative z-10"
+            >
+              <div className="bg-primary p-8 text-[#391053]">
+                <button 
+                  onClick={() => setSelectedContractor(null)}
+                  className="absolute top-6 right-6 text-[#391053]/60 hover:text-[#391053]"
                 >
-                  Mark Priority
+                  <X size={24} />
                 </button>
-              )}
+                <div className="flex items-center gap-6">
+                  <div className="w-24 h-24 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20 shadow-xl">
+                    <UserPlus size={48} className="opacity-50" />
+                  </div>
+                  <div>
+                    <h2 className="text-3xl font-bold">{selectedContractor.name}</h2>
+                    <p className="opacity-80">{selectedContractor.company}</p>
+                    <div className="mt-4 flex gap-2">
+                      <span className="bg-white/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">{selectedContractor.status}</span>
+                      <span className="bg-white text-[#391053] px-3 py-1 rounded-full text-[10px] font-bold uppercase">{selectedContractor.category}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-              {!selectedContractor.statuses.includes("suspicious") && (
-                <button
-                  onClick={() => markSuspicious(selectedContractor.id)}
-                  className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+              <div className="p-8 grid grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-[10px] font-bold text-outline uppercase mb-2">Contact Info</p>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-[#391053] font-medium text-sm">
+                        <Mail size={16} /> {selectedContractor.email}
+                      </div>
+                      <div className="flex items-center gap-2 text-[#391053] font-medium text-sm">
+                        <Phone size={16} /> +1 (555) 000-0000
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-outline uppercase mb-2">Location</p>
+                    <div className="flex items-center gap-2 text-[#391053] font-medium text-sm">
+                      <MapPin size={16} /> Metropolitan Sector B
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-[10px] font-bold text-outline uppercase mb-2">Status Actions</p>
+                    <div className="flex flex-col gap-2">
+                      <button 
+                        onClick={() => moveContractor(selectedContractor.id, 'Priority')}
+                        className="w-full py-2 bg-primary/5 text-[#391053] rounded-lg font-bold text-xs hover:bg-primary/10"
+                      >
+                        Flag as Priority
+                      </button>
+                      <button 
+                        onClick={() => moveContractor(selectedContractor.id, 'Suspicious')}
+                        className="w-full py-2 bg-orange-50 text-orange-600 rounded-lg font-bold text-xs hover:bg-orange-100"
+                      >
+                        Mark Suspicious
+                      </button>
+                      <button 
+                        onClick={() => moveContractor(selectedContractor.id, 'Blocked')}
+                        className="w-full py-2 bg-red-50 text-red-600 rounded-lg font-bold text-xs hover:bg-red-100"
+                      >
+                        Block Contractor
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="p-6 bg-surface-bright border-t border-secondary-container/30 flex justify-end">
+                <button 
+                  onClick={() => setSelectedContractor(null)}
+                  className="bg-primary text-[#391053] px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-primary-container"
                 >
-                  Mark Suspicious
+                  SAVE CHANGES
                 </button>
-              )}
-
-              <button
-                onClick={() => blockContractor(selectedContractor.id)}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-              >
-                Block Contractor
-              </button>
-
-              <button
-                onClick={() => setSelectedContractor(null)}
-                className="ml-auto px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
-              >
-                Close
-              </button>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-
-      <Footer />
-    </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
-}
+};
+
+export default AdminContractorManagement;
+
+

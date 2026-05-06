@@ -1,126 +1,210 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import TopNavbar from "../../components/TopNavbar";
-import Footer from "../../components/footer";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { UploadCloud, Fingerprint, Lock, ShieldCheck, CheckCircle2, ChevronRight, Info, AlertCircle } from 'lucide-react';
 
 const ContractorVerification = () => {
-  const navigate = useNavigate();
-  const [file, setFile] = useState(null);
-  const [verified, setVerified] = useState(false);
+  const [step, setStep] = useState(1); // 1: Upload, 2: Processing, 3: Success
+  const [shareCode, setShareCode] = useState('');
 
-  const handleVerify = () => {
-    if (!file) return;
-    localStorage.setItem("contractorVerified", "true");
-    setVerified(true);
+  const handleBeginVerification = () => {
+    if (shareCode.length === 4) {
+      setStep(2);
+      setTimeout(() => setStep(3), 3000);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="flex-1 min-h-screen pb-10">
+      <header className="flex justify-between items-center px-10 py-6 mb-8">
+        <h2 className="text-3xl font-bold text-[#391053]">Identity Verification</h2>
+      </header>
 
-      {/* TOP NAVBAR */}
-      <div className="w-full sticky top-0 left-0 bg-white border-b shadow-sm z-50">
-        <TopNavbar />
-      </div>
+      <main className="max-w-5xl mx-auto px-10">
+        {/* Stepper */}
+        <div className="flex items-center justify-between px-16 mb-16 relative">
+          <div className="absolute top-5 left-16 right-16 h-0.5 bg-white -z-10" />
+          <StepIndicator current={step} step={1} label="Upload" />
+          <StepIndicator current={step} step={2} label="Process" />
+          <StepIndicator current={step} step={3} label="Success" />
+        </div>
 
-      {/* MAIN CONTENT */}
-      <div className="flex-1 p-6 pb-20 overflow-y-auto">
-        <h1 className="text-center text-3xl font-bold mb-10 tracking-tight">
-          
-        </h1>
-
-        {!verified ? (
-          <div className="bg-white p-8 rounded-xl shadow-lg max-w-xl mx-auto border border-gray-200">
-
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Upload Aadhaar XML File
-            </h2>
-            
-            <p className="text-gray-600 text-sm mb-4">
-              Upload your Aadhaar e-KYC XML file from the UIDAI portal. Make sure it's not older than 3 days.
-            </p>
-
-            {/* File Upload Box */}
-            <label className="block border-2 border-dashed p-6 rounded-lg cursor-pointer text-center hover:bg-gray-50 transition">
-              <input
-                type="file"
-                accept=".xml"
-                className="hidden"
-                onChange={(e) => setFile(e.target.files[0])}
-              />
-              {file ? (
-                <span className="text-green-600 font-semibold">{file.name}</span>
-              ) : (
-                <span className="text-gray-500">Click to upload XML file</span>
-              )}
-            </label>
-
-            {/* Help Section */}
-            <div className="mt-6 bg-blue-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-gray-800">Need Help?</h3>
-              <p className="text-gray-600 text-sm">
-                Watch this short guide on how to download Aadhaar XML.
-              </p>
-
-              <iframe
-                className="mt-3 rounded-lg w-full"
-                height="200"
-                src="https://www.youtube.com/embed/ahxAhQQZfIM"
-                title="UIDAI Help"
-              ></iframe>
-            </div>
-
-            {/* Verify Button */}
-            <button
-              onClick={handleVerify}
-              disabled={!file}
-              className={`w-full mt-6 py-3 rounded-lg text-white font-semibold transition ${
-                file ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"
-              }`}
+        <AnimatePresence mode="wait">
+          {step === 1 && (
+            <motion.div
+              key="step1"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.05 }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-8"
             >
-              Verify
-            </button>
-          </div>
-        ) : (
-          /* SUCCESS SCREEN */
-          <div className="bg-white p-10 rounded-2xl shadow-xl max-w-lg mx-auto text-center animate-fade border border-gray-200">
+              <div className="lg:col-span-8 flex flex-col gap-8">
+                <div className="bg-white p-10 rounded-2xl card-shadow border border-gray-50">
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="p-4 bg-brand-background rounded-2xl text-[#391053]">
+                      <Fingerprint size={32} />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-[#391053] tracking-tight">Aadhaar XML Verification</h3>
+                      <p className="text-sm text-[#391053]">Securely verify your identity via UIDAI Paperless Offline e-KYC.</p>
+                    </div>
+                  </div>
 
-            <div className="flex justify-center mb-5">
-              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
-                <svg
-                  className="w-12 h-12 text-green-600"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
+                  <div className="border-2 border-dashed border-gray-100 rounded-3xl p-16 flex flex-col items-center justify-center text-center hover:border-brand-primary transition-all cursor-pointer group bg-white/50">
+                    <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform mb-6">
+                      <UploadCloud className="text-[#391053]" size={32} />
+                    </div>
+                    <p className="text-lg font-bold text-[#391053] mb-1">Click to upload your .xml file</p>
+                    <p className="text-xs font-bold text-[#391053] uppercase tracking-widest">Max file size: 5MB (Zip/XML supported)</p>
+                  </div>
+
+                  <div className="mt-10 space-y-6">
+                    <div className="flex flex-col gap-3">
+                      <label className="text-[10px] font-black text-[#391053] uppercase tracking-[0.2em] ml-2">Share Code (4-digit)</label>
+                      <input 
+                        type="password" 
+                        maxLength={4}
+                        value={shareCode}
+                        onChange={(e) => setShareCode(e.target.value.replace(/\D/g, ''))}
+                        className="w-full bg-white border-none rounded-2xl p-5 text-xl font-black tracking-[1em] focus:ring-2 focus:ring-brand-primary/20 text-center"
+                        placeholder="••••"
+                      />
+                    </div>
+                    <button 
+                      onClick={handleBeginVerification}
+                      disabled={shareCode.length < 4}
+                      className={`w-full py-5 rounded-2xl font-bold shadow-xl flex items-center justify-center gap-3 active:scale-[0.98] transition-all uppercase tracking-widest text-sm ${
+                        shareCode.length === 4 ? 'bg-brand-primary text-[#391053]' : 'bg-white text-[#391053] cursor-not-allowed'
+                      }`}
+                    >
+                      Begin Verification Process <ChevronRight size={18} />
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <h2 className="text-3xl font-semibold text-gray-800">Verification Successful 🎉</h2>
+              <div className="lg:col-span-4 space-y-8">
+                <div className="bg-white p-8 rounded-2xl card-shadow border border-gray-50">
+                  <h4 className="text-[10px] font-black text-[#391053] uppercase tracking-[0.2em] mb-6">Instructions</h4>
+                  <ul className="space-y-6">
+                    <InstructionItem icon={<Info size={16} />} text={<>Visit <a href="#" className="text-[#391053] font-black underline underline-offset-4">UIDAI Portal</a> to download your Offline XML file.</>} />
+                    <InstructionItem icon={<Lock size={16} />} text="Set a 4-digit share code during download for encryption." />
+                    <InstructionItem icon={<ShieldCheck size={16} />} text="We do not store your Aadhaar number, only the verified metadata." />
+                  </ul>
+                </div>
 
-            <p className="text-gray-600 mt-3">
-              Your Aadhaar verification is complete. Welcome to the platform!
-            </p>
+                <div className="bg-brand-primary p-8 rounded-2xl card-shadow text-[#391053] relative overflow-hidden">
+                  <div className="relative z-10">
+                    <h4 className="text-lg font-bold mb-3">Need Help?</h4>
+                    <p className="text-xs text-[#391053]/70 leading-relaxed font-medium mb-6">Contact our verification support team if you encounter issues with the XML file structure or share code encryption.</p>
+                    <button className="w-full py-3 bg-white text-[#391053] font-black rounded-xl text-[10px] uppercase tracking-[0.2em] shadow-lg">Chat Support</button>
+                  </div>
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+                </div>
+              </div>
+            </motion.div>
+          )}
 
-            <div className="my-6 w-20 h-1 bg-green-500 rounded mx-auto"></div>
-
-            <button
-              onClick={() => navigate("/contractor-dashboard")}
-              className="bg-blue-600 text-white font-medium py-3 rounded-xl hover:bg-blue-700 transition duration-200 shadow-md"
+          {step === 2 && (
+            <motion.div
+              key="step2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white p-20 rounded-2xl card-shadow flex flex-col items-center justify-center text-center space-y-8"
             >
-              Go To Dashboard
-            </button>
+              <div className="relative">
+                <div className="w-24 h-24 border-4 border-brand-primary/10 border-t-brand-primary rounded-full animate-spin" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                   <ShieldCheck className="text-[#391053] opacity-50" size={32} />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-[#391053] tracking-tight">Verification Processing</h3>
+                <p className="text-[#391053] mt-2 max-w-sm font-medium">Please do not close this window. We are validating your document against official records with our security partners.</p>
+              </div>
+            </motion.div>
+          )}
 
-          </div>
+          {step === 3 && (
+            <motion.div
+              key="step3"
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-white p-20 rounded-2xl card-shadow flex flex-col items-center justify-center text-center space-y-8"
+            >
+              <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center shadow-inner">
+                <CheckCircle2 size={48} />
+              </div>
+              <div>
+                <h3 className="text-3xl font-bold text-[#391053] tracking-tight">Verification Successful</h3>
+                <p className="text-[#391053] mt-2 max-w-sm font-medium mx-auto">Your identity has been verified. A gold badge has been added to your profile across the platform.</p>
+              </div>
+              <button onClick={() => setStep(1)} className="px-10 py-4 bg-brand-primary text-[#391053] rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl active:scale-95 transition-all">
+                Return to Dashboard
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Footer Stats Bento */}
+        {step === 1 && (
+          <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            transition={{ delay: 0.4 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16"
+          >
+            <div className="bg-white p-8 rounded-2xl card-shadow border border-gray-50">
+               <p className="text-[10px] font-black text-[#391053] uppercase tracking-widest mb-4">Partner Security</p>
+               <div className="flex gap-4 opacity-30 grayscale">
+                 <ShieldCheck size={24} />
+                 <Fingerprint size={24} />
+                 <AlertCircle size={24} />
+               </div>
+            </div>
+            <div className="bg-white p-8 rounded-2xl card-shadow border border-gray-50 flex flex-col items-center text-center">
+               <p className="text-3xl font-bold text-[#391053]">99.9%</p>
+               <p className="text-[10px] font-black text-[#391053] uppercase tracking-widest mt-1">Uptime SLA</p>
+            </div>
+            <div className="bg-white p-8 rounded-2xl card-shadow border border-gray-50 flex flex-col items-center text-center">
+               <p className="text-3xl font-bold text-[#391053]">&lt; 2min</p>
+               <p className="text-[10px] font-black text-[#391053] uppercase tracking-widest mt-1">Avg. Processing</p>
+            </div>
+          </motion.div>
         )}
-      </div>
-
-      {/* FOOTER */}
-      <Footer />
+      </main>
     </div>
   );
 };
 
+const StepIndicator = ({ current, step, label }) => {
+  const isCompleted = current > step;
+  const isActive = current === step;
+
+  return (
+    <div className="flex flex-col items-center gap-3 relative z-10 group">
+      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-lg transition-all duration-500 ${
+        isCompleted ? 'bg-brand-primary text-[#391053]' : 
+        isActive ? 'bg-brand-primary text-[#391053] shadow-xl scale-110' : 
+        'bg-white text-[#391053] border-2 border-gray-50'
+      }`}>
+        {isCompleted ? <CheckCircle2 size={24} /> : step}
+      </div>
+      <span className={`text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
+        isActive ? 'text-[#391053]' : 'text-[#391053]'
+      }`}>{label}</span>
+    </div>
+  );
+};
+
+const InstructionItem = ({ icon, text }) => (
+  <li className="flex gap-4 items-start group">
+    <div className="p-2 bg-brand-background rounded-lg text-[#391053] group-hover:scale-110 transition-transform">
+      {icon}
+    </div>
+    <p className="text-xs font-bold text-[#391053] leading-relaxed">{text}</p>
+  </li>
+);
+
 export default ContractorVerification;
+
+

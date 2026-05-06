@@ -1,372 +1,216 @@
-import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
-import toast from "react-hot-toast";
-import Footer from "../../components/footer";
-import TopNavbar from "../../components/TopNavbar";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { MoreVertical, MapPin, Calendar, Users, DollarSign, CheckCircle2, XCircle, ChevronRight, Plus, Clock } from 'lucide-react';
 
-import {
-  FiBriefcase,
-  FiUser,
-  FiMapPin,
-  FiClock,
-  FiCalendar,
-  FiSearch,
-  FiDollarSign,
-  FiUsers,
-  FiCheckCircle,
-  FiXCircle,
-  FiPlayCircle,
-  FiStopCircle,
-  FiBox,
-} from "react-icons/fi";
-
-
-export default function ContractorJobPosts() {
-  const [activeTab, setActiveTab] = useState("active");
-  const [search, setSearch] = useState("");
-
-  // ---------------------- Dummy Data ----------------------
-  const initialData = {
-    active: [
-      {
-        id: 101,
-        title: "Mall Renovation - Mason Work",
-        workersApplied: 3,
-        workersNeeded: 5,
-        category: "Mason",
-        skill: "Intermediate",
-        date: "2025-03-01",
-        time: "10:00 AM",
-        location: "Andheri East, Mumbai",
-        payment: "₹900/day",
-      },
-      {
-        id: 102,
-        title: "Villa Painting Work",
-        workersApplied: 1,
-        workersNeeded: 4,
-        category: "Painter",
-        skill: "Beginner",
-        date: "2025-03-05",
-        time: "09:00 AM",
-        location: "Powai, Mumbai",
-        payment: "₹700/day",
-      },
+const ContractorJobPosts = () => {
+  const [activeTab, setActiveTab] = useState('Active');
+  const [jobsData, setJobsData] = useState({
+    'Active': [
+      { id: 1, title: 'Senior Site Supervisor', category: 'Construction', location: 'North Harbor', wage: '$45.00/hr', range: 'Oct 12 - Oct 28', workers: '3 / 5 Filled' },
+      { id: 2, title: 'Exterior Painting Team', category: 'Maintenance', location: 'Riverside Park', wage: '$32.00/hr', range: 'Nov 01 - Nov 05', workers: '0 / 4 Filled' },
     ],
-
-    pending: [
-      {
-        id: 201,
-        title: "Warehouse Electrical Repair",
-        workerName: "Raju",
-        category: "Electrician",
-        skill: "Expert",
-        date: "2025-03-02",
-        time: "08:00 AM",
-        location: "Bhandup, Mumbai",
-        payment: "₹1200/day",
-      },
-      {
-        id: 202,
-        title: "Modular Kitchen Setup",
-        workerName: "Imran",
-        category: "Carpenter",
-        skill: "Intermediate",
-        date: "2025-03-06",
-        time: "09:30 AM",
-        location: "Goregaon West",
-        payment: "₹1100/day",
-      },
+    'Pending Applications': [
+      { id: 3, title: 'Electrical Re-wiring', category: 'Electrical', location: 'Old Town', wage: '$40.00/hr', range: 'Oct 15 - Oct 20', applicants: 12 },
     ],
-
-    inprogress: [
-      {
-        id: 301,
-        title: "Apartment Plumbing Fix",
-        category: "Plumber",
-        skill: "Intermediate",
-        date: "2025-02-28",
-        time: "11:00 AM",
-        location: "Dadar, Mumbai",
-        workersAssigned: 2,
-        payment: "₹950/day",
-      },
+    'In Progress': [
+      { id: 4, title: 'Concrete Masonry', category: 'Construction', location: 'Highway 101', wage: '$38.50/hr', progress: 75, deadline: '4 Days left' },
     ],
+    'Completed': [],
+    'Cancelled': []
+  });
 
-    completed: [
-      {
-        id: 401,
-        title: "Office Carpentry Work",
-        category: "Carpenter",
-        skill: "Expert",
-        date: "2025-02-10",
-        time: "08:00 AM",
-        location: "Kurla, Mumbai",
-        workersAssigned: 1,
-        payment: "₹1200/day",
-      },
-    ],
+  const tabs = ['Active', 'Pending Applications', 'In Progress', 'Completed', 'Cancelled'];
 
-    cancelled: [],
-  };
+  const moveJob = (jobId, fromStage, toStage) => {
+    const jobToMove = jobsData[fromStage].find(j => j.id === jobId);
+    if (!jobToMove) return;
 
-  const [jobs, setJobs] = useState(initialData);
-
-  // ---------------------- Pipeline Actions ----------------------
-  const approveWorker = (id) => {
-    const item = jobs.pending.find((j) => j.id === id);
-    if (!item) return;
-
-    setJobs((prev) => ({
+    setJobsData(prev => ({
       ...prev,
-      pending: prev.pending.filter((j) => j.id !== id),
-      inprogress: [item, ...prev.inprogress],
+      [fromStage]: prev[fromStage].filter(j => j.id !== jobId),
+      [toStage]: [...prev[toStage], { ...jobToMove, progress: toStage === 'In Progress' ? 0 : undefined }]
     }));
-
-    toast.success("Worker approved & job moved to In Progress");
+    setActiveTab(toStage);
   };
-
-  const rejectWorker = (id) => {
-    const item = jobs.pending.find((j) => j.id === id);
-    if (!item) return;
-
-    setJobs((prev) => ({
-      ...prev,
-      pending: prev.pending.filter((j) => j.id !== id),
-      cancelled: [item, ...prev.cancelled],
-    }));
-
-    toast.error("Worker application rejected");
-  };
-
-  const completeJob = (id) => {
-    const item = jobs.inprogress.find((j) => j.id === id);
-
-    setJobs((prev) => ({
-      ...prev,
-      inprogress: prev.inprogress.filter((j) => j.id !== id),
-      completed: [item, ...prev.completed],
-    }));
-
-    toast.success("Job marked as Completed");
-  };
-
-  const cancelJob = (id) => {
-    const item = jobs.inprogress.find((j) => j.id === id);
-
-    setJobs((prev) => ({
-      ...prev,
-      inprogress: prev.inprogress.filter((j) => j.id !== id),
-      cancelled: [item, ...prev.cancelled],
-    }));
-
-    toast.error("Job Cancelled");
-  };
-
-  // ---------------------- Tabs ----------------------
-  const tabs = [
-    { key: "active", label: "Active" },
-    { key: "pending", label: "Pending Applications" },
-    { key: "inprogress", label: "In Progress" },
-    { key: "completed", label: "Completed" },
-    { key: "cancelled", label: "Cancelled" },
-  ];
-
-  // ---------------------- Search Filter ----------------------
-  const currentList = useMemo(() => {
-    const base = jobs[activeTab] || [];
-
-    if (!search.trim()) return base;
-
-    const q = search.toLowerCase();
-
-    return base.filter(
-      (j) =>
-        (j.title && j.title.toLowerCase().includes(q)) ||
-        (j.category && j.category.toLowerCase().includes(q)) ||
-        (j.location && j.location.toLowerCase().includes(q)) ||
-        (String(j.id).includes(q))
-    );
-  }, [jobs, activeTab, search]);
 
   return (
-    <>
-      <TopNavbar/>
+    <div className="flex-1 min-h-screen pb-10">
+      <header className="flex justify-between items-center px-10 py-6 mb-8">
+        <h2 className="text-3xl font-bold text-[#391053]">Job Posts</h2>
+        <button className="bg-brand-primary text-[#391053] px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:opacity-90 active:scale-95 transition-all">
+          <Plus size={20} /> POST NEW JOB
+        </button>
+      </header>
 
-      {/* HERO */}
-      <div className="w-full bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-600 text-white px-10 pt-20 pb-12 rounded-b-3xl shadow-lg">
-        <h1 className="text-3xl md:text-4xl font-extrabold">Your Job Posts</h1>
-        <p className="text-blue-100 mt-1">
-          Manage job posts, review worker applications, and track progress.
-        </p>
-      </div>
-
-      {/* KPI CARDS */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 px-8 -mt-10 relative">
-        {tabs.map((t, i) => (
-          <motion.div
-            key={t.key}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-            className="p-5 bg-white/80 backdrop-blur-md rounded-2xl shadow-md border"
-          >
-            <p className="text-sm text-gray-600">{t.label}</p>
-            <p className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 text-transparent bg-clip-text">
-              {jobs[t.key].length}
-            </p>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* MAIN SECTION */}
-      <div className="px-8 mt-8 pb-32">
-        {/* TABS + SEARCH */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          <div className="flex gap-2 bg-white p-2 rounded-xl shadow-sm">
-            {tabs.map((t) => (
-              <button
-                key={t.key}
-                onClick={() => setActiveTab(t.key)}
-                className={`px-4 py-2 rounded-lg font-medium ${
-                  activeTab === t.key
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="relative w-full md:w-1/3">
-            <FiSearch className="absolute left-4 top-3 text-gray-400" />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search job title, category, location..."
-              className="w-full pl-12 pr-4 py-2.5 bg-white border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-200"
-            />
-          </div>
+      <main className="px-10 space-y-8">
+        {/* Tabs */}
+        <div className="flex items-center gap-8 border-b border-gray-100 overflow-x-auto no-scrollbar">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`pb-4 text-sm font-bold tracking-tight whitespace-nowrap transition-all relative ${
+                activeTab === tab ? 'text-[#391053]' : 'text-[#391053] hover:text-[#391053]/60'
+              }`}
+            >
+              {tab}
+              {activeTab === tab && (
+                <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-1 bg-brand-primary rounded-full" />
+              )}
+            </button>
+          ))}
         </div>
 
-        {/* LIST */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          {currentList.length === 0 ? (
-            <div className="col-span-full bg-white p-12 rounded-xl shadow border text-center">
-              <FiBox className="text-5xl mx-auto text-gray-300" />
-              <p className="font-semibold mt-3 text-gray-700">
-                No items in this section
-              </p>
-            </div>
-          ) : (
-            currentList.map((job) => (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
+          {/* Main Pipeline List */}
+          <div className="lg:col-span-8 flex flex-col gap-6">
+            <AnimatePresence mode="wait">
               <motion.div
-                key={job.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.01 }}
-                className="bg-white rounded-xl border shadow-md p-6"
+                key={activeTab}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
+                className="space-y-6"
               >
-                <div className="flex justify-between">
-                  <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-                    <FiBriefcase className="text-blue-600" />
-                    {job.title}
-                  </h3>
-                  <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-600 border">
-                    {job.category}
-                  </span>
-                </div>
+                {(jobsData[activeTab] || []).length > 0 ? (
+                  jobsData[activeTab].map((job) => (
+                    <div key={job.id} className="bg-white rounded-2xl p-8 card-shadow flex flex-col gap-6 group hover:border-brand-primary/20 border border-transparent transition-colors">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <div className="flex items-center gap-3 mb-2">
+                            <span className="px-3 py-1 bg-brand-background text-[#391053] text-[10px] font-black uppercase tracking-widest rounded-full">{job.category}</span>
+                            <span className="text-[10px] font-bold text-[#391053]">Job ID: #{1000 + job.id}</span>
+                          </div>
+                          <h3 className="text-2xl font-bold text-[#391053]">{job.title}</h3>
+                        </div>
+                        <button className="text-[#391053] hover:text-[#391053] transition-colors">
+                          <MoreVertical size={20} />
+                        </button>
+                      </div>
 
-                <div className="grid grid-cols-2 gap-4 mt-4 text-gray-700 text-sm">
-                  <p className="flex items-center gap-2">
-                    <FiUsers className="text-purple-500" />
-                    {job.skill}
-                  </p>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 border-y border-gray-50">
+                        <InfoItem label="Daily Wage" value={job.wage} />
+                        <InfoItem label="Location" value={job.location} />
+                        {job.range && <InfoItem label="Date Range" value={job.range} />}
+                        {job.workers && <InfoItem label="Workers" value={job.workers} />}
+                        {job.deadline && <InfoItem label="Remaining" value={job.deadline} />}
+                        {job.applicants && <InfoItem label="Applicants" value={job.applicants} />}
+                      </div>
 
-                  <p className="flex items-center gap-2">
-                    <FiDollarSign className="text-emerald-600" />
-                    {job.payment}
-                  </p>
-
-                  <p className="flex items-center gap-2">
-                    <FiCalendar className="text-orange-500" />
-                    {job.date}
-                  </p>
-
-                  <p className="flex items-center gap-2">
-                    <FiClock className="text-red-500" />
-                    {job.time}
-                  </p>
-
-                  <p className="flex items-center col-span-2 gap-2">
-                    <FiMapPin className="text-pink-600" />
-                    {job.location}
-                  </p>
-                </div>
-
-                {/* Buttons */}
-                <div className="mt-6 flex gap-3">
-                  {activeTab === "pending" && (
-                    <>
-                      <button
-                        onClick={() => approveWorker(job.id)}
-                        className="w-full py-2.5 bg-emerald-600 text-white rounded-lg"
-                      >
-                        Approve Worker
-                      </button>
-                      <button
-                        onClick={() => rejectWorker(job.id)}
-                        className="w-full py-2.5 bg-red-50 text-red-600 border border-red-300 rounded-lg"
-                      >
-                        Reject
-                      </button>
-                    </>
-                  )}
-
-                  {activeTab === "inprogress" && (
-                    <>
-                      <button
-                        onClick={() => completeJob(job.id)}
-                        className="w-full py-2.5 bg-indigo-600 text-white rounded-lg"
-                      >
-                        Complete Job
-                      </button>
-
-                      <button
-                        onClick={() => cancelJob(job.id)}
-                        className="w-full py-2.5 bg-white border text-gray-700 rounded-lg"
-                      >
-                        Cancel Job
-                      </button>
-                    </>
-                  )}
-
-                  {activeTab === "active" && (
-                    <p className="text-blue-600 font-semibold">
-                      {job.workersApplied} applied / {job.workersNeeded} needed
-                    </p>
-                  )}
-
-                  {activeTab === "completed" && (
-                    <p className="text-emerald-600 font-semibold flex items-center gap-2">
-                      <FiCheckCircle /> Completed
-                    </p>
-                  )}
-
-                  {activeTab === "cancelled" && (
-                    <p className="text-red-600 font-semibold flex items-center gap-2">
-                      <FiXCircle /> Cancelled
-                    </p>
-                  )}
-                </div>
+                      {job.progress !== undefined ? (
+                        <div className="flex flex-col gap-3">
+                          <div className="flex justify-between text-xs font-bold">
+                            <span className="text-[#391053] uppercase tracking-tighter">Project Completion</span>
+                            <span className="text-[#391053]">{job.progress}%</span>
+                          </div>
+                          <div className="h-2 w-full bg-white rounded-full overflow-hidden">
+                            <motion.div 
+                              initial={{ width: 0 }}
+                              animate={{ width: `${job.progress}%` }}
+                              className="h-full bg-brand-primary rounded-full transition-all duration-1000" 
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-wrap items-center justify-between gap-4">
+                          <div className="flex -space-x-3">
+                            {[1, 2, 3].map((i) => (
+                              <img key={i} className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm bg-gray-200" src={`https://i.pravatar.cc/150?u=${job.id * 10 + i}`} alt="Worker" referrerPolicy="no-referrer" />
+                            ))}
+                            <div className="w-10 h-10 rounded-full border-2 border-white bg-brand-background flex items-center justify-center text-[10px] font-black text-[#391053]">+2</div>
+                          </div>
+                          <div className="flex gap-3">
+                            {activeTab === 'Pending Applications' ? (
+                              <>
+                                <button onClick={() => moveJob(job.id, activeTab, 'Cancelled')} className="px-6 py-2 border border-gray-100 rounded-xl text-xs font-bold text-[#391053] hover:bg-white transition-colors uppercase tracking-widest">Reject All</button>
+                                <button onClick={() => moveJob(job.id, activeTab, 'In Progress')} className="px-6 py-2 bg-brand-primary text-[#391053] rounded-xl text-xs font-bold shadow-sm hover:opacity-90 transition-opacity uppercase tracking-widest">Approve Applications</button>
+                              </>
+                            ) : (
+                              <button className="px-6 py-2 bg-white text-[#391053] rounded-xl text-xs font-bold hover:bg-white transition-colors uppercase tracking-widest">Manage Post</button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {activeTab === 'In Progress' && (
+                        <div className="flex justify-end pt-2">
+                           <button onClick={() => moveJob(job.id, activeTab, 'Completed')} className="px-8 py-3 bg-brand-primary text-[#391053] rounded-xl font-bold text-sm shadow-md hover:bg-brand-primary/95 transition-all">MARK COMPLETED</button>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <div className="bg-white/50 rounded-2xl p-20 flex flex-col items-center justify-center text-center opacity-50">
+                    <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 text-[#391053]">
+                       <Plus size={32} />
+                    </div>
+                    <h3 className="text-xl font-bold text-[#391053]">No Jobs in this Stage</h3>
+                    <p className="text-sm text-[#391053] mt-2">Create a new post to populate your pipeline overview.</p>
+                  </div>
+                )}
               </motion.div>
-            ))
-          )}
-        </div>
-      </div>
+            </AnimatePresence>
+          </div>
 
-      <Footer />
-    </>
+          {/* Pipeline Stats Sidebar */}
+          <div className="lg:col-span-4 flex flex-col gap-6">
+            <div className="bg-white rounded-2xl p-8 card-shadow shadow-sm">
+              <h4 className="text-lg font-bold text-[#391053] mb-8 underline decoration-brand-background decoration-4 underline-offset-8">Pipeline Overview</h4>
+              <div className="space-y-4">
+                <StatRow icon={<CheckCircle2 className="text-[#391053]" />} label="New Applicants" value="24" color="bg-brand-background" />
+                <StatRow icon={<Clock className="text-[#391053]" />} label="Active Tasks" value="08" color="bg-white" />
+                <StatRow icon={<DollarSign className="text-[#391053]" />} label="Ready to Payout" value="12" color="bg-brand-background" />
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-8 card-shadow shadow-sm flex-grow">
+              <h4 className="text-lg font-bold text-[#391053] mb-8 underline decoration-brand-background decoration-4 underline-offset-8">Recent Activity</h4>
+              <div className="space-y-8 relative before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-[1px] before:bg-white">
+                <ActivityItem icon={<UserSearch className="text-[#391053]" size={12} />} text="Marc S. applied for Masonry" time="15 minutes ago" color="border-brand-primary" />
+                <ActivityItem icon={<CheckCircle2 className="text-green-500" size={12} />} text="Roofing project marked completed" time="2 hours ago" color="border-green-500" />
+                <ActivityItem icon={<XCircle className="text-red-500" size={12} />} text="Job cancelled: Interior Painting" time="Yesterday" color="border-red-500" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
   );
-}
+};
+
+const InfoItem = ({ label, value }) => (
+  <div className="flex flex-col">
+    <span className="text-[10px] font-black text-[#391053] uppercase tracking-widest mb-1">{label}</span>
+    <span className="text-sm font-bold text-[#391053]">{value}</span>
+  </div>
+);
+
+const StatRow = ({ icon, label, value, color }) => (
+  <div className={`p-4 rounded-2xl flex items-center justify-between ${color}`}>
+    <div className="flex items-center gap-4">
+      <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
+        {icon}
+      </div>
+      <span className="text-sm font-bold text-[#391053]">{label}</span>
+    </div>
+    <span className="text-lg font-black text-[#391053]">{value}</span>
+  </div>
+);
+
+const ActivityItem = ({ icon, text, time, color }) => (
+  <div className="flex gap-6 relative z-10">
+    <div className={`w-10 h-10 rounded-full bg-white border-2 ${color} flex items-center justify-center shadow-sm`}>
+      {icon}
+    </div>
+    <div>
+      <p className="text-sm font-bold text-[#391053]">{text}</p>
+      <p className="text-[10px] font-semibold text-[#391053] uppercase tracking-tighter">{time}</p>
+    </div>
+  </div>
+);
+
+const UserSearch = ({ ...props }) => <Users {...props} />;
+
+export default ContractorJobPosts;
+
+

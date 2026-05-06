@@ -1,453 +1,119 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import AdminNavbar from "../../components/AdminNavbar";
-import Footer from "../../components/footer";
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
+import { Search, UserCheck, HardHat, ShieldOff, AlertCircle, Ban, Star, MoreVertical } from 'lucide-react';
 
-/**
- * AdminWorkerManagement.jsx
- * - Row highlight (subtle pastel)
- * - Badges next to name (Suspicious / Priority)
- * - Block removes from main table -> blocked table
- * - Undo ops available for each special table
- */
+const mockWorkers = [
+  { id: 'WRK-00129', name: 'Julianna Arquette', skill: 'Advanced', rating: 4.82, completed: 412, status: 'Active', category: 'Priority' },
+  { id: 'WRK-00215', name: 'Samuel Tarly', skill: 'Intermediate', rating: 4.45, completed: 184, status: 'Active', category: 'Main' },
+  { id: 'WRK-00104', name: 'Lena Headey', skill: 'Master', rating: 4.98, completed: 892, status: 'Active', category: 'Priority' },
+  { id: 'WRK-00344', name: 'Ben Kingsley', skill: 'Novice', rating: 4.10, completed: 12, status: 'Active', category: 'Main' },
+  { id: 'WRK-9902', name: 'Unknown Entity', skill: 'N/A', rating: 0, completed: 0, status: 'Suspicious', category: 'Suspicious' },
+  { id: 'WRK-4412', name: 'John Doe', skill: 'Basic', rating: 2.1, completed: 5, status: 'Blocked', category: 'Blocked' },
+];
 
-export default function AdminWorkerManagement() {
-  // initial workers (dummy)
-  const [workers, setWorkers] = useState([
-    { id: 1, name: "Suresh Kumar", category: "Mason", skill: "Expert", verified: true, rating: 4.7, location: "Mumbai", aadhaar: "XXXX-XXXX-1234", skillScore: 92, pastJobs: 18, feedback: ["Highly skilled mason.", "Very disciplined."], statuses: [] },
-    { id: 2, name: "Ramesh Das", category: "Carpenter", skill: "Intermediate", verified: false, rating: 3.9, location: "Pune", aadhaar: "XXXX-XXXX-5678", skillScore: 78, pastJobs: 12, feedback: ["Good worker"], statuses: [] },
-    { id: 3, name: "Amit Sharma", category: "Electrician", skill: "Skilled", verified: true, rating: 4.4, location: "Nashik", aadhaar: "XXXX-XXXX-9988", skillScore: 85, pastJobs: 22, feedback: ["Strong technical knowledge"], statuses: [] },
-    { id: 4, name: "Vijay Patil", category: "Painter", skill: "Beginner", verified: false, rating: 3.2, location: "Thane", aadhaar: "XXXX-XXXX-3322", skillScore: 60, pastJobs: 5, feedback: ["Needs more experience"], statuses: [] },
-    { id: 5, name: "Harish Rawat", category: "Helper", skill: "Semi-Skilled", verified: true, rating: 4.1, location: "Mumbai", aadhaar: "XXXX-XXXX-7623", skillScore: 74, pastJobs: 15, feedback: ["Hardworking"], statuses: [] },
-    { id: 6, name: "Karan Verma", category: "Mason", skill: "Skilled", verified: true, rating: 4.3, location: "Pune", aadhaar: "XXXX-XXXX-4477", skillScore: 83, pastJobs: 19, feedback: ["Quality finishing work."], statuses: [] },
-    { id: 7, name: "Vinod Singh", category: "Welder", skill: "Expert", verified: true, rating: 4.8, location: "Mumbai", aadhaar: "XXXX-XXXX-1122", skillScore: 94, pastJobs: 25, feedback: ["Excellent precision welding."], statuses: ["priority"] },
-    { id: 8, name: "Sahil Khan", category: "Plumber", skill: "Skilled", verified: false, rating: 3.8, location: "Navi Mumbai", aadhaar: "XXXX-XXXX-8855", skillScore: 70, pastJobs: 10, feedback: ["Decent but needs improvement."], statuses: [] },
-    { id: 9, name: "Rohit Mehra", category: "Electrician", skill: "Expert", verified: true, rating: 4.9, location: "Pune", aadhaar: "XXXX-XXXX-7788", skillScore: 95, pastJobs: 30, feedback: ["Outstanding work!"], statuses: ["priority"] },
-    { id: 10, name: "Javed Shaikh", category: "Painter", skill: "Intermediate", verified: false, rating: 3.5, location: "Thane", aadhaar: "XXXX-XXXX-2211", skillScore: 68, pastJobs: 7, feedback: ["Good but slow."], statuses: [] }
-  ]);
+const AdminWorkerManagement = () => {
+  const [workers, setWorkers] = useState(mockWorkers);
 
-  // derived lists are maintained for block / suspicious / priority display
-  const [blockedWorkers, setBlockedWorkers] = useState([]);
-  const [suspiciousWorkers, setSuspiciousWorkers] = useState(
-    workers.filter((w) => w.statuses.includes("suspicious"))
-  );
-  const [priorityWorkers, setPriorityWorkers] = useState(
-    workers.filter((w) => w.statuses.includes("priority"))
-  );
-
-  // local state for selected worker modal view
-  const [selectedWorker, setSelectedWorker] = useState(null);
-
-  // helper: update suspicious/priority lists from current workers state
-  const refreshDerivedLists = (currentWorkers) => {
-    setSuspiciousWorkers(currentWorkers.filter((w) => w.statuses.includes("suspicious")));
-    setPriorityWorkers(currentWorkers.filter((w) => w.statuses.includes("priority")));
-  };
-
-  // MARK suspicious: keep worker in main table, add 'suspicious' to statuses if not present,
-  // add to suspiciousWorkers list (derived via refresh)
-  const markSuspicious = (workerId) => {
-    const updated = workers.map((w) =>
-      w.id === workerId && !w.statuses.includes("suspicious") ? { ...w, statuses: [...w.statuses, "suspicious"] } : w
-    );
-    setWorkers(updated);
-    refreshDerivedLists(updated);
-    setSelectedWorker(null);
-  };
-
-  // UNMARK suspicious
-  const unmarkSuspicious = (workerId) => {
-    const updated = workers.map((w) =>
-      w.id === workerId ? { ...w, statuses: w.statuses.filter((s) => s !== "suspicious") } : w
-    );
-    setWorkers(updated);
-    refreshDerivedLists(updated);
-  };
-
-  // MARK priority
-  const markPriority = (workerId) => {
-    const updated = workers.map((w) =>
-      w.id === workerId && !w.statuses.includes("priority") ? { ...w, statuses: [...w.statuses, "priority"] } : w
-    );
-    setWorkers(updated);
-    refreshDerivedLists(updated);
-    setSelectedWorker(null);
-  };
-
-  // UNMARK priority
-  const unmarkPriority = (workerId) => {
-    const updated = workers.map((w) =>
-      w.id === workerId ? { ...w, statuses: w.statuses.filter((s) => s !== "priority") } : w
-    );
-    setWorkers(updated);
-    refreshDerivedLists(updated);
-  };
-
-  // BLOCK worker: remove from workers list and add to blockedWorkers array
-  const blockWorker = (workerId) => {
-    const toBlock = workers.find((w) => w.id === workerId);
-    if (!toBlock) return;
-    // remove suspicious/priority statuses when blocked (optional)
-    const clean = { ...toBlock, statuses: [] };
-    setBlockedWorkers((prev) => [clean, ...prev]);
-    const remaining = workers.filter((w) => w.id !== workerId);
-    setWorkers(remaining);
-    refreshDerivedLists(remaining);
-    setSelectedWorker(null);
-  };
-
-  // UNBLOCK: move worker back to main table (prepend) and remove from blocked list
-  const unblockWorker = (workerId) => {
-    const toUnblock = blockedWorkers.find((b) => b.id === workerId);
-    if (!toUnblock) return;
-    // insert back into workers (at top)
-    setWorkers((prev) => [toUnblock, ...prev]);
-    setBlockedWorkers((prev) => prev.filter((b) => b.id !== workerId));
-    refreshDerivedLists([toUnblock, ...workers]);
-  };
-
-  // Utility: compute row class based on statuses
-  const getRowClass = (w) => {
-    // C1 pastel highlights:
-    // suspicious -> bg-yellow-50
-    // priority   -> bg-blue-50
-    // if both, combine with blue first (priority more prominent), but we'll show both badges
-    if (w.statuses.includes("suspicious")) return "bg-yellow-50";
-    if (w.statuses.includes("priority")) return "bg-blue-50";
-    return "";
-  };
-
-  // Utility: show badges next to name
-  const renderBadges = (w) => {
-    return (
-      <div className="flex items-center gap-2">
-        <span className="font-medium">{w.name}</span>
-        <div className="flex items-center gap-2">
-          {w.statuses.includes("suspicious") && (
-            <span className="text-xs px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800">Suspicious</span>
-          )}
-          {w.statuses.includes("priority") && (
-            <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">Priority</span>
-          )}
-        </div>
-      </div>
-    );
-  };
+  const categories = [
+    { title: 'Priority', icon: Star, color: 'text-[#391053]' },
+    { title: 'Main', icon: HardHat, color: 'text-[#391053]' },
+    { title: 'Suspicious', icon: AlertCircle, color: 'text-orange-600' },
+    { title: 'Blocked', icon: Ban, color: 'text-red-600' },
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <AdminNavbar />
-
-      {/* Header */}
-      <div className="px-10 mt-6">
-        <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-4xl font-semibold text-gray-900">
-          Worker Management
-        </motion.h2>
-        <p className="text-gray-600">Review workers, mark suspicious, prioritize, or block.</p>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-8 pb-20">
+      <div className="flex justify-between items-end">
+        <div>
+          <h2 className="text-4xl font-bold text-[#391053] tracking-tight">Worker Management</h2>
+          <p className="text-[#391053]-variant mt-2 text-lg">Comprehensive oversight of personnel across all regions.</p>
+        </div>
+        <button className="bg-primary text-[#391053] px-8 py-4 rounded-xl font-bold shadow-lg hover:bg-primary-container uppercase text-sm">Onboard New Worker</button>
       </div>
 
-      {/* Main worker table */}
-      <div className="px-10 mt-8">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white p-6 rounded-2xl shadow-lg">
-          <h3 className="text-2xl font-semibold mb-4 text-gray-800">Worker List</h3>
-
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-gray-100 text-left">
-                  <th className="p-3">Name</th>
-                  <th className="p-3">Category</th>
-                  <th className="p-3">Skill Level</th>
-                  <th className="p-3">Status</th>
-                  <th className="p-3">Rating</th>
-                  <th className="p-3">Location</th>
-                  <th className="p-3">Action</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {workers.length === 0 && (
-                  <tr>
-                    <td colSpan={7} className="p-6 text-center text-gray-500">
-                      No workers in the main list.
-                    </td>
-                  </tr>
-                )}
-
-                {workers.map((w) => (
-                  <motion.tr
-                    key={w.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className={`${getRowClass(w)} border-b`}
-                  >
-                    <td className="p-3 align-middle">
-                      {renderBadges(w)}
-                    </td>
-
-                    <td className="p-3 align-middle">{w.category}</td>
-                    <td className="p-3 align-middle">
-                      <span className="text-blue-600 font-semibold">{w.skill}</span>
-                    </td>
-
-                    <td className="p-3 align-middle">
-                      {w.verified ? (
-                        <span className="text-sm px-2 py-1 bg-green-100 text-green-700 rounded-full">Verified</span>
-                      ) : (
-                        <span className="text-sm px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full">Pending</span>
-                      )}
-                    </td>
-
-                    <td className="p-3 align-middle">{w.rating} ⭐</td>
-                    <td className="p-3 align-middle">{w.location}</td>
-
-                    <td className="p-3 align-middle">
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setSelectedWorker(w)}
-                          className="px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition text-sm"
-                        >
-                          View
-                        </button>
-
-                        {/* quick small controls inline */}
-                        {!w.statuses.includes("priority") && (
-                          <button
-                            onClick={() => markPriority(w.id)}
-                            className="px-3 py-2 bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200 transition text-sm"
-                            title="Mark Priority"
-                          >
-                            ★
-                          </button>
-                        )}
-
-                        {!w.statuses.includes("suspicious") && (
-                          <button
-                            onClick={() => markSuspicious(w.id)}
-                            className="px-3 py-2 bg-yellow-100 text-yellow-800 rounded-md hover:bg-yellow-200 transition text-sm"
-                            title="Mark Suspicious"
-                          >
-                            !
-                          </button>
-                        )}
-
-                        <button
-                          onClick={() => blockWorker(w.id)}
-                          className="px-3 py-2 bg-red-100 text-red-800 rounded-md hover:bg-red-200 transition text-sm"
-                          title="Block Worker"
-                        >
-                          ⛔
-                        </button>
-                      </div>
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
+      <div className="grid grid-cols-12 gap-6 pb-4">
+        <div className="col-span-12 lg:col-span-8 bg-surface p-8 rounded-xl custom-card-shadow flex flex-col justify-between">
+          <div>
+            <p className="text-[10px] font-bold text-outline uppercase tracking-widest mb-4">Workforce Performance</p>
+            <h3 className="text-5xl font-bold text-[#391053]">94.2%</h3>
+            <p className="text-sm text-[#391053]-variant mt-2">Overall efficiency rating across 1,240 active professionals.</p>
           </div>
-        </motion.div>
-      </div>
-
-      {/* Blocked Workers */}
-      <div className="px-10 mt-8">
-        <motion.h3 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl font-semibold text-red-700">
-          Blocked Workers ({blockedWorkers.length})
-        </motion.h3>
-
-        {blockedWorkers.length === 0 ? (
-          <div className="mt-4 bg-red-50 text-red-700 p-6 rounded-xl shadow">
-            <div className="text-lg font-medium">No blocked workers</div>
-            <div className="text-sm text-gray-600 mt-1">Blocked workers will appear here when actioned.</div>
+          <div className="mt-8 flex gap-8">
+            {['Active: 1,102', 'Training: 84', 'Off-duty: 54'].map(stat => (
+              <div key={stat}><p className="text-sm font-bold text-[#391053]">{stat.split(':')[0]}</p><p className="text-xl font-bold">{stat.split(':')[1]}</p></div>
+            ))}
           </div>
-        ) : (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white mt-4 p-4 rounded-2xl shadow">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-red-50 text-left">
-                  <th className="p-3">Name</th>
-                  <th className="p-3">Category</th>
-                  <th className="p-3">Rating</th>
-                  <th className="p-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {blockedWorkers.map((b) => (
-                  <tr key={b.id} className="border-b bg-red-50">
-                    <td className="p-3 font-medium text-red-800">{b.name}</td>
-                    <td className="p-3">{b.category}</td>
-                    <td className="p-3">{b.rating} ⭐</td>
-                    <td className="p-3">
-                      <button
-                        onClick={() => unblockWorker(b.id)}
-                        className="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition text-sm"
-                      >
-                        Unblock
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </motion.div>
-        )}
-      </div>
-
-      {/* Suspicious Workers */}
-      <div className="px-10 mt-8">
-        <motion.h3 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl font-semibold text-yellow-700">
-          Suspicious Workers ({suspiciousWorkers.length})
-        </motion.h3>
-
-        {suspiciousWorkers.length === 0 ? (
-          <div className="mt-4 bg-yellow-50 text-yellow-800 p-6 rounded-xl shadow">
-            <div className="text-lg font-medium">No suspicious workers</div>
-            <div className="text-sm text-gray-600 mt-1">Workers marked suspicious will appear here.</div>
+        </div>
+        <div className="col-span-12 lg:col-span-4 bg-primary text-[#391053] p-8 rounded-xl shadow-xl flex flex-col justify-between">
+          <div className="flex justify-between items-start">
+            <UserCheck size={36} className="opacity-50" />
+            <span className="text-[10px] font-bold border border-white/20 px-3 py-1 rounded-full uppercase tracking-tighter">Live Feed</span>
           </div>
-        ) : (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white mt-4 p-4 rounded-2xl shadow">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-yellow-50 text-left">
-                  <th className="p-3">Name</th>
-                  <th className="p-3">Category</th>
-                  <th className="p-3">Rating</th>
-                  <th className="p-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {suspiciousWorkers.map((s) => (
-                  <tr key={s.id} className="border-b">
-                    <td className="p-3">{s.name}</td>
-                    <td className="p-3">{s.category}</td>
-                    <td className="p-3">{s.rating} ⭐</td>
-                    <td className="p-3">
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => unmarkSuspicious(s.id)}
-                          className="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition text-sm"
-                        >
-                          Remove Suspicious
-                        </button>
-                        <button
-                          onClick={() => blockWorker(s.id)}
-                          className="px-3 py-2 bg-red-100 text-red-800 rounded-md hover:bg-red-200 transition text-sm"
-                        >
-                          Block
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </motion.div>
-        )}
-      </div>
-
-      {/* Priority Workers */}
-      <div className="px-10 mt-8 mb-20">
-        <motion.h3 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl font-semibold text-blue-700">
-          Priority Workers ({priorityWorkers.length})
-        </motion.h3>
-
-        {priorityWorkers.length === 0 ? (
-          <div className="mt-4 bg-blue-50 text-blue-800 p-6 rounded-xl shadow">
-            <div className="text-lg font-medium">No priority workers</div>
-            <div className="text-sm text-gray-600 mt-1">Workers marked priority will appear here.</div>
-          </div>
-        ) : (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white mt-4 p-4 rounded-2xl shadow">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-blue-50 text-left">
-                  <th className="p-3">Name</th>
-                  <th className="p-3">Category</th>
-                  <th className="p-3">Rating</th>
-                  <th className="p-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {priorityWorkers.map((p) => (
-                  <tr key={p.id} className="border-b">
-                    <td className="p-3 text-blue-800 font-medium">{p.name}</td>
-                    <td className="p-3">{p.category}</td>
-                    <td className="p-3">{p.rating} ⭐</td>
-                    <td className="p-3">
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => unmarkPriority(p.id)}
-                          className="px-3 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition text-sm"
-                        >
-                          Remove Priority
-                        </button>
-
-                        <button
-                          onClick={() => blockWorker(p.id)}
-                          className="px-3 py-2 bg-red-100 text-red-800 rounded-md hover:bg-red-200 transition text-sm"
-                        >
-                          Block
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </motion.div>
-        )}
-      </div>
-
-      {/* Worker Detail Modal */}
-      {selectedWorker && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} className="bg-white w-full max-w-2xl rounded-2xl p-6 shadow-xl">
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="text-2xl font-semibold">{selectedWorker.name}</h3>
-                <p className="text-sm text-gray-600">{selectedWorker.category} • {selectedWorker.location}</p>
-              </div>
-              <div className="flex gap-2">
-                {selectedWorker.statuses.includes("priority") && <span className="px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-sm">Priority</span>}
-                {selectedWorker.statuses.includes("suspicious") && <span className="px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 text-sm">Suspicious</span>}
-              </div>
+          <div>
+            <h4 className="font-bold text-lg mb-4">Security Screening</h4>
+            <div className="space-y-2 opacity-80 text-sm">
+              <p>• 24 Verifications Passed</p>
+              <p>• 2 Suspension Alerts</p>
+              <p>• Audit Updated 2m ago</p>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <p><strong>Aadhaar:</strong> {selectedWorker.aadhaar}</p>
-                <p className="mt-2"><strong>Skill Test Score:</strong> {selectedWorker.skillScore}%</p>
-                <p className="mt-2"><strong>Past Jobs:</strong> {selectedWorker.pastJobs}</p>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {categories.map(cat => (
+          <div key={cat.title} className="bg-surface p-6 rounded-xl custom-card-shadow border-t-4 border-primary">
+            <h5 className="font-bold text-[#391053] mb-4 flex items-center justify-between">
+              {cat.title}
+              <cat.icon size={18} className={cat.color} />
+            </h5>
+            <p className="text-xs text-[#391053]-variant mb-6">{workers.filter(w => w.category === cat.title).length} members listed.</p>
+            <button className="w-full py-2 border border-outline rounded-lg text-xs font-bold text-[#391053] hover:bg-background-page/10">View List</button>
+          </div>
+        ))}
+      </div>
 
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <p><strong>Rating:</strong> {selectedWorker.rating} ⭐</p>
-                <p className="mt-2"><strong>Verified:</strong> {selectedWorker.verified ? "Yes" : "No"}</p>
-
-                <div className="mt-3">
-                  <strong>Contractor Feedback</strong>
-                  <ul className="list-disc ml-5 mt-2 text-gray-700">
-                    {selectedWorker.feedback.map((f, i) => <li key={i}>{f}</li>)}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-3 mt-6">
-              {!selectedWorker.statuses.includes("priority") && (
-                <button onClick={() => markPriority(selectedWorker.id)} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Mark Priority</button>
-              )}
-              {!selectedWorker.statuses.includes("suspicious") && (
-                <button onClick={() => markSuspicious(selectedWorker.id)} className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition">Mark Suspicious</button>
-              )}
-              <button onClick={() => blockWorker(selectedWorker.id)} className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">Block Worker</button>
-
-              <button onClick={() => setSelectedWorker(null)} className="ml-auto px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition">Close</button>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-
-      <Footer />
-    </div>
+      <div className="bg-surface rounded-xl custom-card-shadow overflow-hidden">
+        <div className="p-8 border-b border-outline-variant flex justify-between items-center">
+          <h3 className="text-xl font-bold text-[#391053]">Primary Workforce Directory</h3>
+          <div className="flex gap-2">
+            <button className="px-4 py-2 border border-outline-variant rounded-xl text-xs font-bold text-[#391053]-variant flex items-center gap-2">
+              <Search size={14} /> FILTER
+            </button>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead className="bg-background-page/10">
+              <tr>
+                {['Name', 'Skill', 'Rating', 'Jobs', 'Actions'].map(h => (
+                  <th key={h} className="px-8 py-4 text-[10px] font-bold text-outline uppercase tracking-wider">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-outline-variant">
+              {workers.slice(0, 4).map(w => (
+                <tr key={w.id} className="hover:bg-background-page/5 transition-colors">
+                  <td className="px-8 py-5">
+                    <p className="font-bold text-[#391053]">{w.name}</p>
+                    <p className="text-[10px] text-[#391053]-variant font-bold">ID: {w.id}</p>
+                  </td>
+                  <td className="px-8 py-5"><span className="px-3 py-1 bg-background-page/20 rounded-full text-[10px] font-bold uppercase">{w.skill}</span></td>
+                  <td className="px-8 py-5 font-bold text-sm text-[#391053]">★ {w.rating}</td>
+                  <td className="px-8 py-5 text-sm font-bold text-[#391053]">{w.completed}</td>
+                  <td className="px-8 py-5 text-right">
+                    <button className="text-[#391053] hover:text-[#391053]-container"><MoreVertical size={20} /></button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </motion.div>
   );
-}
+};
+
+export default AdminWorkerManagement;
+
+

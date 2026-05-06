@@ -1,455 +1,272 @@
-import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
-import toast from "react-hot-toast";
-import BottomNavbar from "../../components/BottomNavbar";
-import Footer from "../../components/footer";
+import React, { useState } from 'react';
+import { 
+  Briefcase, 
+  Search, 
+  Filter, 
+  MapPin, 
+  Calendar, 
+  DollarSign, 
+  Clock, 
+  Route,
+  CheckCircle,
+  XCircle,
+  Undo2,
+  Check
+} from 'lucide-react';
 
-import {
-  FiBriefcase,
-  FiUser,
-  FiMapPin,
-  FiClock,
-  FiCalendar,
-  FiSearch,
-  FiDollarSign,
-  FiUsers,
-  FiCheckCircle,
-  FiXCircle,
-  FiBox,
-} from "react-icons/fi";
+const initialJobs = [
+  {
+    id: '1',
+    title: 'Main Site Concrete Pour',
+    contractor: 'Apex Construction Ltd.',
+    wage: '$45.00 / hr',
+    date: 'Oct 24',
+    time: '08:00 AM',
+    location: 'North Harbor District',
+    distance: '4.2 miles away',
+    status: 'Pending',
+    categoryIcon: <Route size={24} />,
+    iconBg: 'bg-[#eedcff]',
+    iconColor: 'text-[#28084b]'
+  },
+  {
+    id: '2',
+    title: 'Bricklaying Refurbishment',
+    contractor: 'Urban Living Co.',
+    wage: '$38.50 / hr',
+    date: 'Oct 26',
+    time: '09:30 AM',
+    location: 'East End Plaza',
+    distance: '1.8 miles away',
+    status: 'Accepted',
+    categoryIcon: <Briefcase size={24} />,
+    iconBg: 'bg-[#c9a8f1]',
+    iconColor: 'text-[#2e0349]'
+  },
+  {
+    id: '3',
+    title: 'Warehouse Inventory Support',
+    contractor: 'Logistics Pro',
+    wage: '$32.00 / hr',
+    date: 'Oct 18',
+    time: '10:00 AM',
+    location: 'South Port Hub',
+    distance: '5.5 miles away',
+    status: 'Completed',
+    categoryIcon: <Clock size={24} />,
+    iconBg: 'bg-white',
+    iconColor: 'text-[#391053]'
+  },
+  {
+    id: '4',
+    title: 'Exterior Wall Painting',
+    contractor: 'ColorMasters Inc.',
+    wage: '$40.00 / hr',
+    date: 'Oct 25',
+    time: '07:00 AM',
+    location: 'West Hill Residential',
+    distance: '2.4 miles away',
+    status: 'Pending',
+    categoryIcon: <DollarSign size={24} />,
+    iconBg: 'bg-[#fcdfa9]',
+    iconColor: 'text-[#261a00]'
+  }
+];
 
 export default function LabourerJobRequests() {
-  const [activeTab, setActiveTab] = useState("pending");
-  const [search, setSearch] = useState("");
+  const [jobs, setJobs] = useState(initialJobs);
+  const [activeTab, setActiveTab] = useState('Pending');
 
-  const initialData = {
-    pending: [
-      {
-        id: 1,
-        contractor: "Prime Build Co.",
-        contractorPerson: "Rohit Mehta",
-        category: "Mason",
-        skill: "Intermediate",
-        date: "2025-02-20",
-        time: "10:00 AM",
-        location: "Andheri East, Mumbai",
-        distance: "4.2 km",
-        payment: "₹950/day",
-        workersNeeded: 4,
-      },
-      {
-        id: 2,
-        contractor: "Nova Construct",
-        contractorPerson: "Meera Joshi",
-        category: "Helper",
-        skill: "Beginner",
-        date: "2025-02-21",
-        time: "08:30 AM",
-        location: "Andheri West, Mumbai",
-        distance: "3.9 km",
-        payment: "₹600/day",
-        workersNeeded: 2,
-      },
-      {
-        id: 3,
-        contractor: "Urban Estates",
-        contractorPerson: "Satish Kumar",
-        category: "Carpenter",
-        skill: "Expert",
-        date: "2025-03-02",
-        time: "09:00 AM",
-        location: "Kurla, Mumbai",
-        distance: "5.1 km",
-        payment: "₹1100/day",
-        workersNeeded: 3,
-      },
-      {
-        id: 4,
-        contractor: "Greenfield Builders",
-        contractorPerson: "Nikhil Rao",
-        category: "Plumber",
-        skill: "Intermediate",
-        date: "2025-03-05",
-        time: "11:00 AM",
-        location: "Dadar, Mumbai",
-        distance: "2.4 km",
-        payment: "₹900/day",
-        workersNeeded: 2,
-      },
-      {
-        id: 5,
-        contractor: "Skyline Contractors",
-        contractorPerson: "Priya Singh",
-        category: "Painter",
-        skill: "Beginner",
-        date: "2025-03-06",
-        time: "08:00 AM",
-        location: "Powai, Mumbai",
-        distance: "6.2 km",
-        payment: "₹700/day",
-        workersNeeded: 5,
-      },
-      {
-        id: 6,
-        contractor: "Metro Infra",
-        contractorPerson: "S. Verma",
-        category: "Carpenter",
-        skill: "Intermediate",
-        date: "2025-03-07",
-        time: "07:30 AM",
-        location: "Kurla, Mumbai",
-        distance: "3.5 km",
-        payment: "₹1150/day",
-        workersNeeded: 2,
-      },
-      {
-        id: 7,
-        contractor: "BuildRight",
-        contractorPerson: "Anita Desai",
-        category: "Mason",
-        skill: "Expert",
-        date: "2025-03-08",
-        time: "10:30 AM",
-        location: "Andheri East, Mumbai",
-        distance: "4.8 km",
-        payment: "₹1300/day",
-        workersNeeded: 6,
-      },
-    ],
+  const filteredJobs = jobs.filter(job => job.status === activeTab);
 
-    accepted: [
-      {
-        id: 22,
-        contractor: "Skyline Contractors",
-        contractorPerson: "Ajay Sharma",
-        category: "Painter",
-        skill: "Expert",
-        date: "2025-02-18",
-        time: "09:30 AM",
-        location: "Bandra West, Mumbai",
-        distance: "5.8 km",
-        payment: "₹1200/day",
-        workersNeeded: 1,
-      },
-      {
-        id: 23,
-        contractor: "Prime Build Co.",
-        contractorPerson: "Rohit Mehta",
-        category: "Helper",
-        skill: "Beginner",
-        date: "2025-02-25",
-        time: "07:00 AM",
-        location: "Andheri West",
-        distance: "4.0 km",
-        payment: "₹650/day",
-        workersNeeded: 3,
-      },
-    ],
-
-    completed: [
-      {
-        id: 33,
-        contractor: "Metro Infra",
-        contractorPerson: "S. Verma",
-        category: "Carpenter",
-        skill: "Intermediate",
-        date: "2025-02-11",
-        time: "08:00 AM",
-        location: "Kurla, Mumbai",
-        distance: "3.5 km",
-        payment: "₹1100/day",
-        workersNeeded: 2,
-      },
-      {
-        id: 34,
-        contractor: "Nova Construct",
-        contractorPerson: "Meera Joshi",
-        category: "Helper",
-        skill: "Beginner",
-        date: "2025-02-05",
-        time: "09:00 AM",
-        location: "Andheri West",
-        distance: "4.1 km",
-        payment: "₹600/day",
-        workersNeeded: 2,
-      },
-    ],
-
-    rejected: [
-      {
-        id: 44,
-        contractor: "QuickFix Services",
-        contractorPerson: "Raman Patel",
-        category: "Electrician",
-        skill: "Intermediate",
-        date: "2025-02-14",
-        time: "11:00 AM",
-        location: "Goregaon East",
-        distance: "6.5 km",
-        payment: "₹900/day",
-        workersNeeded: 1,
-      },
-    ],
+  const updateJobStatus = (id, status) => {
+    setJobs(jobs.map(job => job.id === id ? { ...job, status } : job));
   };
 
-  const [requests, setRequests] = useState(initialData);
-
-  // ACTIONS
-  const acceptRequest = (id) => {
-    const item = requests.pending.find((p) => p.id === id);
-    if (!item) return;
-    setRequests((prev) => ({
-      ...prev,
-      pending: prev.pending.filter((p) => p.id !== id),
-      accepted: [item, ...prev.accepted],
-    }));
-    toast.success("Request accepted");
-  };
-
-  const rejectRequest = (id) => {
-    const item = requests.pending.find((p) => p.id === id);
-    if (!item) return;
-    setRequests((prev) => ({
-      ...prev,
-      pending: prev.pending.filter((p) => p.id !== id),
-      rejected: [item, ...prev.rejected],
-    }));
-    toast.error("Request rejected");
-  };
-
-  const completeRequest = (id) => {
-    const item = requests.accepted.find((p) => p.id === id);
-    if (!item) return;
-    setRequests((prev) => ({
-      ...prev,
-      accepted: prev.accepted.filter((p) => p.id !== id),
-      completed: [item, ...prev.completed],
-    }));
-    toast.success("Marked completed");
-  };
-
-  const tabs = [
-    { key: "pending", label: "Pending" },
-    { key: "accepted", label: "Accepted" },
-    { key: "completed", label: "Completed" },
-    { key: "rejected", label: "Rejected" },
-  ];
-
-  // derived list (based on active tab & search)
-  const currentList = useMemo(() => {
-    const base = requests[activeTab] || [];
-    if (!search || search.trim() === "") return base;
-    const q = search.trim().toLowerCase();
-    return base.filter((r) => {
-      return (
-        (r.contractor && r.contractor.toLowerCase().includes(q)) ||
-        (r.contractorPerson && r.contractorPerson.toLowerCase().includes(q)) ||
-        (r.category && r.category.toLowerCase().includes(q)) ||
-        (r.location && r.location.toLowerCase().includes(q)) ||
-        (String(r.id).includes(q))
-      );
-    });
-  }, [requests, activeTab, search]);
+  const tabs = ['Pending', 'Accepted', 'Completed', 'Rejected'];
 
   return (
-    <>
-      <BottomNavbar />
-
-      {/* HERO */}
-      <div className="relative">
-        <div className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600
-                        text-white px-10 pt-20 pb-12 rounded-b-3xl shadow-xl">
-          <motion.h1
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-3xl md:text-4xl font-bold"
-          >
-            Job Request Queue
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.12 }}
-            className="text-blue-100 text-lg mt-1 max-w-3xl"
-          >
-            View and manage incoming job requests — accept, reject or mark completed.
-            Use the search to quickly find a contractor, category or location.
-          </motion.p>
+    <div className="flex-1 p-8 space-y-8 animate-in fade-in duration-500">
+      <header className="flex justify-between items-center">
+        <div>
+          <h1 className="text-4xl font-bold text-[#391053]">Job Requests</h1>
+          <p className="text-[#391053] mt-1">Manage and track your active opportunities</p>
         </div>
-
-        {/* KPI CARDS */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 px-6 md:px-10 -mt-10 relative z-20">
-          {tabs.map((t, i) => (
-            <motion.div
-              key={t.key}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.06, type: "spring", stiffness: 110 }}
-              className="p-5 rounded-2xl shadow-lg border bg-gradient-to-br from-white/80 to-white/50 backdrop-blur-md
-                         hover:scale-[1.02] transition-transform cursor-pointer"
-            >
-              <p className="text-gray-600 text-sm">{t.label}</p>
-              <p className="text-3xl font-extrabold mt-1" style={{ background: "linear-gradient(90deg,#2563eb,#7c3aed)", WebkitBackgroundClip: "text", color: "transparent" }}>
-                {requests[t.key].length}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      {/* MAIN CONTENT */}
-      <div className="w-full px-6 md:px-10 mt-6 pb-36">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-          <div className="flex gap-2 bg-white p-2 rounded-xl shadow-sm">
-            {tabs.map((t) => (
-              <button
-                key={t.key}
-                onClick={() => setActiveTab(t.key)}
-                className={`px-4 py-2 rounded-lg font-medium transition whitespace-nowrap ${
-                  activeTab === t.key ? "bg-blue-600 text-white shadow" : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-
-        <div className="relative w-full md:w-1/3">
-            <FiSearch className="absolute left-4 top-3 text-gray-400" />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search contractor, category, location or id..."
-              className="w-full pl-12 pr-4 py-2.5 bg-white border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-200"
+        <div className="flex items-center gap-4">
+          <div className="bg-white border border-[#c9a8f1]/30 p-2 rounded-full shadow-sm">
+            <img 
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=40&h=40&auto=format&fit=crop" 
+              alt="Profile" 
+              className="w-8 h-8 rounded-full object-cover"
             />
           </div>
         </div>
+      </header>
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          {currentList.length === 0 ? (
-            <div className="col-span-full text-center bg-white p-12 rounded-xl border shadow-sm">
-              <FiBox className="text-5xl mx-auto text-gray-300" />
-              <h3 className="mt-4 text-gray-700 font-semibold">
-                No {activeTab} requests found
-              </h3>
-              <p className="text-sm text-gray-500 mt-2">
-                Try clearing the search or switching tabs.
-              </p>
-            </div>
-          ) : (
-            currentList.map((req) => (
-              <motion.div
-                key={req.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.01 }}
-                className="bg-white rounded-xl shadow-md p-6 border transition"
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                      <FiBriefcase className="text-blue-600" />
-                      {req.contractor}
-                    </h2>
-                    <p className="text-gray-600 text-sm mt-1 flex items-center gap-2">
-                      <FiUser className="text-green-600" />
-                      {req.contractorPerson}
-                    </p>
-                  </div>
-
-                  <span className="px-3 py-1 text-sm rounded-full bg-blue-50 text-blue-600 border">
-                    {req.category}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 mt-4 text-gray-700 text-sm">
-                  <p className="flex gap-2 items-center">
-                    <FiUsers className="text-purple-500" />
-                    {req.skill}
-                  </p>
-
-                  <p className="flex gap-2 items-center">
-                    <FiDollarSign className="text-emerald-600" />
-                    {req.payment}
-                  </p>
-
-                  <p className="flex gap-2 items-center">
-                    <FiCalendar className="text-orange-500" />
-                    {req.date}
-                  </p>
-
-                  <p className="flex gap-2 items-center">
-                    <FiClock className="text-red-500" />
-                    {req.time}
-                  </p>
-
-                  <p className="col-span-2 flex gap-2 items-center">
-                    <FiMapPin className="text-pink-600" />
-                    {req.location} <span className="text-gray-500">({req.distance})</span>
-                  </p>
-                </div>
-
-                <div className="mt-6 flex gap-3">
-                  {activeTab === "pending" && (
-                    <>
-                      <button
-                        onClick={() => acceptRequest(req.id)}
-                        className="w-full py-2.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
-                      >
-                        Accept
-                      </button>
-
-                      <button
-                        onClick={() => rejectRequest(req.id)}
-                        className="w-full py-2.5 bg-white border border-red-400 text-red-600 rounded-lg hover:bg-red-50"
-                      >
-                        Reject
-                      </button>
-                    </>
-                  )}
-
-                  {activeTab === "accepted" && (
-                    <>
-                      <button
-                        onClick={() => completeRequest(req.id)}
-                        className="w-full py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-                      >
-                        Mark Completed
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          // move back to pending
-                          setRequests((prev) => ({
-                            ...prev,
-                            accepted: prev.accepted.filter((p) => p.id !== req.id),
-                            pending: [req, ...prev.pending],
-                          }));
-                          toast("Moved back to pending");
-                        }}
-                        className="w-full py-2.5 bg-white border text-gray-700 rounded-lg hover:bg-gray-50"
-                      >
-                        Undo
-                      </button>
-                    </>
-                  )}
-
-                  {activeTab === "completed" && (
-                    <p className="text-purple-600 font-semibold">Completed</p>
-                  )}
-
-                  {activeTab === "rejected" && (
-                    <p className="text-red-600 font-semibold">Rejected</p>
-                  )}
-                </div>
-              </motion.div>
-            ))
-          )}
+      {/* Search & Filter */}
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-12 lg:col-span-8 bg-white rounded-2xl p-6 shadow-sm border border-[#c9a8f1]/30">
+          <div className="flex items-center gap-4 bg-white px-4 py-3 rounded-xl border border-[#c9a8f1]/50 focus-within:border-[#c9a8f1] transition-all">
+            <Search className="text-[#391053]" size={20} />
+            <input 
+              type="text" 
+              placeholder="Search by contractor or category..." 
+              className="bg-transparent border-none focus:ring-0 w-full text-base placeholder:text-[#391053]/60"
+            />
+          </div>
+        </div>
+        <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl p-6 shadow-sm border border-[#c9a8f1]/30 flex items-center gap-3">
+          <Filter className="text-[#391053]" size={20} />
+          <span className="font-semibold text-[#391053]">Sort by:</span>
+          <select className="flex-1 bg-transparent border-none focus:ring-0 text-sm font-medium">
+            <option>Newest First</option>
+            <option>Highest Wage</option>
+            <option>Nearest Distance</option>
+          </select>
         </div>
       </div>
 
-      <Footer />
-    </>
+      {/* Tabs */}
+      <div className="flex gap-2 overflow-x-auto pb-2">
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-8 py-3 rounded-full font-bold transition-all whitespace-nowrap ${
+              activeTab === tab 
+                ? 'bg-[#c9a8f1] text-[#391053] shadow-lg scale-95' 
+                : 'bg-white text-[#391053] border border-[#c9a8f1] hover:bg-white'
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      {/* Job Grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {filteredJobs.length > 0 ? (
+          filteredJobs.map((job) => (
+            <div key={job.id} className={`bg-white rounded-2xl p-8 shadow-sm border border-[#c9a8f1]/30 flex flex-col justify-between transition-all hover:shadow-md ${job.status === 'Completed' ? 'opacity-75' : ''}`}>
+              <div>
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className={`w-14 h-14 ${job.iconBg} rounded-2xl flex items-center justify-center`}>
+                      <div className={job.iconColor}>{job.categoryIcon}</div>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-[#391053]">{job.title}</h3>
+                      <p className="text-[#391053] font-medium">{job.contractor}</p>
+                    </div>
+                  </div>
+                  <div className={`px-4 py-1.5 rounded-full text-[10px] font-bold flex items-center gap-1.5 ${
+                    job.status === 'Pending' ? 'bg-[#fcdfa9] text-[#261a00]' :
+                    job.status === 'Accepted' ? 'bg-[#d4b3fd] text-[#2e0349]' :
+                    job.status === 'Completed' ? 'bg-white text-[#391053]' :
+                    'bg-[#ffdad6] text-[#ba1a1a]'
+                  }`}>
+                    {job.status === 'Pending' && <Clock size={12} />}
+                    {job.status === 'Accepted' && <Check size={12} />}
+                    {job.status === 'Completed' && <CheckCircle size={12} />}
+                    {job.status === 'Rejected' && <XCircle size={12} />}
+                    <span className="uppercase tracking-wider">{job.status}</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6 py-6 border-y border-[#efeded]">
+                  <div className="flex items-center gap-3">
+                    <DollarSign size={18} className="text-[#7d747f]" />
+                    <div>
+                      <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-wider">Wage</p>
+                      <p className="font-bold text-[#391053]">{job.wage}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Calendar size={18} className="text-[#7d747f]" />
+                    <div>
+                      <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-wider">Date/Time</p>
+                      <p className="font-bold text-[#391053]">{job.date} • {job.time}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <MapPin size={18} className="text-[#7d747f]" />
+                    <div>
+                      <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-wider">Location</p>
+                      <p className="font-bold text-[#391053]">{job.location}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Route size={18} className="text-[#7d747f]" />
+                    <div>
+                      <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-wider">Distance</p>
+                      <p className="font-bold text-[#391053]">{job.distance}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8">
+                {activeTab === 'Pending' && (
+                  <div className="flex gap-3">
+                    <button 
+                      onClick={() => updateJobStatus(job.id, 'Accepted')}
+                      className="flex-1 bg-[#c9a8f1] text-[#391053] py-4 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2"
+                    >
+                      <CheckCircle size={20} />
+                      Accept Request
+                    </button>
+                    <button 
+                      onClick={() => updateJobStatus(job.id, 'Rejected')}
+                      className="px-6 border border-[#c9a8f1] text-[#391053] py-4 rounded-xl font-bold hover:bg-white transition-all"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                )}
+                {activeTab === 'Accepted' && (
+                  <div className="flex gap-3">
+                    <button 
+                      onClick={() => updateJobStatus(job.id, 'Completed')}
+                      className="flex-1 bg-[#c9a8f1] text-[#391053] py-4 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2"
+                    >
+                      <CheckCircle size={20} />
+                      Mark Completed
+                    </button>
+                    <button 
+                      onClick={() => updateJobStatus(job.id, 'Pending')}
+                      className="px-6 border border-[#c9a8f1] text-[#391053] py-4 rounded-xl font-bold hover:bg-white transition-all flex items-center gap-2"
+                    >
+                      <Undo2 size={18} />
+                      Undo
+                    </button>
+                  </div>
+                )}
+                {activeTab === 'Completed' && (
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-xs font-bold text-[#391053] uppercase tracking-widest bg-[#c9a8f1] px-4 py-2 rounded-lg">Payment Processed</span>
+                  </div>
+                )}
+                {activeTab === 'Rejected' && (
+                  <button 
+                    onClick={() => updateJobStatus(job.id, 'Pending')}
+                    className="w-full border border-[#c9a8f1] text-[#391053] py-4 rounded-xl font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2"
+                  >
+                    <Undo2 size={18} />
+                    Restore Request
+                  </button>
+                )}
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="col-span-full py-20 text-center bg-white rounded-2xl border border-dashed border-[#c9a8f1]">
+            <Briefcase size={48} className="mx-auto text-[#391053] opacity-20 mb-4" />
+            <p className="text-[#391053] font-medium">No {activeTab.toLowerCase()} job requests found.</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
+
+

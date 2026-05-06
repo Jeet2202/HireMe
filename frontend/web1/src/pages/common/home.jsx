@@ -1,162 +1,136 @@
-import Navbar from "../../components/Navbar";
 import { Link } from "react-router-dom";
-import Footer from "../../components/footer";
+import { CheckCircle, Zap, Shield, Users, ArrowRight } from "lucide-react";
+import { motion } from "motion/react";
 
-// Font Awesome React Imports
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faShieldAlt,
-  faBrain,
-  faUsersCog,
-  faBell,
-  faStar,
-  faMobileAlt,
-  faChevronDown
-} from "@fortawesome/free-solid-svg-icons";
-
-// Feature list (Open/Closed: extensible without modifying logic)
-const FEATURES = [
-  { icon: faShieldAlt, title: "Secure Verification" },
-  { icon: faBrain, title: "Smart Matching" },
-  { icon: faUsersCog, title: "Role-Based Access" },
-  { icon: faBell, title: "Real-Time Updates" },
-  { icon: faStar, title: "Quality System" },
-  { icon: faMobileAlt, title: "Mobile Access" },
-];
-
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="bg-gray-50">
-      <Navbar />
-
-      {/* Hero */}
-      {/* Hero */}
-<section 
-  className="relative text-white pt-28 pb-24"
-  style={{
-    backgroundImage: `url('https://img.freepik.com/premium-photo/construction-team-working-site_1230717-256348.jpg')`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat"
-  }}
->
-  {/* Dark Overlay for Readability */}
-  <div className="absolute inset-0 bg-black/50"></div>
-
-  <div className="container mx-auto px-6 relative z-10">
-   <div className="max-w-3xl mx-auto text-center">
-
-      <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-        Connecting Contractors with Skilled Labourers
-      </h1>
-
-      <p className="text-lg mb-10 text-gray-200">
-        A modern platform designed to streamline the construction workforce with secure verification and intelligent matching.
-      </p>
-
-      <div className="flex gap-4 justify-center">
-        {/* Buttons or future actions go here */}
-      </div>
-
-    </div>
-
-
-    {/* Scroll Indicator */}
-    <div className="text-center mt-16 animate-bounce">
-      <FontAwesomeIcon icon={faChevronDown} size="2x" className="text-yellow-400"/>
-    </div>
-  </div>
-</section>
-
-
-      {/* Features */}
-      <section id="features" className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Platform Features
-            </h2>
-            <p className="text-lg text-gray-600">
-              Essential tools for modern labour coordination
-            </p>
+    <div className="min-h-screen bg-surface-stage">
+      {/* Navigation Header */}
+      <header className="bg-white/80 backdrop-blur-md border-b border-outline-variant sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-8 h-20 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <span className="text-[#391053] text-xl font-bold tracking-tighter">HireMe</span>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {FEATURES.map((f, i) => (
-              <div
-                key={i}
-                className="bg-gray-50 p-8 rounded-xl hover:-translate-y-1 hover:shadow-xl transition"
-              >
-                <div className="text-4xl text-blue-500 mb-4">
-                  <FontAwesomeIcon icon={f.icon} />
-                </div>
-
-                <h3 className="text-xl font-semibold mb-3">{f.title}</h3>
-                <p className="text-gray-600">
-                  Finding Jobs made easy.
-                </p>
-              </div>
-            ))}
-          </div>
-
+          <nav className="hidden md:flex items-center gap-8">
+            <a href="#features" className="text-sm font-medium text-[#391053]-variant hover:text-[#391053] transition-colors">Features</a>
+            <a href="#about" className="text-sm font-medium text-[#391053]-variant hover:text-[#391053] transition-colors">About</a>
+            <Link to="/login" className="text-sm font-bold text-[#391053] hover:underline">Login</Link>
+            <Link to="/signup" className="primary-button !py-2 !px-6 !text-sm">Get Started</Link>
+          </nav>
         </div>
-      </section>
+      </header>
 
-      {/* About */}
-      <section id="about" className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center">
-
-          <div className="lg:w-1/2 mb-10 lg:mb-0">
-            <img
-              src="https://picsum.photos/seed/construction-site/500/350"
-              className="rounded-lg shadow-lg"
-              alt="Construction site"
+      <main className="max-w-7xl mx-auto px-8 py-16 space-y-24">
+        {/* Hero Section */}
+        <section className="executive-card p-0 overflow-hidden flex flex-col md:flex-row items-stretch">
+          <div className="flex-1 p-12 md:p-16 flex flex-col justify-center space-y-8">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-5xl md:text-6xl font-bold text-[#391053] tracking-tight"
+            >
+              Connecting Contractors with Skilled Labourers
+            </motion.h1>
+            <p className="text-lg text-[#391053]-variant max-w-lg leading-relaxed">
+              The ultimate high-performance workspace for the construction industry. Verify, match, and deploy skilled talent with enterprise-grade precision and real-time operational oversight.
+            </p>
+            <div className="flex flex-wrap gap-4 pt-4">
+              <Link to="/signup" className="primary-button flex items-center gap-2">
+                Get Started <ArrowRight size={20} />
+              </Link>
+              <button className="secondary-button">Learn More</button>
+            </div>
+          </div>
+          <div className="flex-1 min-h-[400px]">
+            <img 
+              src="https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=1920" 
+              alt="Construction site" 
+              className="w-full h-full object-cover grayscale opacity-90"
+              referrerPolicy="no-referrer"
             />
           </div>
+        </section>
 
-          <div className="lg:w-1/2 lg:pl-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">About HireMe</h2>
-
-            <p className="text-lg text-gray-600 mb-6">
-              HireMe is transforming how construction projects find and manage skilled labour.
-            </p>
-
-            <p className="text-lg text-gray-600 mb-8">
-              With secure verification and intelligent matching, we ensure efficiency.
-            </p>
-
-            <div className="grid grid-cols-2 gap-6 mb-8">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">10K+</div>
-                <div className="text-gray-600">Verified Workers</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">500+</div>
-                <div className="text-gray-600">Active Contractors</div>
-              </div>
-            </div>
-
-            <Link
-              to="/signup"
-              className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold"
+        {/* Platform Features */}
+        <section id="features" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { title: "Secure Verification", icon: Shield, desc: "Rigorous credential auditing and background checks to ensure compliance." },
+            { title: "Smart Matching", icon: Zap, iconColor: "text-[#391053]", desc: "Algorithmic allocation based on proximity, certification, and performance." },
+            { title: "Real-Time Updates", icon: ArrowRight, desc: "Instant synchronization of timelines, shifts, and safety protocols." },
+            { title: "Role-Based Access", icon: Users, desc: "Granular permission management for administrators and contractors." }
+          ].map((feature, idx) => (
+            <motion.div 
+              key={feature.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="executive-card !p-8 border-l-4 border-primary space-y-4"
             >
-              Join Our Platform
-            </Link>
+              <div className="w-12 h-12 bg-surface-stage/20 flex items-center justify-center rounded-lg">
+                <feature.icon className="text-[#391053]" size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-[#391053]">{feature.title}</h3>
+              <p className="text-sm text-[#391053]-variant leading-relaxed">{feature.desc}</p>
+            </motion.div>
+          ))}
+        </section>
 
-          </div>
-
-        </div>
-      </section>
-      
-      {/* footer */}
-      <section>
-            <div>
-              <Footer></Footer>
+        {/* Statistics Section */}
+        <section className="bg-primary text-[#391053] rounded-xl overflow-hidden shadow-executive">
+          <div className="p-12 md:p-16 flex flex-col md:flex-row items-center gap-16">
+            <div className="flex-1 space-y-6">
+              <h2 className="text-4xl font-bold tracking-tight">The Trusted Standard for Industrial Manpower</h2>
+              <p className="text-lg text-[#391053]/70 leading-relaxed">
+                HireMe Services serves as the structural backbone for large-scale construction enterprises. We bridge the gap between complex infrastructure projects and specialized talent.
+              </p>
+              <div className="grid grid-cols-2 gap-12 pt-8">
+                <div>
+                  <div className="text-5xl font-black tracking-tighter">12,500+</div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-[#391053]/50 mt-1">Verified Workers</div>
+                </div>
+                <div>
+                  <div className="text-5xl font-black tracking-tighter">850+</div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-[#391053]/50 mt-1">Active Contractors</div>
+                </div>
+              </div>
             </div>
-      </section>
+            <div className="flex-1 w-full relative">
+               <img 
+                src="https://images.unsplash.com/photo-1544723495-24ee5fd0fc3b?auto=format&fit=crop&q=80&w=1920" 
+                alt="Industrial workers" 
+                className="w-full aspect-[4/3] object-cover rounded-xl shadow-2xl"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          </div>
+        </section>
 
+        {/* CTA Section */}
+        <section className="executive-card text-center py-16 space-y-8">
+          <h2 className="text-4xl font-bold text-[#391053] tracking-tight">Join HireMe Today</h2>
+          <p className="max-w-2xl mx-auto text-lg text-[#391053]-variant">
+            Scale your workforce with confidence. Experience the power of professional matching and secure laborer verification in one centralized workspace.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link to="/signup?role=contractor" className="primary-button">Sign Up as Contractor</Link>
+            <Link to="/signup?role=labourer" className="secondary-button">Register as Labourer</Link>
+          </div>
+        </section>
+      </main>
+
+      <footer className="max-w-7xl mx-auto px-8 py-12 border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="text-[#391053]-variant text-sm">
+          © 2026 HireMe Services. All rights reserved.
+        </div>
+        <div className="flex gap-8">
+          <a href="#" className="text-sm font-medium text-[#391053]-variant hover:text-[#391053]">Privacy Policy</a>
+          <a href="#" className="text-sm font-medium text-[#391053]-variant hover:text-[#391053]">Terms of Service</a>
+          <a href="#" className="text-sm font-medium text-[#391053]-variant hover:text-[#391053]">Contact Us</a>
+        </div>
+      </footer>
     </div>
   );
 }
+
 

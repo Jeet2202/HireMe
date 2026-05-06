@@ -1,164 +1,109 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import AdminNavbar from "../../components/AdminNavbar";
-import Footer from "../../components/footer";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { FileCheck, Search, ShieldCheck, X, CheckCircle2, XSquare, Clock, Shield, Fingerprint } from 'lucide-react';
 
-export default function AdminVerification() {
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [selectedXML, setSelectedXML] = useState(null);
-  const [message, setMessage] = useState("");
+const mockVerifications = [
+  { id: 'V-99283-XLM', name: 'Rajesh Agrawal', email: 'rajesh.a@example.com', type: 'Contractor', status: 'Pending', company: 'Agrawal Logistics' },
+  { id: 'V-99291-XLM', name: 'Sanya Kapoor', email: 'sanya.k@work.io', type: 'Worker', status: 'Pending', company: 'Freelance' },
+  { id: 'V-99104-XLM', name: 'Michael Varma', email: 'm.varma@provider.com', type: 'Contractor', status: 'Validating', company: 'Varma Crew' },
+];
 
-  // 10 Dummy verification requests
-  const [pendingVerifications, setPendingVerifications] = useState([
-    { id: 1, name: "Rohit Mehta", type: "Contractor", xmlFile: "aadhaar_rohit.xml", submitted: "2025-01-10 14:32" },
-    { id: 2, name: "Suresh Kumar", type: "Worker", xmlFile: "aadhaar_suresh.xml", submitted: "2025-01-11 09:20" },
-    { id: 3, name: "Amit Sharma", type: "Worker", xmlFile: "aadhaar_amit.xml", submitted: "2025-01-12 16:48" },
-    { id: 4, name: "Global Build Co.", type: "Contractor", xmlFile: "aadhaar_globalbuild.xml", submitted: "2025-01-13 11:15" },
-    { id: 5, name: "Vinod Singh", type: "Worker", xmlFile: "aadhaar_vinod.xml", submitted: "2025-01-14 10:12" },
-    { id: 6, name: "Modern Infra Ltd", type: "Contractor", xmlFile: "aadhaar_moderninfra.xml", submitted: "2025-01-15 14:05" },
-    { id: 7, name: "Ramesh Das", type: "Worker", xmlFile: "aadhaar_ramesh.xml", submitted: "2025-01-16 08:50" },
-    { id: 8, name: "Karan Verma", type: "Worker", xmlFile: "aadhaar_karan.xml", submitted: "2025-01-17 17:40" },
-    { id: 9, name: "Future Build Co.", type: "Contractor", xmlFile: "aadhaar_futurebuild.xml", submitted: "2025-01-18 12:22" },
-    { id: 10, name: "Harish Rawat", type: "Worker", xmlFile: "aadhaar_harish.xml", submitted: "2025-01-18 19:30" }
-  ]);
-
-  // Handle Approve / Reject
-  const handleStatus = (id, type) => {
-    setPendingVerifications(prev => prev.filter(user => user.id !== id));
-
-    setMessage(type === "approve" ? "Verification Approved ✔" : "Verification Rejected ❌");
-
-    setTimeout(() => setMessage(""), 2500);
-  };
-
-  // Dummy XML Content
-  const dummyXML = `
-  <AadhaarData>
-      <Name>Dummy Aadhaar User</Name>
-      <DOB>1991-05-21</DOB>
-      <Gender>M</Gender>
-      <MaskedAadhaar>XXXX-XXXX-1234</MaskedAadhaar>
-      <Address>
-          <Street>MG Road</Street>
-          <City>Mumbai</City>
-          <State>Maharashtra</State>
-          <Pincode>400001</Pincode>
-      </Address>
-  </AadhaarData>
-  `;
+const AdminVerification = () => {
+  const [selectedVerification, setSelectedVerification] = useState(null);
 
   return (
-    <div className="min-h-screen bg-gray-100">
-
-      <AdminNavbar />
-
-      {/* Success/Reject Message */}
-      {message && (
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className={`mx-10 mt-6 p-4 rounded-xl text-white text-center font-medium ${
-            message.includes("Approved") ? "bg-green-500" : "bg-red-500"
-          }`}
-        >
-          {message}
-        </motion.div>
-      )}
-
-      {/* HEADER */}
-      <div className="px-10 mt-6">
-        <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-4xl font-semibold text-gray-900">
-          Verification Center
-        </motion.h2>
-        <p className="text-gray-600">Approve or reject labourer and contractor identity verifications.</p>
+    <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8 pb-20">
+      <div className="flex justify-between items-end">
+        <div>
+          <h2 className="text-4xl font-bold text-[#391053] tracking-tight">Identity Verification</h2>
+          <p className="text-[#391053]-variant mt-2 text-lg">Monitor and validate professional credentials via Aadhaar XML data.</p>
+        </div>
+        <div className="bg-surface px-6 py-4 rounded-xl custom-card-shadow flex items-center gap-4">
+          <Clock className="text-[#391053]" size={24} />
+          <div>
+            <p className="text-[10px] font-bold text-outline uppercase">Queue Status</p>
+            <p className="text-2xl font-bold text-[#391053] uppercase">24 PENDING</p>
+          </div>
+        </div>
       </div>
 
-      {/* TABLE */}
-      <div className="px-10 mt-10">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white shadow-lg rounded-2xl p-6">
-
-          <h3 className="text-2xl font-semibold mb-6 text-gray-800">Pending Verifications</h3>
-
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-12 lg:col-span-8 bg-surface p-8 rounded-xl custom-card-shadow">
+          <div className="flex justify-between items-center mb-10">
+            <h3 className="text-2xl font-bold text-[#391053]">Verification Queue</h3>
+            <div className="relative w-64">
+              <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-outline" />
+              <input type="text" placeholder="Search..." className="w-full pl-10 pr-4 py-2 rounded-xl bg-background-page/20 border-none text-sm focus:ring-2 focus:ring-primary" />
+            </div>
+          </div>
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-gray-200 text-left">
-                  <th className="p-4">Name</th>
-                  <th className="p-4">User Type</th>
-                  <th className="p-4">Aadhaar XML</th>
-                  <th className="p-4">Submitted At</th>
-                  <th className="p-4">Actions</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {pendingVerifications.map(user => (
-                  <motion.tr
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="border-b hover:bg-gray-100 transition"
-                 >
-
-                    <td className="p-4 font-medium text-gray-800">{user.name}</td>
-                    <td className="p-4 text-gray-600">{user.type}</td>
-
-                    <td className="p-4">
-                      <button onClick={() => setSelectedXML(dummyXML)} className="text-blue-600 hover:underline">
-                        {user.xmlFile}
-                      </button>
+            <table className="w-full text-left">
+              <thead><tr className="border-b border-surface-container"><th className="pb-4 font-bold text-xs text-outline uppercase tracking-wider">User Profile</th><th className="pb-4 font-bold text-xs text-outline uppercase tracking-wider text-right">Actions</th></tr></thead>
+              <tbody className="divide-y divide-surface-container text-[#391053]">
+                {mockVerifications.map((v) => (
+                  <tr key={v.id} className="hover:bg-background-page/5 transition-colors group">
+                    <td className="py-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-lg bg-primary-container text-[#391053] flex items-center justify-center font-bold">{v.name.charAt(0)}</div>
+                        <div><p className="font-bold">{v.name}</p><p className="text-xs text-[#391053]-variant font-medium">{v.type} • {v.company}</p></div>
+                      </div>
                     </td>
-
-                    <td className="p-4 text-gray-600">{user.submitted}</td>
-
-                    <td className="p-4 flex gap-3">
-                      <button onClick={() => setSelectedUser(user)} className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">View</button>
-                      <button onClick={() => handleStatus(user.id, "approve")} className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">Approve</button>
-                      <button onClick={() => handleStatus(user.id, "reject")} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">Reject</button>
+                    <td className="py-6 text-right">
+                      <button onClick={() => setSelectedVerification(v)} className="bg-primary text-[#391053] font-bold text-[10px] px-6 py-2 rounded-xl hover:bg-primary-container transition-all">REVIEW XML</button>
                     </td>
-                  </motion.tr>
+                  </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </motion.div>
+        </div>
+        <div className="col-span-12 lg:col-span-4 space-y-6">
+          <div className="bg-primary text-[#391053] p-8 rounded-xl shadow-xl">
+            <h3 className="text-xl font-bold mb-6">Security Context</h3>
+            <div className="space-y-4">
+              <div className="flex justify-between text-sm"><span className="opacity-70">Audited Today:</span><span className="font-bold">112</span></div>
+              <div className="flex justify-between text-sm"><span className="opacity-70">Rejections:</span><span className="font-bold text-red-400">7.2%</span></div>
+              <div className="pt-4 border-t border-white/20 flex items-center gap-3">
+                <Fingerprint size={20} /><p className="text-sm font-bold uppercase tracking-wider">X509 Cert: Valid</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* VIEW DETAILS MODAL */}
-      {selectedUser && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50">
-          <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg">
-            <h3 className="text-2xl font-semibold text-gray-800 mb-4">Verification Details</h3>
-
-            <p><strong>Name:</strong> {selectedUser.name}</p>
-            <p><strong>User Type:</strong> {selectedUser.type}</p>
-            <p><strong>XML File:</strong> {selectedUser.xmlFile}</p>
-            <p><strong>Submitted At:</strong> {selectedUser.submitted}</p>
-
-            <button onClick={() => setSelectedUser(null)} className="mt-6 w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition">
-              Close
-            </button>
-          </motion.div>
-        </motion.div>
-      )}
-
-      {/* XML VIEW MODAL */}
-      {selectedXML && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50">
-          <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-2xl">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Aadhaar XML Preview</h3>
-
-            <pre className="bg-gray-100 p-4 rounded-xl text-gray-700 text-sm overflow-auto max-h-96">
-              {selectedXML}
-            </pre>
-
-            <button onClick={() => setSelectedXML(null)} className="mt-6 w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition">
-              Close
-            </button>
-          </motion.div>
-        </motion.div>
-      )}
-
-      <Footer />
-    </div>
+      <AnimatePresence>
+        {selectedVerification && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 lg:p-24">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedVerification(null)} className="absolute inset-0 bg-primary/60 backdrop-blur-md" />
+            <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 100 }} className="bg-surface-bright w-full max-w-4xl rounded-2xl shadow-2xl relative z-10 flex flex-col max-h-[85vh]">
+              <div className="bg-white px-8 py-6 border-b border-outline-variant flex justify-between items-center">
+                <h3 className="text-2xl font-bold text-[#391053]">Identity Payload Preview</h3>
+                <button onClick={() => setSelectedVerification(null)}><X size={24} className="text-outline" /></button>
+              </div>
+              <div className="p-10 space-y-8 bg-surface-container-low overflow-y-auto">
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-secondary-container/20">
+                  <p className="text-[10px] font-bold text-outline uppercase mb-4 tracking-tighter">Secure Data Stream</p>
+                  <pre className="bg-primary-container/5 p-4 rounded-xl font-mono text-[11px] text-[#391053] overflow-x-auto">
+                    {`<UidData>
+  <Poi name="${selectedVerification.name}" gender="M" dob="1984-05-15" />
+  <Poa vtc="Andheri West" dist="Mumbai" state="Maharashtra" pc="400053"/>
+  <Pht>[ENCRYPTED]</Pht>
+</UidData>`}
+                  </pre>
+                </div>
+                <div className="flex gap-4">
+                  <button onClick={() => setSelectedVerification(null)} className="flex-1 py-4 border-2 border-outline-variant text-[#391053] font-bold rounded-2xl hover:bg-surface-container-low uppercase text-xs">Reject</button>
+                  <button onClick={() => setSelectedVerification(null)} className="flex-2 py-4 bg-primary text-[#391053] font-bold rounded-2xl hover:bg-primary-container shadow-xl active:scale-95 uppercase text-xs">Approve Verification</button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
-}
+};
+
+export default AdminVerification;
+
+

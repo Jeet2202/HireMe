@@ -1,58 +1,141 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/common/Home";
-import Login from "./pages/common/Login";
-import Signup from "./pages/common/Signup";
-import ForgotPassword from "./pages/common/ForgotPassword";
-import UserSelection from "./pages/common/UserSelection";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+// Sidebars
+import ContractorSidebar from "./components/ContractorSidebar";
+import LabourerSidebar from "./components/LabourerSidebar";
+import AdminSidebar from "./components/AdminSidebar";
+
+// Common pages
+import Home from "./pages/common/home";
+import Login from "./pages/common/login";
+import Signup from "./pages/common/signup";
+
+// Contractor pages
 import ContractorDashboard from "./pages/Contractor/ContractorDashboard";
 import ContractorProfile from "./pages/Contractor/ContractorProfile";
-import LabourerDashboard from "./pages/Labourer/LabourerDashboard";
 import ContractorFindLabourers from "./pages/Contractor/ContractorFindLabourers";
-import LabourerVerification from "./pages/Labourer/LabourerVerification";
-import LabourerJobRequests from "./pages/Labourer/LabourerJobRequests";
 import ContractorJobPosts from "./pages/Contractor/ContractorJobPosts";
 import ContractorVerification from "./pages/Contractor/ContractorVerification";
+
+// Labourer pages
+import LabourerDashboard from "./pages/Labourer/LabourerDashboard";
+import LabourerVerification from "./pages/Labourer/LabourerVerification";
+import LabourerJobRequests from "./pages/Labourer/LabourerJobRequests";
 import LabourerProfile from "./pages/Labourer/LabourerProfile";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminVerification from "./pages/admin/AdminVerification";
-import AdminWorkerManagement from "./pages/admin/AdminWorkerManagement";
-import AdminContractorManagement from "./pages/admin/AdminContractorManagement";
-import AdminJobManagement from "./pages/admin/AdminJobManagement";
+
+// Admin pages
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AdminVerification from "./pages/Admin/AdminVerification";
+import AdminWorkerManagement from "./pages/Admin/AdminWorkerManagement";
+import AdminContractorManagement from "./pages/Admin/AdminContractorManagement";
+import AdminJobManagement from "./pages/Admin/AdminJobManagement";
+
+/* ─── Layout Wrappers ─────────────────────────────────────────── */
+
+function ContractorLayout({ children }) {
+  return (
+    <div className="flex min-h-screen bg-white">
+      <ContractorSidebar />
+      <div className="flex-1 ml-[280px] overflow-y-auto">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function LabourerLayout({ children }) {
+  return (
+    <div className="flex min-h-screen bg-white">
+      <LabourerSidebar />
+      <div className="flex-1 ml-[280px] overflow-y-auto">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function AdminLayout({ children }) {
+  return (
+    <div className="flex min-h-screen bg-surface-stage">
+      <AdminSidebar />
+      <div className="flex-1 ml-[280px] p-10 overflow-y-auto">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/* ─── App ─────────────────────────────────────────────────────── */
 
 export default function App() {
   return (
     <BrowserRouter>
-
       <Routes>
 
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/select-role" element={<UserSelection />} />
-        <Route path="/contractor-dashboard" element={<ContractorDashboard />}/>
-        <Route path="/contractor/profile" element={<ContractorProfile />} />
-        <Route path="/labour/dashboard" element={<LabourerDashboard />} />
-        <Route path="/contractor/find-labourers" element={<ContractorFindLabourers />} />
-        <Route path="/labourer/verification" element={<LabourerVerification />} />
-        <Route path="/labourer/job-requests" element={<LabourerJobRequests />} />
-        <Route path="/contractor/job-posts" element={<ContractorJobPosts />} />
-        <Route path="/contractor/verification" element={<ContractorVerification />} />
-        <Route path="/labourer/profile" element={<LabourerProfile />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/verification" element={<AdminVerification />} />
-        <Route path="/admin/workers" element={<AdminWorkerManagement />} />
-        <Route path="/admin/contractors" element={<AdminContractorManagement />} />
-        <Route path="/admin/jobs" element={<AdminJobManagement />} />
+        {/* ── Public / Common ─────────────────────────────── */}
+        <Route path="/"        element={<Home />} />
+        <Route path="/login"   element={<Login />} />
+        <Route path="/signup"  element={<Signup />} />
 
-        
+        {/* ── Contractor ──────────────────────────────────── */}
+        <Route path="/contractor-dashboard" element={
+          <ContractorLayout><ContractorDashboard /></ContractorLayout>
+        } />
+        <Route path="/contractor/profile" element={
+          <ContractorLayout><ContractorProfile /></ContractorLayout>
+        } />
+        <Route path="/contractor/find-labourers" element={
+          <ContractorLayout><ContractorFindLabourers /></ContractorLayout>
+        } />
+        <Route path="/contractor/job-posts" element={
+          <ContractorLayout><ContractorJobPosts /></ContractorLayout>
+        } />
+        <Route path="/contractor/verification" element={
+          <ContractorLayout><ContractorVerification /></ContractorLayout>
+        } />
 
-        {/* 404 */}
-        <Route path="*" element={<h1 className="text-center mt-20 text-3xl font-bold">Page Not Found</h1>} />
+        {/* ── Labourer ────────────────────────────────────── */}
+        <Route path="/labour/dashboard" element={
+          <LabourerLayout><LabourerDashboard /></LabourerLayout>
+        } />
+        <Route path="/labourer/job-requests" element={
+          <LabourerLayout><LabourerJobRequests /></LabourerLayout>
+        } />
+        <Route path="/labourer/profile" element={
+          <LabourerLayout><LabourerProfile /></LabourerLayout>
+        } />
+        <Route path="/labourer/verification" element={
+          <LabourerLayout><LabourerVerification /></LabourerLayout>
+        } />
+
+        {/* ── Admin ───────────────────────────────────────── */}
+        <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="/admin/dashboard" element={
+          <AdminLayout><AdminDashboard /></AdminLayout>
+        } />
+        <Route path="/admin/contractors" element={
+          <AdminLayout><AdminContractorManagement /></AdminLayout>
+        } />
+        <Route path="/admin/workers" element={
+          <AdminLayout><AdminWorkerManagement /></AdminLayout>
+        } />
+        <Route path="/admin/jobs" element={
+          <AdminLayout><AdminJobManagement /></AdminLayout>
+        } />
+        <Route path="/admin/verification" element={
+          <AdminLayout><AdminVerification /></AdminLayout>
+        } />
+
+        {/* ── 404 ─────────────────────────────────────────── */}
+        <Route path="*" element={
+          <div className="flex items-center justify-center min-h-screen">
+            <h1 className="text-3xl font-bold text-[#391053]">404 — Page Not Found</h1>
+          </div>
+        } />
 
       </Routes>
-
     </BrowserRouter>
   );
 }
+
 
