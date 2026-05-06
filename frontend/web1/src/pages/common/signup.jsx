@@ -31,16 +31,16 @@ export default function SignupPage() {
       >
         <div className="executive-card !p-12 space-y-8">
           <header className="text-center space-y-4">
-            <div className="text-[#391053] font-bold text-xl tracking-tight">HireMe</div>
-            <h1 className="text-4xl font-bold text-[#391053] tracking-tight">Create Account</h1>
-            <p className="text-[#391053]-variant text-sm">Join our professional network and start growing your service business today.</p>
+            <div className="text-on-surface font-bold text-xl tracking-tight">HireMe</div>
+            <h1 className="text-4xl font-bold text-on-surface tracking-tight">Create Account</h1>
+            <p className="text-on-surface-variant text-sm">Join our professional network and start growing your service business today.</p>
           </header>
 
           <form onSubmit={handleSignup} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-[#391053]-variant px-1">Full Name</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant px-1">Full Name</label>
               <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[#391053]-variant opacity-50" size={18} />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant opacity-50" size={18} />
                 <input 
                   type="text"
                   value={formData.name}
@@ -53,9 +53,9 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-[#391053]-variant px-1">Email Address</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant px-1">Email Address</label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#391053]-variant opacity-50" size={18} />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant opacity-50" size={18} />
                 <input 
                   type="email"
                   value={formData.email}
@@ -68,9 +68,9 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-[#391053]-variant px-1">Phone Number</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant px-1">Phone Number</label>
               <div className="relative">
-                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-[#391053]-variant opacity-50" size={18} />
+                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant opacity-50" size={18} />
                 <input 
                   type="tel"
                   value={formData.phone}
@@ -83,9 +83,9 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-[#391053]-variant px-1">Register As</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant px-1">Register As</label>
               <div className="relative">
-                <BadgeHelp className="absolute left-4 top-1/2 -translate-y-1/2 text-[#391053]-variant opacity-50" size={18} />
+                <BadgeHelp className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant opacity-50" size={18} />
                 <select 
                   value={formData.role}
                   onChange={(e) => setFormData({...formData, role: e.target.value})}
@@ -100,9 +100,9 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-[#391053]-variant px-1">Password</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant px-1">Password</label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#391053]-variant opacity-50" size={18} />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant opacity-50" size={18} />
                 <input 
                   type="password"
                   value={formData.password}
@@ -120,16 +120,16 @@ export default function SignupPage() {
           </form>
 
           <footer className="pt-8 border-t border-outline-variant text-center">
-            <p className="text-sm text-[#391053]-variant">
-              Already have account? <Link to="/login" className="font-bold text-[#391053] hover:underline">Login</Link>
+            <p className="text-sm text-on-surface-variant">
+              Already have account? <Link to="/login" className="font-bold text-on-surface hover:underline">Login</Link>
             </p>
           </footer>
         </div>
 
-        <div className="flex justify-center gap-8 text-[10px] font-bold uppercase tracking-widest text-[#391053]/40">
-          <a href="#" className="hover:text-[#391053] transition-colors">Privacy Policy</a>
-          <a href="#" className="hover:text-[#391053] transition-colors">Terms of Service</a>
-          <a href="#" className="hover:text-[#391053] transition-colors">Contact Us</a>
+        <div className="flex justify-center gap-8 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
+          <a href="#" className="hover:text-on-surface transition-colors">Privacy Policy</a>
+          <a href="#" className="hover:text-on-surface transition-colors">Terms of Service</a>
+          <a href="#" className="hover:text-on-surface transition-colors">Contact Us</a>
         </div>
       </motion.div>
     </div>

@@ -26,7 +26,7 @@ const initialJobs = [
     distance: '4.2 miles away',
     status: 'Pending',
     categoryIcon: <Route size={24} />,
-    iconBg: 'bg-[#eedcff]',
+    iconBg: 'bg-surface-container-high',
     iconColor: 'text-[#28084b]'
   },
   {
@@ -40,7 +40,7 @@ const initialJobs = [
     distance: '1.8 miles away',
     status: 'Accepted',
     categoryIcon: <Briefcase size={24} />,
-    iconBg: 'bg-[#c9a8f1]',
+    iconBg: 'bg-primary',
     iconColor: 'text-[#2e0349]'
   },
   {
@@ -55,7 +55,7 @@ const initialJobs = [
     status: 'Completed',
     categoryIcon: <Clock size={24} />,
     iconBg: 'bg-white',
-    iconColor: 'text-[#391053]'
+    iconColor: 'text-on-surface'
   },
   {
     id: '4',
@@ -89,35 +89,33 @@ export default function LabourerJobRequests() {
     <div className="flex-1 p-8 space-y-8 animate-in fade-in duration-500">
       <header className="flex justify-between items-center">
         <div>
-          <h1 className="text-4xl font-bold text-[#391053]">Job Requests</h1>
-          <p className="text-[#391053] mt-1">Manage and track your active opportunities</p>
+          <h1 className="text-4xl font-bold text-on-surface">Job Requests</h1>
+          <p className="text-on-surface mt-1">Manage and track your active opportunities</p>
         </div>
         <div className="flex items-center gap-4">
-          <div className="bg-white border border-[#c9a8f1]/30 p-2 rounded-full shadow-sm">
-            <img 
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=40&h=40&auto=format&fit=crop" 
-              alt="Profile" 
-              className="w-8 h-8 rounded-full object-cover"
-            />
+          <div className="bg-white border border-outline-variant p-2 rounded-full shadow-sm">
+            <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold border-2 border-outline-variant shrink-0">
+              MT
+            </div>
           </div>
         </div>
       </header>
 
       {/* Search & Filter */}
       <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-12 lg:col-span-8 bg-white rounded-2xl p-6 shadow-sm border border-[#c9a8f1]/30">
-          <div className="flex items-center gap-4 bg-white px-4 py-3 rounded-xl border border-[#c9a8f1]/50 focus-within:border-[#c9a8f1] transition-all">
-            <Search className="text-[#391053]" size={20} />
+        <div className="col-span-12 lg:col-span-8 bg-white rounded-2xl p-6 shadow-sm border border-outline-variant">
+          <div className="flex items-center gap-4 bg-white px-4 py-3 rounded-xl border border-outline-variant focus-within:border-outline-variant transition-all">
+            <Search className="text-on-surface" size={20} />
             <input 
               type="text" 
               placeholder="Search by contractor or category..." 
-              className="bg-transparent border-none focus:ring-0 w-full text-base placeholder:text-[#391053]/60"
+              className="bg-transparent border-none focus:ring-0 w-full text-base placeholder:text-on-surface-variant"
             />
           </div>
         </div>
-        <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl p-6 shadow-sm border border-[#c9a8f1]/30 flex items-center gap-3">
-          <Filter className="text-[#391053]" size={20} />
-          <span className="font-semibold text-[#391053]">Sort by:</span>
+        <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl p-6 shadow-sm border border-outline-variant flex items-center gap-3">
+          <Filter className="text-on-surface" size={20} />
+          <span className="font-semibold text-on-surface">Sort by:</span>
           <select className="flex-1 bg-transparent border-none focus:ring-0 text-sm font-medium">
             <option>Newest First</option>
             <option>Highest Wage</option>
@@ -134,8 +132,8 @@ export default function LabourerJobRequests() {
             onClick={() => setActiveTab(tab)}
             className={`px-8 py-3 rounded-full font-bold transition-all whitespace-nowrap ${
               activeTab === tab 
-                ? 'bg-[#c9a8f1] text-[#391053] shadow-lg scale-95' 
-                : 'bg-white text-[#391053] border border-[#c9a8f1] hover:bg-white'
+                ? 'bg-primary text-on-primary shadow-lg scale-95' 
+                : 'bg-white text-on-surface border border-outline-variant hover:bg-white'
             }`}
           >
             {tab}
@@ -147,7 +145,7 @@ export default function LabourerJobRequests() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {filteredJobs.length > 0 ? (
           filteredJobs.map((job) => (
-            <div key={job.id} className={`bg-white rounded-2xl p-8 shadow-sm border border-[#c9a8f1]/30 flex flex-col justify-between transition-all hover:shadow-md ${job.status === 'Completed' ? 'opacity-75' : ''}`}>
+            <div key={job.id} className={`bg-white rounded-2xl p-8 shadow-sm border border-outline-variant flex flex-col justify-between transition-all hover:shadow-md ${job.status === 'Completed' ? 'opacity-75' : ''}`}>
               <div>
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex items-center gap-4">
@@ -155,14 +153,14 @@ export default function LabourerJobRequests() {
                       <div className={job.iconColor}>{job.categoryIcon}</div>
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-[#391053]">{job.title}</h3>
-                      <p className="text-[#391053] font-medium">{job.contractor}</p>
+                      <h3 className="text-xl font-bold text-on-surface">{job.title}</h3>
+                      <p className="text-on-surface font-medium">{job.contractor}</p>
                     </div>
                   </div>
                   <div className={`px-4 py-1.5 rounded-full text-[10px] font-bold flex items-center gap-1.5 ${
                     job.status === 'Pending' ? 'bg-[#fcdfa9] text-[#261a00]' :
                     job.status === 'Accepted' ? 'bg-[#d4b3fd] text-[#2e0349]' :
-                    job.status === 'Completed' ? 'bg-white text-[#391053]' :
+                    job.status === 'Completed' ? 'bg-white text-on-surface' :
                     'bg-[#ffdad6] text-[#ba1a1a]'
                   }`}>
                     {job.status === 'Pending' && <Clock size={12} />}
@@ -178,28 +176,28 @@ export default function LabourerJobRequests() {
                     <DollarSign size={18} className="text-[#7d747f]" />
                     <div>
                       <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-wider">Wage</p>
-                      <p className="font-bold text-[#391053]">{job.wage}</p>
+                      <p className="font-bold text-on-surface">{job.wage}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <Calendar size={18} className="text-[#7d747f]" />
                     <div>
                       <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-wider">Date/Time</p>
-                      <p className="font-bold text-[#391053]">{job.date} • {job.time}</p>
+                      <p className="font-bold text-on-surface">{job.date} • {job.time}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <MapPin size={18} className="text-[#7d747f]" />
                     <div>
                       <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-wider">Location</p>
-                      <p className="font-bold text-[#391053]">{job.location}</p>
+                      <p className="font-bold text-on-surface">{job.location}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <Route size={18} className="text-[#7d747f]" />
                     <div>
                       <p className="text-[10px] text-[#7d747f] font-bold uppercase tracking-wider">Distance</p>
-                      <p className="font-bold text-[#391053]">{job.distance}</p>
+                      <p className="font-bold text-on-surface">{job.distance}</p>
                     </div>
                   </div>
                 </div>
@@ -210,14 +208,14 @@ export default function LabourerJobRequests() {
                   <div className="flex gap-3">
                     <button 
                       onClick={() => updateJobStatus(job.id, 'Accepted')}
-                      className="flex-1 bg-[#c9a8f1] text-[#391053] py-4 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2"
+                      className="flex-1 bg-primary text-on-primary py-4 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2"
                     >
                       <CheckCircle size={20} />
                       Accept Request
                     </button>
                     <button 
                       onClick={() => updateJobStatus(job.id, 'Rejected')}
-                      className="px-6 border border-[#c9a8f1] text-[#391053] py-4 rounded-xl font-bold hover:bg-white transition-all"
+                      className="px-6 border border-outline-variant text-on-surface py-4 rounded-xl font-bold hover:bg-white transition-all"
                     >
                       Reject
                     </button>
@@ -227,14 +225,14 @@ export default function LabourerJobRequests() {
                   <div className="flex gap-3">
                     <button 
                       onClick={() => updateJobStatus(job.id, 'Completed')}
-                      className="flex-1 bg-[#c9a8f1] text-[#391053] py-4 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2"
+                      className="flex-1 bg-primary text-on-primary py-4 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2"
                     >
                       <CheckCircle size={20} />
                       Mark Completed
                     </button>
                     <button 
                       onClick={() => updateJobStatus(job.id, 'Pending')}
-                      className="px-6 border border-[#c9a8f1] text-[#391053] py-4 rounded-xl font-bold hover:bg-white transition-all flex items-center gap-2"
+                      className="px-6 border border-outline-variant text-on-surface py-4 rounded-xl font-bold hover:bg-white transition-all flex items-center gap-2"
                     >
                       <Undo2 size={18} />
                       Undo
@@ -243,13 +241,13 @@ export default function LabourerJobRequests() {
                 )}
                 {activeTab === 'Completed' && (
                   <div className="flex justify-between items-center py-2">
-                    <span className="text-xs font-bold text-[#391053] uppercase tracking-widest bg-[#c9a8f1] px-4 py-2 rounded-lg">Payment Processed</span>
+                    <span className="text-xs font-bold text-on-surface uppercase tracking-widest bg-primary px-4 py-2 rounded-lg">Payment Processed</span>
                   </div>
                 )}
                 {activeTab === 'Rejected' && (
                   <button 
                     onClick={() => updateJobStatus(job.id, 'Pending')}
-                    className="w-full border border-[#c9a8f1] text-[#391053] py-4 rounded-xl font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2"
+                    className="w-full border border-outline-variant text-on-surface py-4 rounded-xl font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2"
                   >
                     <Undo2 size={18} />
                     Restore Request
@@ -259,9 +257,9 @@ export default function LabourerJobRequests() {
             </div>
           ))
         ) : (
-          <div className="col-span-full py-20 text-center bg-white rounded-2xl border border-dashed border-[#c9a8f1]">
-            <Briefcase size={48} className="mx-auto text-[#391053] opacity-20 mb-4" />
-            <p className="text-[#391053] font-medium">No {activeTab.toLowerCase()} job requests found.</p>
+          <div className="col-span-full py-20 text-center bg-white rounded-2xl border border-dashed border-outline-variant">
+            <Briefcase size={48} className="mx-auto text-on-surface opacity-20 mb-4" />
+            <p className="text-on-surface font-medium">No {activeTab.toLowerCase()} job requests found.</p>
           </div>
         )}
       </div>

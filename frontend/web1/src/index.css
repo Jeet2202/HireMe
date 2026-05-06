@@ -8,29 +8,32 @@
 ──────────────────────────────────────────────────────── */
 @theme {
   /* Contractor / Labourer */
-  --color-brand-primary:    #c9a8f1;
-  --color-brand-secondary:  #ffffff;
+  --color-brand-primary:    #000000;
+  --color-brand-secondary:  #3f3f46;
   --color-brand-background: #ffffff;
   --color-brand-surface:    #ffffff;
 
   /* Admin / Common (Material-style) */
-  --color-primary:                #c9a8f1;
-  --color-on-primary:             #391053;
-  --color-primary-container:      #ffffff;
-  --color-on-primary-container:   #391053;
-  --color-secondary:              #ffffff;
-  --color-secondary-container:    #c9a8f1;
-  --color-on-secondary-container: #391053;
+  --color-primary:                #000000;
+  --color-on-primary:             #ffffff;
+  --color-primary-container:      #1a1c1d;
+  --color-on-primary-container:   #ffffff;
+  --color-secondary:              #3f3f46;
+  --color-secondary-container:    #f4f4f5;
+  --color-on-secondary-container: #1a1c1d;
   --color-surface:                #ffffff;
   --color-surface-bright:         #ffffff;
-  --color-surface-container:      #ffffff;
-  --color-surface-container-low:  #ffffff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low:  #fafafa;
+  --color-surface-container:      #f4f4f5;
+  --color-surface-container-high: #e4e4e7;
+  --color-surface-container-highest: #d4d4d8;
   --color-surface-stage:          #ffffff;
-  --color-on-surface:             #391053;
-  --color-on-surface-variant:     #391053;
+  --color-on-surface:             #1a1c1d;
+  --color-on-surface-variant:     #71717a;
   --color-background-page:        #ffffff;
-  --color-outline:                #c9a8f1;
-  --color-outline-variant:        #c9a8f1;
+  --color-outline:                #000000;
+  --color-outline-variant:        #e4e4e7;
 
   /* Font */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -46,7 +49,7 @@ html {
 
 body {
   background-color: #ffffff;
-  color: #391053;
+  color: #1a1c1d;
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -54,7 +57,13 @@ body {
 
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #c9a8f1; border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: #e4e4e7; border-radius: 2px; }
+
+/* Selection styling */
+::selection {
+  background-color: #000000;
+  color: #ffffff;
+}
 
 /* ─── Reusable Component Classes ─────────────────────── */
 
@@ -63,10 +72,10 @@ body {
   background-color: #ffffff;
   border-radius: 1.25rem;
   padding: 2rem;
-  border: 1px solid #c9a8f1;
+  border: 1px solid #e4e4e7;
   box-shadow:
-    0 1px 3px rgba(201, 168, 241, 0.2),
-    0 4px 16px -4px rgba(201, 168, 241, 0.4);
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 4px 16px -4px rgba(0, 0, 0, 0.1);
 }
 
 /* Primary button */
@@ -74,58 +83,63 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #c9a8f1;
-  color: #391053;
+  background-color: #1a1c1d;
+  color: #ffffff;
   font-weight: 700;
   font-size: 0.875rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 0.875rem 2rem;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   cursor: pointer;
   border: none;
   outline: none;
   text-decoration: none;
-  transition: opacity 0.2s ease, transform 0.15s ease;
-  box-shadow: 0 4px 14px rgba(201, 168, 241, 0.35);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-.primary-button:hover  { opacity: 0.88; }
-.primary-button:active { transform: scale(0.97); }
+.primary-button:hover  { background-color: #000000; }
+.primary-button:active { transform: scale(0.98); }
 
 /* Secondary button */
 .secondary-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: transparent;
-  color: #391053;
+  background-color: #f3f3f4;
+  color: #1a1c1d;
   font-weight: 700;
   font-size: 0.875rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 0.875rem 2rem;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   cursor: pointer;
-  border: 2px solid #c9a8f1;
+  border: 1px solid #eeeeef;
   outline: none;
   text-decoration: none;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
 }
-.secondary-button:hover { background-color: rgba(201, 168, 241, 0.15); }
+.secondary-button:hover { background-color: #e4e4e7; }
+.secondary-button:active { transform: scale(0.98); }
 
 /* Card shadows */
 .card-shadow {
   box-shadow:
-    0 1px 3px rgba(201, 168, 241, 0.2),
-    0 8px 24px -4px rgba(201, 168, 241, 0.4);
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 8px 24px -4px rgba(0, 0, 0, 0.1);
 }
 .custom-card-shadow {
   box-shadow:
-    0 1px 3px rgba(201, 168, 241, 0.15),
-    0 4px 12px rgba(201, 168, 241, 0.2);
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.08);
 }
 .shadow-executive {
-  box-shadow: 0 20px 60px -10px rgba(201, 168, 241, 0.4);
+  box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.1);
+}
+
+.ambient-shadow {
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 0 3px rgba(0, 0, 0, 0.02);
 }
 
 /* Hide scrollbar */
@@ -142,7 +156,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   bottom: -5px;
-  background-color: #c9a8f1;
+  background-color: #000000;
   transition: width 0.3s ease;
 }
 .nav-link:hover::after { width: 100%; }

@@ -38,15 +38,15 @@ export default function LoginPage() {
       >
         <div className="executive-card !p-12 space-y-8">
           <div className="text-center space-y-2">
-            <h1 className="text-4xl font-bold text-[#391053] tracking-tight">Login</h1>
-            <p className="text-[#391053]-variant text-sm">Access your professional workspace</p>
+            <h1 className="text-4xl font-bold text-on-surface tracking-tight">Login</h1>
+            <p className="text-on-surface-variant text-sm">Access your professional workspace</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-[#391053]-variant px-1">Email Address</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant px-1">Email Address</label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#391053]-variant opacity-50" size={18} />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant opacity-50" size={18} />
                 <input 
                   type="email"
                   value={email}
@@ -60,11 +60,11 @@ export default function LoginPage() {
 
             <div className="space-y-2">
               <div className="flex justify-between items-center px-1">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-[#391053]-variant">Password</label>
-                <a href="#" className="text-[10px] font-bold text-[#391053] hover:underline">Forgot Password?</a>
+                <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Password</label>
+                <a href="#" className="text-[10px] font-bold text-on-surface hover:underline">Forgot Password?</a>
               </div>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#391053]-variant opacity-50" size={18} />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant opacity-50" size={18} />
                 <input 
                   type="password"
                   value={password}
@@ -77,7 +77,7 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 text-[#391053]-variant px-1 animate-in fade-in slide-in-from-top-1">
+              <div className="flex items-center gap-2 text-on-surface-variant px-1 animate-in fade-in slide-in-from-top-1">
                 <Info size={16} />
                 <p className="text-xs font-medium">{error}</p>
               </div>
@@ -89,14 +89,14 @@ export default function LoginPage() {
           </form>
 
           <div className="text-center">
-            <p className="text-sm text-[#391053]-variant">
-              Don't have an account? <Link to="/signup" className="font-bold text-[#391053] hover:underline">Signup</Link>
+            <p className="text-sm text-on-surface-variant">
+              Don't have an account? <Link to="/signup" className="font-bold text-on-surface hover:underline">Signup</Link>
             </p>
           </div>
         </div>
 
         <div className="text-center pt-4">
-          <div className="flex items-center justify-center gap-2 text-[#391053]/40 font-bold tracking-tight">
+          <div className="flex items-center justify-center gap-2 text-on-surface-variant font-bold tracking-tight">
             <span className="text-xl">HireMe</span>
             <span className="text-[10px] uppercase tracking-[0.2em] pt-1">Services</span>
           </div>

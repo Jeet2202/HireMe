@@ -23,8 +23,8 @@ const AdminContractorManagement = () => {
   };
 
   const categories = [
-    { title: 'Priority', icon: Star, color: 'text-[#391053]' },
-    { title: 'Main', icon: ShieldCheck, color: 'text-[#391053]' },
+    { title: 'Priority', icon: Star, color: 'text-on-surface' },
+    { title: 'Main', icon: ShieldCheck, color: 'text-on-surface' },
     { title: 'Suspicious', icon: AlertTriangle, color: 'text-orange-600' },
     { title: 'Blocked', icon: Ban, color: 'text-red-600' },
   ];
@@ -37,10 +37,10 @@ const AdminContractorManagement = () => {
     >
       <div className="flex justify-between items-end">
         <div>
-          <h2 className="text-4xl font-bold text-[#391053] tracking-tight">Contractor Management</h2>
-          <p className="text-[#391053]-variant mt-2 text-lg">Oversee, verify, and organize your workforce network.</p>
+          <h2 className="text-4xl font-bold text-on-surface tracking-tight">Contractor Management</h2>
+          <p className="text-on-surface-variant mt-2 text-lg">Oversee, verify, and organize your workforce network.</p>
         </div>
-        <button className="bg-primary text-[#391053] px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-primary-container transition-all">
+        <button className="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-primary-container transition-all">
           <UserPlus size={20} />
           ADD NEW CONTRACTOR
         </button>
@@ -49,7 +49,7 @@ const AdminContractorManagement = () => {
       {categories.map((cat) => (
         <div key={cat.title} className="bg-surface p-8 rounded-xl custom-card-shadow">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-bold text-[#391053] flex items-center gap-2">
+            <h3 className="text-2xl font-bold text-on-surface flex items-center gap-2">
               <cat.icon size={24} className={cat.color} />
               {cat.title} Contractors
             </h3>
@@ -70,10 +70,10 @@ const AdminContractorManagement = () => {
               <tbody className="divide-y divide-surface-container">
                 {contractors.filter(c => c.category === cat.title).map((c) => (
                   <tr key={c.id} className="hover:bg-background-page/5 transition-colors">
-                    <td className="py-4 font-semibold text-[#391053]">{c.name}</td>
-                    <td className="py-4 text-[#391053]-variant text-sm">{c.company}</td>
+                    <td className="py-4 font-semibold text-on-surface">{c.name}</td>
+                    <td className="py-4 text-on-surface-variant text-sm">{c.company}</td>
                     <td className="py-4">
-                      <div className="flex items-center text-[#391053] font-bold text-sm">
+                      <div className="flex items-center text-on-surface font-bold text-sm">
                         <Star size={14} className="fill-primary" />
                         <span className="ml-1">{c.rating}</span>
                       </div>
@@ -81,7 +81,7 @@ const AdminContractorManagement = () => {
                     <td className="py-4 text-right">
                       <button 
                         onClick={() => setSelectedContractor(c)}
-                        className="text-[#391053] font-bold text-sm hover:underline"
+                        className="text-on-surface font-bold text-sm hover:underline"
                       >
                         Details
                       </button>
@@ -91,7 +91,7 @@ const AdminContractorManagement = () => {
               </tbody>
             </table>
             {contractors.filter(c => c.category === cat.title).length === 0 && (
-              <p className="py-8 text-center text-[#391053]-variant italic text-sm">No contractors in this category.</p>
+              <p className="py-8 text-center text-on-surface-variant italic text-sm">No contractors in this category.</p>
             )}
           </div>
         </div>
@@ -113,10 +113,10 @@ const AdminContractorManagement = () => {
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="bg-surface w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden relative z-10"
             >
-              <div className="bg-primary p-8 text-[#391053]">
+              <div className="bg-primary p-8 text-on-surface">
                 <button 
                   onClick={() => setSelectedContractor(null)}
-                  className="absolute top-6 right-6 text-[#391053]/60 hover:text-[#391053]"
+                  className="absolute top-6 right-6 text-on-surface-variant hover:text-on-surface"
                 >
                   <X size={24} />
                 </button>
@@ -129,7 +129,7 @@ const AdminContractorManagement = () => {
                     <p className="opacity-80">{selectedContractor.company}</p>
                     <div className="mt-4 flex gap-2">
                       <span className="bg-white/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">{selectedContractor.status}</span>
-                      <span className="bg-white text-[#391053] px-3 py-1 rounded-full text-[10px] font-bold uppercase">{selectedContractor.category}</span>
+                      <span className="bg-white text-on-surface px-3 py-1 rounded-full text-[10px] font-bold uppercase">{selectedContractor.category}</span>
                     </div>
                   </div>
                 </div>
@@ -140,17 +140,17 @@ const AdminContractorManagement = () => {
                   <div>
                     <p className="text-[10px] font-bold text-outline uppercase mb-2">Contact Info</p>
                     <div className="space-y-3">
-                      <div className="flex items-center gap-2 text-[#391053] font-medium text-sm">
+                      <div className="flex items-center gap-2 text-on-surface font-medium text-sm">
                         <Mail size={16} /> {selectedContractor.email}
                       </div>
-                      <div className="flex items-center gap-2 text-[#391053] font-medium text-sm">
+                      <div className="flex items-center gap-2 text-on-surface font-medium text-sm">
                         <Phone size={16} /> +1 (555) 000-0000
                       </div>
                     </div>
                   </div>
                   <div>
                     <p className="text-[10px] font-bold text-outline uppercase mb-2">Location</p>
-                    <div className="flex items-center gap-2 text-[#391053] font-medium text-sm">
+                    <div className="flex items-center gap-2 text-on-surface font-medium text-sm">
                       <MapPin size={16} /> Metropolitan Sector B
                     </div>
                   </div>
@@ -161,7 +161,7 @@ const AdminContractorManagement = () => {
                     <div className="flex flex-col gap-2">
                       <button 
                         onClick={() => moveContractor(selectedContractor.id, 'Priority')}
-                        className="w-full py-2 bg-primary/5 text-[#391053] rounded-lg font-bold text-xs hover:bg-primary/10"
+                        className="w-full py-2 bg-primary/5 text-on-surface rounded-lg font-bold text-xs hover:bg-primary/10"
                       >
                         Flag as Priority
                       </button>
@@ -184,7 +184,7 @@ const AdminContractorManagement = () => {
               <div className="p-6 bg-surface-bright border-t border-secondary-container/30 flex justify-end">
                 <button 
                   onClick={() => setSelectedContractor(null)}
-                  className="bg-primary text-[#391053] px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-primary-container"
+                  className="bg-primary text-on-primary px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-primary-container"
                 >
                   SAVE CHANGES
                 </button>

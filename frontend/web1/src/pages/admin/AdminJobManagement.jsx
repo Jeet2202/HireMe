@@ -55,9 +55,9 @@ const AdminJobManagement = () => {
   const [expandedJob, setExpandedJob] = useState('JOB-8842');
 
   const stats = [
-    { label: 'Active Jobs', value: '24', icon: Briefcase, bg: 'bg-primary/10', color: 'text-[#391053]' },
-    { label: 'Total Workers', value: '1,402', icon: Users, bg: 'bg-secondary/10', color: 'text-[#391053]' },
-    { label: 'Fulfillment Rate', value: '82%', icon: CheckCircle2, bg: 'bg-primary-container/10', color: 'text-[#391053]-container' },
+    { label: 'Active Jobs', value: '24', icon: Briefcase, bg: 'bg-primary/10', color: 'text-on-surface' },
+    { label: 'Total Workers', value: '1,402', icon: Users, bg: 'bg-secondary/10', color: 'text-on-surface' },
+    { label: 'Fulfillment Rate', value: '82%', icon: CheckCircle2, bg: 'bg-primary-container/10', color: 'text-on-surface-container' },
   ];
 
   return (
@@ -68,10 +68,10 @@ const AdminJobManagement = () => {
     >
       <div className="flex justify-between items-end">
         <div>
-          <h2 className="text-4xl font-bold text-[#391053] tracking-tight">Job Management</h2>
-          <p className="text-[#391053]-variant mt-2 text-lg">Monitor and manage operational worker allocation across active contracts.</p>
+          <h2 className="text-4xl font-bold text-on-surface tracking-tight">Job Management</h2>
+          <p className="text-on-surface-variant mt-2 text-lg">Monitor and manage operational worker allocation across active contracts.</p>
         </div>
-        <button className="bg-primary text-[#391053] px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-primary-container">
+        <button className="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-primary-container">
           <Plus size={20} />
           Create New Job
         </button>
@@ -84,8 +84,8 @@ const AdminJobManagement = () => {
               <Users size={24} />
             </div>
             <div>
-              <p className="text-xs font-bold text-[#391053]-variant uppercase tracking-widest">{stat.label}</p>
-              <p className="text-2xl font-bold text-[#391053] leading-tight">{stat.value}</p>
+              <p className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">{stat.label}</p>
+              <p className="text-2xl font-bold text-on-surface leading-tight">{stat.value}</p>
             </div>
           </div>
         ))}
@@ -103,13 +103,13 @@ const AdminJobManagement = () => {
             >
               <div className="flex-1 grid grid-cols-4 gap-4 items-center">
                 <div>
-                  <h3 className="font-bold text-[#391053]">{job.title}</h3>
-                  <p className="text-xs text-[#391053]-variant">ID: #{job.id}</p>
+                  <h3 className="font-bold text-on-surface">{job.title}</h3>
+                  <p className="text-xs text-on-surface-variant">ID: #{job.id}</p>
                 </div>
                 <div className="px-4">
-                  <div className="flex justify-between text-[10px] font-bold text-[#391053]-variant mb-1 uppercase">
+                  <div className="flex justify-between text-[10px] font-bold text-on-surface-variant mb-1 uppercase">
                     <span>Allocation</span>
-                    <span className="text-[#391053]">{job.allocation}%</span>
+                    <span className="text-on-surface">{job.allocation}%</span>
                   </div>
                   <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
                     <motion.div 
@@ -121,7 +121,7 @@ const AdminJobManagement = () => {
                 </div>
                 <div className="text-center">
                   <p className="text-xs font-bold text-outline uppercase tracking-wider">Required</p>
-                  <p className="text-lg font-bold text-[#391053]">{job.required}</p>
+                  <p className="text-lg font-bold text-on-surface">{job.required}</p>
                 </div>
                 <div className="flex justify-center">
                   {job.allocation < 50 ? (
@@ -130,8 +130,8 @@ const AdminJobManagement = () => {
                       <span className="text-xs font-bold uppercase">Worker Shortage Detected</span>
                     </div>
                   ) : (
-                    <div className="flex items-center gap-2 px-4 py-2 border border-secondary-container/30 rounded-lg bg-surface-bright text-[#391053]-variant">
-                      <CheckCircle2 size={16} className="text-[#391053]" />
+                    <div className="flex items-center gap-2 px-4 py-2 border border-secondary-container/30 rounded-lg bg-surface-bright text-on-surface-variant">
+                      <CheckCircle2 size={16} className="text-on-surface" />
                       <span className="text-xs font-bold uppercase">{job.allocation >= 90 ? 'Target Reached' : 'Hiring Active'}</span>
                     </div>
                   )}
@@ -153,31 +153,31 @@ const AdminJobManagement = () => {
                       <div className="grid grid-cols-2 gap-4">
                         <div className="bg-white p-6 rounded-xl border border-secondary-container/20">
                           <p className="text-[10px] font-bold text-outline uppercase mb-3">Job Description</p>
-                          <p className="text-sm text-[#391053] leading-relaxed">{job.description}</p>
+                          <p className="text-sm text-on-surface leading-relaxed">{job.description}</p>
                         </div>
                         <div className="bg-white p-6 rounded-xl border border-secondary-container/20">
                           <p className="text-[10px] font-bold text-outline uppercase mb-3 text-right">Activity Status</p>
                           <div className="flex justify-end -space-x-3 overflow-hidden mb-4">
                             {[1, 2, 3, 4, 5].map(i => (
-                              <div key={i} className="w-8 h-8 rounded-full bg-primary-container border-2 border-white flex items-center justify-center text-[10px] text-[#391053]">W{i}</div>
+                              <div key={i} className="w-8 h-8 rounded-full bg-primary-container border-2 border-white flex items-center justify-center text-[10px] text-on-surface">W{i}</div>
                             ))}
                           </div>
-                          <p className="text-xs font-medium text-[#391053]-variant text-right">{job.matches} matches found in the vicinity.</p>
+                          <p className="text-xs font-medium text-on-surface-variant text-right">{job.matches} matches found in the vicinity.</p>
                         </div>
                       </div>
                       <div className="flex gap-4 pt-4">
-                        <button className="px-6 py-3 bg-primary text-[#391053] rounded-xl font-bold flex items-center gap-2 hover:bg-primary-container">
+                        <button className="px-6 py-3 bg-primary text-on-primary rounded-xl font-bold flex items-center gap-2 hover:bg-primary-container">
                           <DollarSign size={18} />
                           Increase Wage (+15%)
                         </button>
-                        <button className="px-6 py-3 border border-primary text-[#391053] rounded-xl font-bold flex items-center gap-2 hover:bg-primary/5">
+                        <button className="px-6 py-3 border border-primary text-on-surface rounded-xl font-bold flex items-center gap-2 hover:bg-primary/5">
                           <Send size={18} />
                           Notify Available Workers
                         </button>
                       </div>
                     </div>
                     <div className="col-span-4 flex flex-col gap-4">
-                      <div className="bg-primary text-[#391053] p-6 rounded-xl shadow-xl flex-1">
+                      <div className="bg-primary text-on-primary p-6 rounded-xl shadow-xl flex-1">
                         <h4 className="text-xs font-bold mb-6 flex items-center gap-2 uppercase opacity-60">
                           <TrendingUp size={16} />
                           Real-time Monitoring
@@ -185,7 +185,7 @@ const AdminJobManagement = () => {
                         <div className="space-y-4">
                           <div className="flex justify-between items-center text-sm">
                             <span className="opacity-70">Shift Fulfillment:</span>
-                            <span className={`font-bold ${job.allocation < 50 ? 'text-orange-400' : 'text-[#391053]'}`}>{job.allocation < 50 ? 'Critical' : 'Healthy'}</span>
+                            <span className={`font-bold ${job.allocation < 50 ? 'text-orange-400' : 'text-on-surface'}`}>{job.allocation < 50 ? 'Critical' : 'Healthy'}</span>
                           </div>
                           <div className="flex justify-between items-center text-sm">
                             <span className="opacity-70">Current Wage:</span>
@@ -206,7 +206,7 @@ const AdminJobManagement = () => {
         ))}
       </div>
 
-      <div className="bg-primary text-[#391053] px-8 py-4 rounded-full custom-card-shadow flex justify-between items-center">
+      <div className="bg-primary text-on-primary px-8 py-4 rounded-full custom-card-shadow flex justify-between items-center">
         <div className="flex gap-8 items-center">
           <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Status Indicators</span>
           <div className="flex items-center gap-2">

@@ -36,8 +36,8 @@ const ContractorJobPosts = () => {
   return (
     <div className="flex-1 min-h-screen pb-10">
       <header className="flex justify-between items-center px-10 py-6 mb-8">
-        <h2 className="text-3xl font-bold text-[#391053]">Job Posts</h2>
-        <button className="bg-brand-primary text-[#391053] px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:opacity-90 active:scale-95 transition-all">
+        <h2 className="text-3xl font-bold text-on-surface">Job Posts</h2>
+        <button className="bg-brand-primary text-on-surface px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:opacity-90 active:scale-95 transition-all">
           <Plus size={20} /> POST NEW JOB
         </button>
       </header>
@@ -50,7 +50,7 @@ const ContractorJobPosts = () => {
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`pb-4 text-sm font-bold tracking-tight whitespace-nowrap transition-all relative ${
-                activeTab === tab ? 'text-[#391053]' : 'text-[#391053] hover:text-[#391053]/60'
+                activeTab === tab ? 'text-on-surface' : 'text-on-surface hover:text-on-surface-variant'
               }`}
             >
               {tab}
@@ -78,12 +78,12 @@ const ContractorJobPosts = () => {
                       <div className="flex justify-between items-start">
                         <div>
                           <div className="flex items-center gap-3 mb-2">
-                            <span className="px-3 py-1 bg-brand-background text-[#391053] text-[10px] font-black uppercase tracking-widest rounded-full">{job.category}</span>
-                            <span className="text-[10px] font-bold text-[#391053]">Job ID: #{1000 + job.id}</span>
+                            <span className="px-3 py-1 bg-brand-background text-on-surface text-[10px] font-black uppercase tracking-widest rounded-full">{job.category}</span>
+                            <span className="text-[10px] font-bold text-on-surface">Job ID: #{1000 + job.id}</span>
                           </div>
-                          <h3 className="text-2xl font-bold text-[#391053]">{job.title}</h3>
+                          <h3 className="text-2xl font-bold text-on-surface">{job.title}</h3>
                         </div>
-                        <button className="text-[#391053] hover:text-[#391053] transition-colors">
+                        <button className="text-on-surface hover:text-on-surface transition-colors">
                           <MoreVertical size={20} />
                         </button>
                       </div>
@@ -100,8 +100,8 @@ const ContractorJobPosts = () => {
                       {job.progress !== undefined ? (
                         <div className="flex flex-col gap-3">
                           <div className="flex justify-between text-xs font-bold">
-                            <span className="text-[#391053] uppercase tracking-tighter">Project Completion</span>
-                            <span className="text-[#391053]">{job.progress}%</span>
+                            <span className="text-on-surface uppercase tracking-tighter">Project Completion</span>
+                            <span className="text-on-surface">{job.progress}%</span>
                           </div>
                           <div className="h-2 w-full bg-white rounded-full overflow-hidden">
                             <motion.div 
@@ -115,18 +115,20 @@ const ContractorJobPosts = () => {
                         <div className="flex flex-wrap items-center justify-between gap-4">
                           <div className="flex -space-x-3">
                             {[1, 2, 3].map((i) => (
-                              <img key={i} className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm bg-gray-200" src={`https://i.pravatar.cc/150?u=${job.id * 10 + i}`} alt="Worker" referrerPolicy="no-referrer" />
+                              <div key={i} className="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold bg-black text-white shadow-sm shrink-0">
+                                W{i}
+                              </div>
                             ))}
-                            <div className="w-10 h-10 rounded-full border-2 border-white bg-brand-background flex items-center justify-center text-[10px] font-black text-[#391053]">+2</div>
+                            <div className="w-10 h-10 rounded-full border-2 border-white bg-brand-background flex items-center justify-center text-[10px] font-black text-on-surface">+2</div>
                           </div>
                           <div className="flex gap-3">
                             {activeTab === 'Pending Applications' ? (
                               <>
-                                <button onClick={() => moveJob(job.id, activeTab, 'Cancelled')} className="px-6 py-2 border border-gray-100 rounded-xl text-xs font-bold text-[#391053] hover:bg-white transition-colors uppercase tracking-widest">Reject All</button>
-                                <button onClick={() => moveJob(job.id, activeTab, 'In Progress')} className="px-6 py-2 bg-brand-primary text-[#391053] rounded-xl text-xs font-bold shadow-sm hover:opacity-90 transition-opacity uppercase tracking-widest">Approve Applications</button>
+                                <button onClick={() => moveJob(job.id, activeTab, 'Cancelled')} className="px-6 py-2 border border-gray-100 rounded-xl text-xs font-bold text-on-surface hover:bg-white transition-colors uppercase tracking-widest">Reject All</button>
+                                <button onClick={() => moveJob(job.id, activeTab, 'In Progress')} className="px-6 py-2 bg-brand-primary text-on-surface rounded-xl text-xs font-bold shadow-sm hover:opacity-90 transition-opacity uppercase tracking-widest">Approve Applications</button>
                               </>
                             ) : (
-                              <button className="px-6 py-2 bg-white text-[#391053] rounded-xl text-xs font-bold hover:bg-white transition-colors uppercase tracking-widest">Manage Post</button>
+                              <button className="px-6 py-2 bg-white text-on-surface rounded-xl text-xs font-bold hover:bg-white transition-colors uppercase tracking-widest">Manage Post</button>
                             )}
                           </div>
                         </div>
@@ -134,18 +136,18 @@ const ContractorJobPosts = () => {
                       
                       {activeTab === 'In Progress' && (
                         <div className="flex justify-end pt-2">
-                           <button onClick={() => moveJob(job.id, activeTab, 'Completed')} className="px-8 py-3 bg-brand-primary text-[#391053] rounded-xl font-bold text-sm shadow-md hover:bg-brand-primary/95 transition-all">MARK COMPLETED</button>
+                           <button onClick={() => moveJob(job.id, activeTab, 'Completed')} className="px-8 py-3 bg-brand-primary text-on-surface rounded-xl font-bold text-sm shadow-md hover:bg-brand-primary/95 transition-all">MARK COMPLETED</button>
                         </div>
                       )}
                     </div>
                   ))
                 ) : (
                   <div className="bg-white/50 rounded-2xl p-20 flex flex-col items-center justify-center text-center opacity-50">
-                    <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 text-[#391053]">
+                    <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 text-on-surface">
                        <Plus size={32} />
                     </div>
-                    <h3 className="text-xl font-bold text-[#391053]">No Jobs in this Stage</h3>
-                    <p className="text-sm text-[#391053] mt-2">Create a new post to populate your pipeline overview.</p>
+                    <h3 className="text-xl font-bold text-on-surface">No Jobs in this Stage</h3>
+                    <p className="text-sm text-on-surface mt-2">Create a new post to populate your pipeline overview.</p>
                   </div>
                 )}
               </motion.div>
@@ -155,18 +157,18 @@ const ContractorJobPosts = () => {
           {/* Pipeline Stats Sidebar */}
           <div className="lg:col-span-4 flex flex-col gap-6">
             <div className="bg-white rounded-2xl p-8 card-shadow shadow-sm">
-              <h4 className="text-lg font-bold text-[#391053] mb-8 underline decoration-brand-background decoration-4 underline-offset-8">Pipeline Overview</h4>
+              <h4 className="text-lg font-bold text-on-surface mb-8 underline decoration-brand-background decoration-4 underline-offset-8">Pipeline Overview</h4>
               <div className="space-y-4">
-                <StatRow icon={<CheckCircle2 className="text-[#391053]" />} label="New Applicants" value="24" color="bg-brand-background" />
-                <StatRow icon={<Clock className="text-[#391053]" />} label="Active Tasks" value="08" color="bg-white" />
-                <StatRow icon={<DollarSign className="text-[#391053]" />} label="Ready to Payout" value="12" color="bg-brand-background" />
+                <StatRow icon={<CheckCircle2 className="text-on-surface" />} label="New Applicants" value="24" color="bg-brand-background" />
+                <StatRow icon={<Clock className="text-on-surface" />} label="Active Tasks" value="08" color="bg-white" />
+                <StatRow icon={<DollarSign className="text-on-surface" />} label="Ready to Payout" value="12" color="bg-brand-background" />
               </div>
             </div>
 
             <div className="bg-white rounded-2xl p-8 card-shadow shadow-sm flex-grow">
-              <h4 className="text-lg font-bold text-[#391053] mb-8 underline decoration-brand-background decoration-4 underline-offset-8">Recent Activity</h4>
+              <h4 className="text-lg font-bold text-on-surface mb-8 underline decoration-brand-background decoration-4 underline-offset-8">Recent Activity</h4>
               <div className="space-y-8 relative before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-[1px] before:bg-white">
-                <ActivityItem icon={<UserSearch className="text-[#391053]" size={12} />} text="Marc S. applied for Masonry" time="15 minutes ago" color="border-brand-primary" />
+                <ActivityItem icon={<UserSearch className="text-on-surface" size={12} />} text="Marc S. applied for Masonry" time="15 minutes ago" color="border-brand-primary" />
                 <ActivityItem icon={<CheckCircle2 className="text-green-500" size={12} />} text="Roofing project marked completed" time="2 hours ago" color="border-green-500" />
                 <ActivityItem icon={<XCircle className="text-red-500" size={12} />} text="Job cancelled: Interior Painting" time="Yesterday" color="border-red-500" />
               </div>
@@ -180,8 +182,8 @@ const ContractorJobPosts = () => {
 
 const InfoItem = ({ label, value }) => (
   <div className="flex flex-col">
-    <span className="text-[10px] font-black text-[#391053] uppercase tracking-widest mb-1">{label}</span>
-    <span className="text-sm font-bold text-[#391053]">{value}</span>
+    <span className="text-[10px] font-black text-on-surface uppercase tracking-widest mb-1">{label}</span>
+    <span className="text-sm font-bold text-on-surface">{value}</span>
   </div>
 );
 
@@ -191,9 +193,9 @@ const StatRow = ({ icon, label, value, color }) => (
       <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
         {icon}
       </div>
-      <span className="text-sm font-bold text-[#391053]">{label}</span>
+      <span className="text-sm font-bold text-on-surface">{label}</span>
     </div>
-    <span className="text-lg font-black text-[#391053]">{value}</span>
+    <span className="text-lg font-black text-on-surface">{value}</span>
   </div>
 );
 
@@ -203,8 +205,8 @@ const ActivityItem = ({ icon, text, time, color }) => (
       {icon}
     </div>
     <div>
-      <p className="text-sm font-bold text-[#391053]">{text}</p>
-      <p className="text-[10px] font-semibold text-[#391053] uppercase tracking-tighter">{time}</p>
+      <p className="text-sm font-bold text-on-surface">{text}</p>
+      <p className="text-[10px] font-semibold text-on-surface uppercase tracking-tighter">{time}</p>
     </div>
   </div>
 );
