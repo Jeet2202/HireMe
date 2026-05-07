@@ -1,0 +1,459 @@
+/*
+ * VoiceAssistant.css
+ *
+ * Premium dark-themed voice navigator UI.
+ * Glassmorphism cards, animated mic button with pulse rings,
+ * smooth transitions, and mobile-responsive layout.
+ */
+
+/* ── Container ────────────────────────────────────────── */
+
+.va-container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+  min-height: 100vh;
+  background: linear-gradient(165deg, #0f0f1a 0%, #1a1a2e 40%, #16213e 100%);
+  color: #e8e8f0;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── Header ───────────────────────────────────────────── */
+
+.va-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 4px 0;
+}
+
+.va-header-icon {
+  font-size: 32px;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+  border-radius: 14px;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+.va-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #a78bfa, #818cf8, #67e8f9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.3px;
+}
+
+.va-subtitle {
+  font-size: 13px;
+  color: #8888a8;
+  margin: 2px 0 0;
+}
+
+/* ── Response Card ────────────────────────────────────── */
+
+.va-response-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 22px 20px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.va-response-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #818cf8, transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.va-response-card:hover::before {
+  opacity: 1;
+}
+
+.va-response-card.va-confirming {
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.06);
+}
+
+.va-confirm-badge {
+  display: inline-block;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  letter-spacing: 0.3px;
+}
+
+.va-response-text {
+  font-size: 17px;
+  line-height: 1.55;
+  margin: 0 0 14px;
+  font-weight: 500;
+  color: #f0f0fa;
+}
+
+.va-response-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.va-intent-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  color: #fff;
+}
+
+.va-status-text {
+  font-size: 12px;
+  color: #7777a0;
+}
+
+/* ── Mic Button ───────────────────────────────────────── */
+
+.va-mic-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 0;
+}
+
+.va-mic-btn {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.va-mic-btn:active {
+  transform: scale(0.93);
+}
+
+.va-mic-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.va-mic-inner {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Idle state */
+.va-mic-idle .va-mic-inner {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  box-shadow:
+    0 4px 20px rgba(99, 102, 241, 0.35),
+    0 0 40px rgba(99, 102, 241, 0.1);
+}
+
+/* Listening state */
+.va-mic-listening .va-mic-inner {
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  box-shadow:
+    0 4px 24px rgba(239, 68, 68, 0.4),
+    0 0 60px rgba(239, 68, 68, 0.15);
+}
+
+/* Processing state */
+.va-mic-processing .va-mic-inner {
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Speaking state */
+.va-mic-speaking .va-mic-inner {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  box-shadow:
+    0 4px 20px rgba(16, 185, 129, 0.35),
+    0 0 40px rgba(16, 185, 129, 0.1);
+  animation: speakPulse 1.2s ease-in-out infinite;
+}
+
+.va-mic-icon {
+  width: 30px;
+  height: 30px;
+  color: #fff;
+}
+
+.va-mic-label {
+  font-size: 13px;
+  color: #8888a8;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ── Pulse Rings (Listening) ──────────────────────────── */
+
+.va-pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid rgba(239, 68, 68, 0.4);
+  z-index: 1;
+}
+
+.va-pulse-1 {
+  animation: pulseExpand 2s ease-out infinite;
+}
+
+.va-pulse-2 {
+  animation: pulseExpand 2s ease-out infinite 0.5s;
+}
+
+.va-pulse-3 {
+  animation: pulseExpand 2s ease-out infinite 1s;
+}
+
+@keyframes pulseExpand {
+  0% {
+    width: 72px;
+    height: 72px;
+    opacity: 0.6;
+  }
+  100% {
+    width: 140px;
+    height: 140px;
+    opacity: 0;
+  }
+}
+
+@keyframes speakPulse {
+  0%, 100% {
+    box-shadow:
+      0 4px 20px rgba(16, 185, 129, 0.35),
+      0 0 40px rgba(16, 185, 129, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 4px 30px rgba(16, 185, 129, 0.5),
+      0 0 60px rgba(16, 185, 129, 0.2);
+  }
+}
+
+/* ── Spinner ──────────────────────────────────────────── */
+
+.va-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Quick Actions ────────────────────────────────────── */
+
+.va-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.va-quick-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  font-size: 13px;
+  color: #a0a0c0;
+  cursor: default;
+  transition: all 0.2s;
+}
+
+.va-quick-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #d0d0e8;
+}
+
+/* ── Error ────────────────────────────────────────────── */
+
+.va-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #fca5a5;
+  text-align: center;
+}
+
+/* ── History ──────────────────────────────────────────── */
+
+.va-history {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 18px;
+}
+
+.va-history-title {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6666a0;
+  margin: 0 0 12px;
+}
+
+.va-history-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.va-history-item:last-child {
+  border-bottom: none;
+}
+
+.va-history-intent {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #818cf8;
+  background: rgba(129, 140, 248, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.va-history-text {
+  font-size: 13px;
+  color: #9999b8;
+  line-height: 1.4;
+}
+
+/* ── Help Section ─────────────────────────────────────── */
+
+.va-help {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.va-help-title {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6666a0;
+  margin: 0 0 14px;
+}
+
+.va-help-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.va-help-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.va-help-cmd {
+  font-size: 14px;
+  font-weight: 600;
+  color: #c4b5fd;
+}
+
+.va-help-desc {
+  font-size: 11px;
+  color: #6b6b8f;
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .va-container {
+    padding: 16px 14px 32px;
+    gap: 20px;
+  }
+
+  .va-title {
+    font-size: 19px;
+  }
+
+  .va-response-text {
+    font-size: 15px;
+  }
+
+  .va-help-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .va-mic-btn {
+    width: 80px;
+    height: 80px;
+  }
+
+  .va-mic-inner {
+    width: 64px;
+    height: 64px;
+  }
+}

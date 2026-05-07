@@ -24,7 +24,7 @@ export default function LabourerSidebar() {
         <p className="text-white/70 text-xs uppercase tracking-wider mt-1">Labourer Module</p>
       </div>
 
-      <nav className="flex-1 px-4 mt-8 space-y-2">
+      <nav className="flex-1 px-4 mt-4 space-y-2 overflow-y-auto">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
