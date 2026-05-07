@@ -332,6 +332,7 @@ function ContractorProfileModal({ contractor, onClose }) {
 }
 
 const API_BASE = 'http://localhost:8000/api/labourer';
+const JOBS_API_BASE = 'http://localhost:8000/api/jobs';
 
 /* ─── Icon mapping for DB jobs ─────────────────────────── */
 const categoryIcons = {
@@ -340,6 +341,11 @@ const categoryIcons = {
   clock: <Clock size={24} />,
   dollar: <DollarSign size={24} />,
   general: <Briefcase size={24} />,
+  Construction: <Briefcase size={24} />,
+  Maintenance: <Clock size={24} />,
+  Electrical: <DollarSign size={24} />,
+  Plumbing: <Route size={24} />,
+  Painting: <Briefcase size={24} />,
 };
 
 function mapDbJobToUi(dbJob) {
@@ -360,6 +366,28 @@ function mapDbJobToUi(dbJob) {
   };
 }
 
+/* ─── Map contractor-posted jobs to the labourer UI format */
+function mapContractorJobToUi(job) {
+  return {
+    id: job.id,
+    title: job.title,
+    contractor: job.contractor_name || 'Unknown Contractor',
+    wage: `₹${job.budget_per_day} / day`,
+    date: job.date_range ? job.date_range.split(' - ')[0] : 'TBD',
+    time: job.start_time || 'TBD',
+    location: job.location,
+    distance: '',
+    status: 'Pending',
+    categoryIcon: categoryIcons[job.category] || categoryIcons.general,
+    iconBg: 'bg-surface-container-high',
+    iconColor: 'text-on-surface',
+    _fromDb: true,
+    _source: 'contractor_post',
+    required_skills: job.required_skills,
+    urgency: job.urgency,
+  };
+}
+
 /* ─── Main Component ───────────────────────────────────── */
 export default function LabourerJobRequests() {
   const [jobs, setJobs] = useState(initialJobs);
@@ -367,21 +395,39 @@ export default function LabourerJobRequests() {
   const [selectedContractor, setSelectedContractor] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  /* Fetch jobs from API on mount; fallback to hardcoded if empty */
+  /* Fetch jobs from both labourer API and contractor-posted jobs */
   useEffect(() => {
     async function fetchJobs() {
+      let mergedJobs = [...initialJobs];
+      
       try {
+        // 1. Try labourer-specific job requests
         const res = await fetch(`${API_BASE}/jobs`);
         const data = await res.json();
         if (data.jobs && data.jobs.length > 0) {
-          setJobs(data.jobs.map(mapDbJobToUi));
+          mergedJobs = data.jobs.map(mapDbJobToUi);
         }
-        // else: keep initialJobs (hardcoded)
       } catch (err) {
-        console.log('API unavailable, using hardcoded jobs.');
-      } finally {
-        setLoading(false);
+        console.log('Labourer API unavailable, using hardcoded jobs.');
       }
+
+      try {
+        // 2. Also fetch contractor-posted jobs from /api/jobs
+        const res2 = await fetch(`${JOBS_API_BASE}?status=Active`);
+        const data2 = await res2.json();
+        if (data2.jobs && data2.jobs.length > 0) {
+          const contractorJobs = data2.jobs.map(mapContractorJobToUi);
+          // Merge — avoid duplicates by ID
+          const existingIds = new Set(mergedJobs.map(j => j.id));
+          const newJobs = contractorJobs.filter(j => !existingIds.has(j.id));
+          mergedJobs = [...mergedJobs, ...newJobs];
+        }
+      } catch (err) {
+        console.log('Jobs API unavailable.');
+      }
+
+      setJobs(mergedJobs);
+      setLoading(false);
     }
     fetchJobs();
   }, []);
