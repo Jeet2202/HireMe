@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 from app.routes.auth import router as auth_router
 from app.routes.ml import router as ml_router
+from app.routes.voice import router as voice_router
 
 load_dotenv()
 
@@ -30,6 +31,7 @@ app.add_middleware(
 # Register routers
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(ml_router, prefix="/api/ml", tags=["ML Matching Engine"])
+app.include_router(voice_router, prefix="/api/voice", tags=["Voice Navigator"])
 
 
 @app.get("/")

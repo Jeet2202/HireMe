@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { 
   Bell, 
   Search, 
@@ -10,7 +10,10 @@ import {
   Star,
   Clock,
   MapPin,
-  ChevronRight
+  ChevronRight,
+  Mic,
+  MicOff,
+  Volume2
 } from 'lucide-react';
 import {
   BarChart,
@@ -23,6 +26,9 @@ import {
   LineChart,
   Line
 } from 'recharts';
+import useRecorder from '../../hooks/useRecorder';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const earningsData = [
   { month: 'Jan', amount: 3200 },
@@ -44,6 +50,190 @@ const ratingData = [
 export default function LabourerDashboard() {
   const [isAvailable, setIsAvailable] = useState(true);
 
+  // ── Voice Assistant State ──────────────────────────────
+  const [voicePhase, setVoicePhase] = useState('idle');
+  // idle | greeting | speaking | listening | processing
+  const [voiceText, setVoiceText] = useState('');
+  const [voiceActive, setVoiceActive] = useState(false);
+  const audioRef = useRef(null);
+  const listenTimeoutRef = useRef(null);
+  const { status: recStatus, error: recError, startRecording, stopRecording, cancelRecording } = useRecorder();
+
+  // ── Cleanup on unmount ─────────────────────────────────
+  useEffect(() => {
+    return () => {
+      cancelRecording();
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      if (listenTimeoutRef.current) {
+        clearTimeout(listenTimeoutRef.current);
+      }
+    };
+  }, [cancelRecording]);
+
+  // ── Play base64 audio helper ───────────────────────────
+  const playAudio = useCallback((base64Audio, onEnded) => {
+    try {
+      const raw = atob(base64Audio);
+      const arr = new Uint8Array(raw.length);
+      for (let i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
+      const blob = new Blob([arr], { type: 'audio/wav' });
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audioRef.current = audio;
+
+      audio.onended = () => {
+        URL.revokeObjectURL(url);
+        audioRef.current = null;
+        if (onEnded) onEnded();
+      };
+      audio.onerror = () => {
+        URL.revokeObjectURL(url);
+        audioRef.current = null;
+        if (onEnded) onEnded();
+      };
+      audio.play().catch(() => {
+        if (onEnded) onEnded();
+      });
+    } catch {
+      if (onEnded) onEnded();
+    }
+  }, []);
+
+  // ── Start listening after system finishes speaking ─────
+  const startListening = useCallback(async () => {
+    setVoicePhase('listening');
+    await startRecording();
+
+    // Auto-stop after 5 seconds
+    listenTimeoutRef.current = setTimeout(async () => {
+      await finishListening();
+    }, 5000);
+  }, [startRecording]);
+
+  // ── Stop recording and send to backend ─────────────────
+  const finishListening = useCallback(async () => {
+    if (listenTimeoutRef.current) {
+      clearTimeout(listenTimeoutRef.current);
+      listenTimeoutRef.current = null;
+    }
+
+    setVoicePhase('processing');
+    const blob = await stopRecording();
+
+    if (!blob || blob.size === 0) {
+      setVoiceText("Didn't hear anything. Tap mic to try again.");
+      setVoicePhase('idle');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('audio', blob, 'recording.webm');
+      const res = await fetch(`${API_URL}/api/voice/`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error(`Server error: ${res.status}`);
+      const data = await res.json();
+
+      setVoiceText(data.text);
+
+      if (data.audio) {
+        setVoicePhase('speaking');
+        playAudio(data.audio, () => {
+          // If system needs confirmation or intent is ongoing, auto-listen
+          if (data.state === 'awaiting_confirmation' || 
+              !['STOP', 'UNKNOWN'].includes(data.intent)) {
+            startListening();
+          } else {
+            setVoicePhase('idle');
+            if (data.intent === 'STOP') {
+              setVoiceActive(false);
+            }
+          }
+        });
+      } else {
+        setVoicePhase('idle');
+      }
+    } catch (err) {
+      console.error('Voice API error:', err);
+      setVoiceText('Connection failed. Tap mic to try again.');
+      setVoicePhase('idle');
+    }
+  }, [stopRecording, playAudio, startListening]);
+
+  // ── Main voice button: triggers the "system speaks first" flow ──
+  const handleVoiceButton = useCallback(async () => {
+    if (voiceActive) {
+      // If currently in a conversation, handle based on phase
+      if (voicePhase === 'listening') {
+        // User taps while listening → stop and send
+        if (listenTimeoutRef.current) {
+          clearTimeout(listenTimeoutRef.current);
+          listenTimeoutRef.current = null;
+        }
+        await finishListening();
+        return;
+      }
+      // Stop entire session
+      cancelRecording();
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      setVoiceActive(false);
+      setVoicePhase('idle');
+      setVoiceText('');
+      return;
+    }
+
+    // ── Start new session: system speaks first ──
+    setVoiceActive(true);
+    setVoicePhase('greeting');
+    setVoiceText('Connecting...');
+
+    try {
+      const res = await fetch(
+        `${API_URL}/api/voice/init?user_name=Marcus`
+      );
+      if (!res.ok) throw new Error(`Server error: ${res.status}`);
+      const data = await res.json();
+
+      setVoiceText(data.text);
+
+      if (data.audio) {
+        setVoicePhase('speaking');
+        playAudio(data.audio, () => {
+          // After greeting finishes, start listening
+          startListening();
+        });
+      } else {
+        // No audio, go straight to listening
+        startListening();
+      }
+    } catch (err) {
+      console.error('Voice init error:', err);
+      setVoiceText('Could not connect. Please try again.');
+      setVoicePhase('idle');
+      setVoiceActive(false);
+    }
+  }, [voiceActive, voicePhase, finishListening, cancelRecording, playAudio, startListening]);
+
+  // ── Voice phase label ──────────────────────────────────
+  const getVoiceLabel = () => {
+    switch (voicePhase) {
+      case 'greeting': return 'Connecting...';
+      case 'speaking': return '🔊 Speaking...';
+      case 'listening': return '🎤 Listening...';
+      case 'processing': return '⏳ Processing...';
+      default: return '';
+    }
+  };
+
   return (
     <div className="flex-1 p-8 space-y-8 animate-in fade-in duration-500 bg-gradient-to-br from-white to-[#f4f4f5] min-h-screen">
       <header className="flex justify-between items-center">
@@ -52,6 +242,33 @@ export default function LabourerDashboard() {
           <p className="text-on-surface mt-1">Welcome back, Marcus. Here's your schedule for today.</p>
         </div>
         <div className="flex items-center gap-4">
+          {/* ── Voice Assistant Button ───────────────────── */}
+          <button
+            id="voice-assistant-btn"
+            onClick={handleVoiceButton}
+            className={`w-12 h-12 flex items-center justify-center rounded-xl border transition-all duration-300 relative ${
+              voiceActive
+                ? voicePhase === 'listening'
+                  ? 'bg-red-500 border-red-400 text-white shadow-lg shadow-red-200'
+                  : voicePhase === 'speaking'
+                  ? 'bg-green-500 border-green-400 text-white shadow-lg shadow-green-200'
+                  : 'bg-blue-500 border-blue-400 text-white shadow-lg shadow-blue-200'
+                : 'bg-white border-outline-variant text-on-surface card-shadow hover:bg-primary hover:text-white hover:border-primary'
+            }`}
+            title={voiceActive ? 'Stop voice assistant' : 'Talk to assistant'}
+          >
+            {voiceActive && voicePhase === 'listening' ? (
+              <MicOff size={20} />
+            ) : voiceActive && voicePhase === 'speaking' ? (
+              <Volume2 size={20} className="animate-pulse" />
+            ) : (
+              <Mic size={20} />
+            )}
+            {voiceActive && voicePhase === 'listening' && (
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping" />
+            )}
+          </button>
+
           <button className="w-12 h-12 flex items-center justify-center rounded-xl bg-white card-shadow border border-outline-variant hover:bg-white transition-colors relative">
             <Bell className="text-on-surface" size={20} />
             <span className="absolute top-3 right-3 w-2 h-2 bg-[#ba1a1a] rounded-full"></span>
@@ -62,6 +279,45 @@ export default function LabourerDashboard() {
           </div>
         </div>
       </header>
+
+      {/* ── Voice Status Bar (only visible when active) ── */}
+      {voiceActive && (
+        <div className={`flex items-center gap-4 px-6 py-4 rounded-2xl border transition-all duration-300 ${
+          voicePhase === 'listening'
+            ? 'bg-red-50 border-red-200'
+            : voicePhase === 'speaking'
+            ? 'bg-green-50 border-green-200'
+            : 'bg-blue-50 border-blue-200'
+        }`}>
+          <div className="flex items-center gap-2 shrink-0">
+            {voicePhase === 'listening' && (
+              <>
+                <span className="w-2 h-2 bg-red-500 rounded-full animate-ping" />
+                <span className="text-xs font-bold text-red-600 uppercase tracking-wider">
+                  {getVoiceLabel()}
+                </span>
+              </>
+            )}
+            {voicePhase === 'speaking' && (
+              <>
+                <Volume2 size={16} className="text-green-600 animate-pulse" />
+                <span className="text-xs font-bold text-green-600 uppercase tracking-wider">
+                  {getVoiceLabel()}
+                </span>
+              </>
+            )}
+            {(voicePhase === 'processing' || voicePhase === 'greeting') && (
+              <>
+                <div className="w-4 h-4 border-2 border-blue-300 border-t-blue-600 rounded-full animate-spin" />
+                <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">
+                  {getVoiceLabel()}
+                </span>
+              </>
+            )}
+          </div>
+          <p className="text-sm text-on-surface flex-1 leading-relaxed">{voiceText}</p>
+        </div>
+      )}
 
       {/* KPI Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -224,5 +480,3 @@ export default function LabourerDashboard() {
     </div>
   );
 }
-
-
