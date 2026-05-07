@@ -1,58 +1,44 @@
 """
-Text-to-Speech service using Groq Orpheus API.
+Text-to-Speech service using Google TTS (gTTS).
 
-Converts response text to speech audio and returns base64-encoded data.
+Supports both Hindi ('hi') and English ('en') output.
+No API key required — uses Google Translate TTS.
 """
 
-import os
+import asyncio
 import base64
-import httpx
-
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GROQ_TTS_URL = "https://api.groq.com/openai/v1/audio/speech"
-TTS_MODEL = "canopylabs/orpheus-v1-english"
-TTS_VOICE = "daniel"  # Valid voices: autumn, diana, hannah, austin, daniel, troy
+import io
+from gtts import gTTS
 
 
-async def text_to_speech(text: str) -> str:
+async def text_to_speech(text: str, lang: str = "hi") -> str:
     """
-    Convert text to speech using Groq Orpheus TTS API.
+    Convert text to speech using Google TTS.
 
     Args:
-        text: The response text to convert to audio.
+        text: The response text.
+        lang: Language code — 'hi' for Hindi, 'en' for English.
 
     Returns:
-        Base64-encoded audio string (WAV format).
-
-    Raises:
-        ValueError: If API key is missing or text is empty.
-        httpx.HTTPStatusError: If Groq API returns an error.
+        Base64-encoded audio string (MP3 format).
     """
-    if not GROQ_API_KEY:
-        raise ValueError("GROQ_API_KEY is not set in environment variables.")
-
     if not text or not text.strip():
         raise ValueError("Cannot convert empty text to speech.")
 
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        response = await client.post(
-            GROQ_TTS_URL,
-            headers={
-                "Authorization": f"Bearer {GROQ_API_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": TTS_MODEL,
-                "input": text,
-                "voice": TTS_VOICE,
-                "response_format": "wav",
-            },
-        )
-        response.raise_for_status()
+    # Normalize language code
+    tts_lang = "hi" if lang == "hi" else "en"
 
-    audio_bytes = response.content
+    def _generate() -> bytes:
+        tts = gTTS(text=text, lang=tts_lang, slow=False)
+        buf = io.BytesIO()
+        tts.write_to_fp(buf)
+        buf.seek(0)
+        return buf.read()
+
+    loop = asyncio.get_event_loop()
+    audio_bytes = await loop.run_in_executor(None, _generate)
 
     if not audio_bytes:
-        raise ValueError("TTS API returned empty audio.")
+        raise ValueError("gTTS returned empty audio.")
 
     return base64.b64encode(audio_bytes).decode("utf-8")

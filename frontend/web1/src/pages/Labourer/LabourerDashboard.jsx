@@ -1,4 +1,5 @@
-import React, { useState, useRef, useCallback, useEffect, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Bell, 
   Search, 
@@ -27,7 +28,7 @@ import {
   LineChart,
   Line
 } from 'recharts';
-import useRecorder from '../../hooks/useRecorder';
+
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -66,30 +67,35 @@ const defaultStats = {
 };
 
 export default function LabourerDashboard() {
+  const navigate = useNavigate();
   const [isAvailable, setIsAvailable] = useState(true);
 
   // ── Voice Assistant State ──────────────────────────────
   const [voicePhase, setVoicePhase] = useState('idle');
   // idle | greeting | speaking | listening | processing
   const [voiceText, setVoiceText] = useState('');
+  const [liveTranscript, setLiveTranscript] = useState(''); // real-time as user speaks
+  const [userTranscript, setUserTranscript] = useState(''); // confirmed after send
   const [voiceActive, setVoiceActive] = useState(false);
+  const [language, setLanguage] = useState('hi');
+  const [srError, setSrError] = useState('');
+  const hasPlayedIntro = useRef(false);
   const audioRef = useRef(null);
-  const listenTimeoutRef = useRef(null);
-  const { status: recStatus, error: recError, startRecording, stopRecording, cancelRecording } = useRecorder();
+  const recognitionRef = useRef(null);
 
   // ── Cleanup on unmount ─────────────────────────────────
   useEffect(() => {
     return () => {
-      cancelRecording();
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+        recognitionRef.current = null;
+      }
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
       }
-      if (listenTimeoutRef.current) {
-        clearTimeout(listenTimeoutRef.current);
-      }
     };
-  }, [cancelRecording]);
+  }, []);
 
   // ── Play base64 audio helper ───────────────────────────
   const playAudio = useCallback((base64Audio, onEnded) => {
@@ -97,108 +103,132 @@ export default function LabourerDashboard() {
       const raw = atob(base64Audio);
       const arr = new Uint8Array(raw.length);
       for (let i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
-      const blob = new Blob([arr], { type: 'audio/wav' });
+      const blob = new Blob([arr], { type: 'audio/mpeg' });
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
       audioRef.current = audio;
-
-      audio.onended = () => {
-        URL.revokeObjectURL(url);
-        audioRef.current = null;
-        if (onEnded) onEnded();
-      };
-      audio.onerror = () => {
-        URL.revokeObjectURL(url);
-        audioRef.current = null;
-        if (onEnded) onEnded();
-      };
-      audio.play().catch(() => {
-        if (onEnded) onEnded();
-      });
-    } catch {
-      if (onEnded) onEnded();
-    }
+      audio.onended = () => { URL.revokeObjectURL(url); audioRef.current = null; if (onEnded) onEnded(); };
+      audio.onerror = () => { URL.revokeObjectURL(url); audioRef.current = null; if (onEnded) onEnded(); };
+      audio.play().catch(() => { if (onEnded) onEnded(); });
+    } catch { if (onEnded) onEnded(); }
   }, []);
 
-  // ── Start listening after system finishes speaking ─────
-  const startListening = useCallback(async () => {
-    setVoicePhase('listening');
-    await startRecording();
+  // ── Execute UI action from backend ─────────────────────
+  const executeUiAction = useCallback((action) => {
+    if (!action) return;
+    if (action === 'NAVIGATE_JOB_REQUESTS') navigate('/labourer/job-requests');
+    else if (action === 'NAVIGATE_PROFILE') navigate('/labourer/profile');
+    else if (action === 'TOGGLE_AVAILABILITY') setIsAvailable(prev => !prev);
+  }, [navigate]);
 
-    // Auto-stop after 5 seconds
-    listenTimeoutRef.current = setTimeout(async () => {
-      await finishListening();
-    }, 5000);
-  }, [startRecording]);
-
-  // ── Stop recording and send to backend ─────────────────
-  const finishListening = useCallback(async () => {
-    if (listenTimeoutRef.current) {
-      clearTimeout(listenTimeoutRef.current);
-      listenTimeoutRef.current = null;
-    }
-
-    setVoicePhase('processing');
-    const blob = await stopRecording();
-
-    if (!blob || blob.size === 0) {
-      setVoiceText("Didn't hear anything. Tap mic to try again.");
+  // ── Start listening: Web Speech API for live display ───
+  const startListening = useCallback(() => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) {
+      setSrError('Voice input not supported. Please use Chrome or Edge.');
+      setVoiceActive(false);
       setVoicePhase('idle');
       return;
     }
+    setSrError('');
+    setLiveTranscript('');
+    setVoicePhase('listening');
+
+    const recognition = new SR();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = language === 'hi' ? 'hi-IN' : 'en-US';
+
+    recognition.onresult = (event) => {
+      let full = '';
+      for (let i = 0; i < event.results.length; i++) {
+        full += event.results[i][0].transcript;
+      }
+      setLiveTranscript(full);
+    };
+
+    recognition.onerror = (e) => {
+      if (e.error === 'not-allowed') setSrError('Mic permission denied. Allow mic in browser settings.');
+      else if (e.error !== 'no-speech') setSrError(`Voice error: ${e.error}`);
+    };
+
+    recognition.onend = () => {
+      // Auto-restart if still in listening phase (handles silence timeout)
+      setVoicePhase(prev => {
+        if (prev === 'listening' && recognitionRef.current) {
+          try { recognitionRef.current.start(); } catch {}
+        }
+        return prev;
+      });
+    };
+
+    recognitionRef.current = recognition;
+    try { recognition.start(); } catch {}
+  }, [language]);
+
+  // ── Send live transcript to backend ────────────────────
+  const finishListening = useCallback(async () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.onend = null;
+      recognitionRef.current.abort();
+      recognitionRef.current = null;
+    }
+
+    const transcript = liveTranscript.trim();
+    if (!transcript) {
+      setVoiceText(language === 'hi' ? 'Kuch nahi suna. Dobara bolein.' : 'Nothing heard. Please try again.');
+      startListening();
+      return;
+    }
+
+    setVoicePhase('processing');
+    setUserTranscript(transcript);
+    setLiveTranscript('');
 
     try {
       const formData = new FormData();
-      formData.append('audio', blob, 'recording.webm');
-      const res = await fetch(`${API_URL}/api/voice/`, {
+      formData.append('text', transcript);
+      formData.append('lang', language);
+      const res = await fetch(`${API_URL}/api/voice/text-input`, {
         method: 'POST',
         body: formData,
       });
-
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
       const data = await res.json();
 
       setVoiceText(data.text);
+      if (data.ui_action) executeUiAction(data.ui_action);
 
       if (data.audio) {
         setVoicePhase('speaking');
         playAudio(data.audio, () => {
-          // If system needs confirmation or intent is ongoing, auto-listen
-          if (data.state === 'awaiting_confirmation' || 
-              !['STOP', 'UNKNOWN'].includes(data.intent)) {
-            startListening();
-          } else {
+          if (data.intent === 'STOP') {
+            setVoiceActive(false);
             setVoicePhase('idle');
-            if (data.intent === 'STOP') {
-              setVoiceActive(false);
-            }
+          } else {
+            startListening();
           }
         });
       } else {
-        setVoicePhase('idle');
+        startListening();
       }
     } catch (err) {
       console.error('Voice API error:', err);
-      setVoiceText('Connection failed. Tap mic to try again.');
+      setVoiceText(language === 'hi' ? 'Connection fail hua. Dobara try karein.' : 'Connection failed. Try again.');
       setVoicePhase('idle');
+      setVoiceActive(false);
     }
-  }, [stopRecording, playAudio, startListening]);
+  }, [liveTranscript, language, playAudio, startListening, executeUiAction]);
 
-  // ── Main voice button: triggers the "system speaks first" flow ──
+  // ── Main voice button ─────────────────────────────────
   const handleVoiceButton = useCallback(async () => {
     if (voiceActive) {
-      // If currently in a conversation, handle based on phase
-      if (voicePhase === 'listening') {
-        // User taps while listening → stop and send
-        if (listenTimeoutRef.current) {
-          clearTimeout(listenTimeoutRef.current);
-          listenTimeoutRef.current = null;
-        }
-        await finishListening();
-        return;
+      // Stop everything
+      if (recognitionRef.current) {
+        recognitionRef.current.onend = null;
+        recognitionRef.current.abort();
+        recognitionRef.current = null;
       }
-      // Stop entire session
-      cancelRecording();
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
@@ -206,48 +236,50 @@ export default function LabourerDashboard() {
       setVoiceActive(false);
       setVoicePhase('idle');
       setVoiceText('');
+      setUserTranscript('');
+      setLiveTranscript('');
       return;
     }
 
-    // ── Start new session: system speaks first ──
+    // Start new session
     setVoiceActive(true);
     setVoicePhase('greeting');
-    setVoiceText('Connecting...');
+    setVoiceText(language === 'hi' ? 'Connect ho raha hai...' : 'Connecting...');
+    setLiveTranscript('');
+    setUserTranscript('');
 
     try {
+      const isFirst = !hasPlayedIntro.current;
       const res = await fetch(
-        `${API_URL}/api/voice/init?user_name=Marcus`
+        `${API_URL}/api/voice/init?user_name=Marcus&is_first_time=${isFirst}&lang=${language}`
       );
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
       const data = await res.json();
 
+      hasPlayedIntro.current = true;
       setVoiceText(data.text);
 
       if (data.audio) {
         setVoicePhase('speaking');
-        playAudio(data.audio, () => {
-          // After greeting finishes, start listening
-          startListening();
-        });
+        playAudio(data.audio, () => startListening());
       } else {
-        // No audio, go straight to listening
         startListening();
       }
     } catch (err) {
       console.error('Voice init error:', err);
-      setVoiceText('Could not connect. Please try again.');
+      setVoiceText(language === 'hi' ? 'Connect nahi ho saka.' : 'Could not connect.');
       setVoicePhase('idle');
       setVoiceActive(false);
     }
-  }, [voiceActive, voicePhase, finishListening, cancelRecording, playAudio, startListening]);
+  }, [voiceActive, playAudio, startListening, language]);
 
   // ── Voice phase label ──────────────────────────────────
   const getVoiceLabel = () => {
     switch (voicePhase) {
-      case 'greeting': return 'Connecting...';
-      case 'speaking': return '🔊 Speaking...';
-      case 'listening': return '🎤 Listening...';
-      case 'processing': return '⏳ Processing...';
+      case 'greeting': return language === 'hi' ? 'Connect ho raha hai...' : 'Connecting...';
+      case 'speaking': return language === 'hi' ? 'Bol raha hai...' : 'Speaking...';
+      case 'listening': return language === 'hi' ? 'Sun raha hai...' : 'Listening...';
+      case 'processing': return language === 'hi' ? 'Samajh raha hai...' : 'Processing...';
       default: return '';
     }
   };
@@ -288,6 +320,15 @@ export default function LabourerDashboard() {
           <p className="text-on-surface mt-1">Welcome back, Marcus. Here's your schedule for today.</p>
         </div>
         <div className="flex items-center gap-4">
+          {/* ── Language Toggle ────────────────────────── */}
+          <button
+            onClick={() => setLanguage(prev => prev === 'hi' ? 'en' : 'hi')}
+            className="px-3 py-2 rounded-xl bg-white border border-outline-variant card-shadow text-xs font-bold text-on-surface hover:bg-primary hover:text-white transition-colors"
+            title="Switch language"
+          >
+            {language === 'hi' ? 'HI → EN' : 'EN → HI'}
+          </button>
+
           {/* ── Voice Assistant Button ───────────────────── */}
           <button
             id="voice-assistant-btn"
@@ -328,40 +369,71 @@ export default function LabourerDashboard() {
 
       {/* ── Voice Status Bar (only visible when active) ── */}
       {voiceActive && (
-        <div className={`flex items-center gap-4 px-6 py-4 rounded-2xl border transition-all duration-300 ${
+        <div className={`flex flex-col gap-2 px-6 py-4 rounded-2xl border transition-all duration-300 ${
           voicePhase === 'listening'
             ? 'bg-red-50 border-red-200'
             : voicePhase === 'speaking'
             ? 'bg-green-50 border-green-200'
             : 'bg-blue-50 border-blue-200'
         }`}>
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 shrink-0">
+              {voicePhase === 'listening' && (
+                <>
+                  <span className="w-2 h-2 bg-red-500 rounded-full animate-ping" />
+                  <span className="text-xs font-bold text-red-600 uppercase tracking-wider">
+                    {getVoiceLabel()}
+                  </span>
+                </>
+              )}
+              {voicePhase === 'speaking' && (
+                <>
+                  <Volume2 size={16} className="text-green-600 animate-pulse" />
+                  <span className="text-xs font-bold text-green-600 uppercase tracking-wider">
+                    {getVoiceLabel()}
+                  </span>
+                </>
+              )}
+              {(voicePhase === 'processing' || voicePhase === 'greeting') && (
+                <>
+                  <div className="w-4 h-4 border-2 border-blue-300 border-t-blue-600 rounded-full animate-spin" />
+                  <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">
+                    {getVoiceLabel()}
+                  </span>
+                </>
+              )}
+            </div>
+            <p className="text-sm text-on-surface flex-1 leading-relaxed">{voiceText}</p>
             {voicePhase === 'listening' && (
-              <>
-                <span className="w-2 h-2 bg-red-500 rounded-full animate-ping" />
-                <span className="text-xs font-bold text-red-600 uppercase tracking-wider">
-                  {getVoiceLabel()}
-                </span>
-              </>
-            )}
-            {voicePhase === 'speaking' && (
-              <>
-                <Volume2 size={16} className="text-green-600 animate-pulse" />
-                <span className="text-xs font-bold text-green-600 uppercase tracking-wider">
-                  {getVoiceLabel()}
-                </span>
-              </>
-            )}
-            {(voicePhase === 'processing' || voicePhase === 'greeting') && (
-              <>
-                <div className="w-4 h-4 border-2 border-blue-300 border-t-blue-600 rounded-full animate-spin" />
-                <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">
-                  {getVoiceLabel()}
-                </span>
-              </>
+              <button
+                onClick={finishListening}
+                className="px-4 py-1.5 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600 transition-colors shrink-0"
+              >
+                {language === 'hi' ? 'BHEJO' : 'SEND'}
+              </button>
             )}
           </div>
-          <p className="text-sm text-on-surface flex-1 leading-relaxed">{voiceText}</p>
+          {/* STT Transcript feedback */}
+          {userTranscript && (
+            <p className="text-xs text-on-surface/60 italic pl-6">
+              {language === 'hi' ? 'Aapne bola' : 'You said'}: "{userTranscript}"
+            </p>
+          )}
+          {/* Live transcript while speaking */}
+          {voicePhase === 'listening' && liveTranscript && (
+            <p className="text-sm font-medium text-on-surface pl-6 mt-1">
+              🎙️ &ldquo;{liveTranscript}&rdquo;
+            </p>
+          )}
+          {/* No-speech prompt */}
+          {voicePhase === 'listening' && !liveTranscript && (
+            <p className="text-xs text-on-surface/40 italic pl-6">
+              {language === 'hi' ? 'Boliye... (BHEJO dabayein bhejna ke liye)' : 'Speak now... (press SEND when done)'}
+            </p>
+          )}
+          {srError && (
+            <p className="text-xs text-red-500 pl-6">{srError}</p>
+          )}
         </div>
       )}
 

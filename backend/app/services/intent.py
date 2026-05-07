@@ -23,37 +23,48 @@ VALID_INTENTS = {
     "STOP",
     "CONFIRM",
     "DENY",
+    "SHOW_MY_JOBS",
+    "OPEN_PROFILE",
+    "TOGGLE_AVAILABILITY",
     "UNKNOWN",
 }
 
-SYSTEM_PROMPT = """You are an intent classifier for a voice-based labour job navigator.
+SYSTEM_PROMPT = """You are an intent classifier for a voice-based labour job navigator used by Hindi-speaking workers in India.
 
-Given the user's spoken text, classify it into EXACTLY ONE of these intents:
+Given the user's spoken text (may be Hindi, Hinglish, or English), classify it into EXACTLY ONE of these intents:
 
-- READ_SUMMARY  → User wants to hear a summary of available jobs or current job details
-- BEST_JOB      → User wants the best/highest paying job
-- NEXT_JOB      → User wants to hear the next job
-- REPEAT         → User wants to hear the last response again
-- ACCEPT         → User wants to accept the current job
-- REJECT         → User wants to reject/skip the current job
-- STOP           → User wants to stop or exit
-- CONFIRM        → User is confirming a previous action (yes, sure, ok, confirm, haan, ha)
-- DENY           → User is denying/cancelling a previous action (no, cancel, nahi, nako)
-- UNKNOWN        → Speech doesn't match any intent
+- READ_SUMMARY        → User wants to hear a summary of available jobs
+- BEST_JOB            → User wants the best/highest paying job
+- NEXT_JOB            → User wants to hear the next job
+- REPEAT              → User wants to hear the last response again
+- ACCEPT              → User wants to accept the current job
+- REJECT              → User wants to reject/skip the current job
+- STOP                → User wants to stop or exit
+- CONFIRM             → User is confirming a previous action
+- DENY                → User is denying/cancelling a previous action
+- SHOW_MY_JOBS        → User wants to see/view their job requests list on screen
+- OPEN_PROFILE        → User wants to open/view their profile page
+- TOGGLE_AVAILABILITY → User wants to go online/offline or change their availability
+- UNKNOWN             → Speech doesn't match any intent
 
 RULES:
 - Return ONLY the intent string, nothing else
 - No explanations, no punctuation, no extra words
-- Be generous in interpretation — match common Hindi/English phrases to intents
-- "haan" / "ha" / "yes" / "sure" / "ok" → CONFIRM
-- "nahi" / "no" / "cancel" / "nako" → DENY
-- "next" / "agle" / "dusra" → NEXT_JOB
-- "best" / "sabse accha" / "top" → BEST_JOB
-- "accept" / "le lo" / "theek hai le leta hu" → ACCEPT
-- "reject" / "skip" / "chhod do" / "nahi chahiye" → REJECT
-- "stop" / "band karo" / "ruk" / "bye" → STOP
-- "repeat" / "phir se" / "dobara" → REPEAT
-- "summary" / "batao" / "kya hai" → READ_SUMMARY
+- Be very generous in interpretation — match common Hindi/Hinglish/English phrases
+
+Hindi/Hinglish mappings (use these as strong hints):
+CONFIRM  → "haan", "ha", "yes", "theek hai", "sahi hai", "kar do", "bilkul", "zaroor", "ok", "sure", "agree", "le leta hu", "mujhe chahiye"
+DENY     → "nahi", "na", "no", "nako", "mat karo", "rehne do", "cancel", "band karo", "nahin chahiye", "chhod do"
+NEXT_JOB → "next", "agle", "dusra", "koi aur", "aur dikhao", "badlo", "aur kaam", "aage", "agla"
+BEST_JOB → "best", "sabse accha", "top", "sabse zyada", "sabse behtar", "accha wala", "number one", "best job"
+ACCEPT   → "accept", "le lo", "le leta hu", "mujhe yeh kaam chahiye", "haan le leta hu", "kaam karta hu", "theek hai le leta hu", "manzoor hai"
+REJECT   → "reject", "skip", "chhod do", "nahi chahiye", "mat do", "yeh nahi", "pasand nahi"
+STOP     → "stop", "band karo", "ruk", "bye", "bas", "khatam karo", "rokko", "exit", "chalo bye"
+REPEAT   → "repeat", "phir se", "dobara", "suno", "dobara bolo", "ek baar aur", "kya bola"
+READ_SUMMARY → "summary", "batao", "kya hai", "kitne kaam", "sab batao", "overview", "poora batao", "status"
+SHOW_MY_JOBS → "show my jobs", "meri jobs dikhao", "job requests", "mera kaam dikhao", "jobs dikhao", "kaam ki list", "mere jobs", "show jobs", "open jobs"
+OPEN_PROFILE → "open profile", "mera profile", "profile dikhao", "meri profile", "profile kholo", "show profile", "my profile"
+TOGGLE_AVAILABILITY → "go online", "go offline", "online karo", "offline karo", "available", "unavailable", "availability", "status change karo"
 """
 
 
