@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ContractorSidebar from "./components/ContractorSidebar";
 import LabourerSidebar from "./components/LabourerSidebar";
 import AdminSidebar from "./components/AdminSidebar";
+import UnionSidebar from "./components/UnionSidebar";
 
 // Common pages
 import Home from "./pages/common/home";
@@ -14,6 +15,7 @@ import Signup from "./pages/common/signup";
 import ContractorDashboard from "./pages/Contractor/ContractorDashboard";
 import ContractorProfile from "./pages/Contractor/ContractorProfile";
 import ContractorFindLabourers from "./pages/Contractor/ContractorFindLabourers";
+import ContractorFindHelpers from "./pages/Contractor/ContractorFindHelpers";
 import ContractorJobPosts from "./pages/Contractor/ContractorJobPosts";
 import ContractorVerification from "./pages/Contractor/ContractorVerification";
 
@@ -22,6 +24,13 @@ import LabourerDashboard from "./pages/Labourer/LabourerDashboard";
 import LabourerVerification from "./pages/Labourer/LabourerVerification";
 import LabourerJobRequests from "./pages/Labourer/LabourerJobRequests";
 import LabourerProfile from "./pages/Labourer/LabourerProfile";
+
+// Union pages
+import UnionDashboard from "./pages/Union/UnionDashboard";
+import UnionMyUnions from "./pages/Union/UnionMyUnions";
+import UnionCreate from "./pages/Union/UnionCreate";
+import UnionJobRequests from "./pages/Union/UnionJobRequests";
+import UnionSettings from "./pages/Union/UnionSettings";
 
 // Admin pages
 import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -47,6 +56,17 @@ function LabourerLayout({ children }) {
   return (
     <div className="flex min-h-screen bg-white">
       <LabourerSidebar />
+      <div className="flex-1 ml-[280px] overflow-y-auto">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function UnionLayout({ children }) {
+  return (
+    <div className="flex min-h-screen bg-white">
+      <UnionSidebar />
       <div className="flex-1 ml-[280px] overflow-y-auto">
         {children}
       </div>
@@ -87,6 +107,9 @@ export default function App() {
         <Route path="/contractor/find-labourers" element={
           <ContractorLayout><ContractorFindLabourers /></ContractorLayout>
         } />
+        <Route path="/contractor/find-helpers" element={
+          <ContractorLayout><ContractorFindHelpers /></ContractorLayout>
+        } />
         <Route path="/contractor/job-posts" element={
           <ContractorLayout><ContractorJobPosts /></ContractorLayout>
         } />
@@ -106,6 +129,23 @@ export default function App() {
         } />
         <Route path="/labourer/verification" element={
           <LabourerLayout><LabourerVerification /></LabourerLayout>
+        } />
+
+        {/* ── Union ───────────────────────────────────────── */}
+        <Route path="/union/dashboard" element={
+          <UnionLayout><UnionDashboard /></UnionLayout>
+        } />
+        <Route path="/union/my-unions" element={
+          <UnionLayout><UnionMyUnions /></UnionLayout>
+        } />
+        <Route path="/union/create" element={
+          <UnionLayout><UnionCreate /></UnionLayout>
+        } />
+        <Route path="/union/job-requests" element={
+          <UnionLayout><UnionJobRequests /></UnionLayout>
+        } />
+        <Route path="/union/settings" element={
+          <UnionLayout><UnionSettings /></UnionLayout>
         } />
 
         {/* ── Admin ───────────────────────────────────────── */}

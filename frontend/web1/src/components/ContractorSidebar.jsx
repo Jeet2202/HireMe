@@ -9,6 +9,7 @@ const Sidebar = () => {
   const navItems = [
     { name: 'Dashboard',       path: '/contractor-dashboard',       icon: <LayoutDashboard size={20} /> },
     { name: 'Find Labourers',  path: '/contractor/find-labourers',  icon: <Users size={20} /> },
+    { name: 'Find Helpers',    path: '/contractor/find-helpers',    icon: <Users size={20} /> },
     { name: 'Job Posts',       path: '/contractor/job-posts',       icon: <Briefcase size={20} /> },
     { name: 'Profile',         path: '/contractor/profile',         icon: <User size={20} /> },
     { name: 'Verification',    path: '/contractor/verification',    icon: <GraduationCap size={20} /> },

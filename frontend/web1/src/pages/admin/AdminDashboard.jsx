@@ -139,8 +139,8 @@ const AdminDashboard = () => {
             </div>
           </div>
           <div className="mt-8 flex gap-4">
-            <button className="flex-1 py-3 bg-on-primary text-on-surface font-bold rounded-xl active:scale-95 transition-transform hover:bg-secondary-container">Download Report</button>
-            <button className="flex-1 py-3 border border-on-primary text-on-surface font-bold rounded-xl active:scale-95 transition-transform hover:bg-white/10">View Details</button>
+            <button className="flex-1 py-3 bg-white text-black font-bold rounded-xl active:scale-95 transition-all hover:bg-white/90">Download Report</button>
+            <button className="flex-1 py-3 border border-white/30 text-white font-bold rounded-xl active:scale-95 transition-all hover:bg-white/10">View Details</button>
           </div>
         </div>
 
@@ -154,7 +154,7 @@ const AdminDashboard = () => {
               <p className="text-sm font-bold text-on-surface-variant uppercase mb-2">Supply Efficiency</p>
               <p className="text-sm text-on-background">Fulfillment speed increased by <span className="font-bold text-on-surface text-lg">14m</span> via matching engine.</p>
             </div>
-            <div className="flex items-center gap-3 text-white bg-primary/5 p-4 rounded-xl">
+            <div className="flex items-center gap-3 text-on-surface bg-primary/5 p-4 rounded-xl">
               <Info size={20} />
               <p className="text-sm font-medium">Verification backlog reaching critical status. Review suggested.</p>
             </div>

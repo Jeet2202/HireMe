@@ -170,7 +170,7 @@ const AdminJobManagement = () => {
                           <DollarSign size={18} />
                           Increase Wage (+15%)
                         </button>
-                        <button className="px-6 py-3 border border-primary text-white rounded-xl font-bold flex items-center gap-2 hover:bg-primary/5 hover:text-white">
+                        <button className="px-6 py-3 border border-primary text-on-surface rounded-xl font-bold flex items-center gap-2 hover:bg-primary/5">
                           <Send size={18} />
                           Notify Available Workers
                         </button>

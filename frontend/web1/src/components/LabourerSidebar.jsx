@@ -5,6 +5,7 @@ import {
   Briefcase, 
   User, 
   ShieldCheck,
+  Users,
   LogOut
 } from 'lucide-react';
 

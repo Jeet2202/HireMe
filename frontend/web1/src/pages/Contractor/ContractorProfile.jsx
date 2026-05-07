@@ -23,11 +23,11 @@ const ContractorProfile = () => {
   ];
 
   const galleryImages = [
-    { src: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=600&auto=format&fit=crop', title: 'Harbor Bridge Logistics Center', size: 'large' },
-    { src: 'https://images.unsplash.com/photo-1503387762-592dea58ef01?q=80&w=400&auto=format&fit=crop', title: 'Skyline Tower Phase 1', size: 'small' },
-    { src: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=400&auto=format&fit=crop', title: 'Corporate Plaza Interior', size: 'small' },
-    { src: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=400&auto=format&fit=crop', title: 'Westside Pipeline Renewal', size: 'small' },
-    { src: 'https://images.unsplash.com/photo-1590644365607-1c5a519a7a37?q=80&w=400&auto=format&fit=crop', title: 'Concrete Foundation Project X', size: 'small' },
+    { src: '/projects/project1.png', title: 'Harbor Bridge Logistics Center', size: 'large' },
+    { src: '/projects/project2.png', title: 'Skyline Tower Phase 1', size: 'small' },
+    { src: '/projects/project3.png', title: 'Corporate Plaza Interior', size: 'small' },
+    { src: '/projects/project4.png', title: 'Westside Pipeline Renewal', size: 'small' },
+    { src: '/projects/project2.png', title: 'Concrete Foundation Project X', size: 'small' },
   ];
 
   return (
