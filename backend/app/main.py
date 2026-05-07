@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from app.routes.auth import router as auth_router
 from app.routes.ml import router as ml_router
 from app.routes.labourer import router as labourer_router
+from app.routes.jobs import router as jobs_router
 
 load_dotenv()
 
@@ -32,6 +33,7 @@ app.add_middleware(
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(ml_router, prefix="/api/ml", tags=["ML Matching Engine"])
 app.include_router(labourer_router, prefix="/api/labourer", tags=["Labourer"])
+app.include_router(jobs_router, prefix="/api/jobs", tags=["Jobs"])
 
 
 @app.get("/")
